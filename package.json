@@ -10,7 +10,8 @@
     "apigen": "npx rimraf ./api && npx openapi2aspida -i ./openapi.json"
   },
   "dependencies": {
-    "@ant-design/cssinjs": "^1.17.0",
+    "@ant-design/cssinjs": "^1.17.2",
+    "antd": "^5.10.1",
     "firebase": "^10.4.0",
     "next": "13.5.4",
     "react": "^18",
@@ -35,7 +36,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --cache-location .next/cache/eslint/ --fix",
+      "eslint --cache --cache-location .next/cache/eslint/ --fix 'app/**/*.{js,jsx,ts,tsx}'",
       "prettier --write --ignore-path .gitignore"
     ]
   }
