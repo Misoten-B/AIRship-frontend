@@ -1,8 +1,7 @@
 import { ConfigProvider } from 'antd';
 import { Inter } from 'next/font/google';
-import StyledComponentsRegistry from './_shared/lib/AntdRegistry';
-import theme from './_shared/theme/themeConfig';
 import type { Metadata } from 'next';
+import { StyledComponentsRegistry, theme } from '@/lib/antd';
 
 const inter = Inter({ subsets: ['latin'] });
 
