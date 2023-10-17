@@ -36,8 +36,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --cache-location .next/cache/eslint/ --fix 'app/**/*.{js,jsx,ts,tsx}'",
-      "prettier --write --ignore-path .gitignore"
+      "npx eslint --cache --cache-location .next/cache/eslint/ --fix './src/**/*.{js,jsx,ts,tsx}'",
+      "npx prettier --write --ignore-path .gitignore ./src"
     ]
   }
 }
