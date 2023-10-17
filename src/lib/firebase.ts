@@ -33,10 +33,10 @@ export const firebaseSignIn = async () => {
     .catch((error) => {});
 };
 
-export const firebaseSignOut = () => {
-  signOut(auth)
-    .then(() => {})
-    .catch((error) => {
-      console.log(error);
-    });
+export const firebaseSignOut = async () => {
+  try {
+    return await signOut(auth);
+  } catch (error) {
+    console.error(error);
+  }
 };

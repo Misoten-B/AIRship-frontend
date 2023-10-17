@@ -1,6 +1,6 @@
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { atom } from 'recoil';
-import { auth } from '@/lib/firebase';
+import { auth } from './firebase';
 
 export const firebaseUserIdState = atom<string | undefined>({
   key: 'firebaseUserIdState',
