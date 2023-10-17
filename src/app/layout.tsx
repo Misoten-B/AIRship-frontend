@@ -1,7 +1,8 @@
-import { ConfigProvider } from 'antd';
+import { ConfigProvider as AntdConfigProvider } from 'antd';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { StyledComponentsRegistry, theme } from '@/lib/antd';
+import { AuthProvider } from '@/shared/hooks/auth/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <ConfigProvider theme={theme}>{children}</ConfigProvider>
+          <AuthProvider>
+            <AntdConfigProvider theme={theme}>{children}</AntdConfigProvider>
+          </AuthProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
