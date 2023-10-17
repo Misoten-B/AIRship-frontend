@@ -1,5 +1,6 @@
 import { Button } from '@/shared/components/common/Button';
 
-export default function Home() {
+const Page = () => {
   return <Button type="primary">Button</Button>;
-}
+};
+export default Page;
