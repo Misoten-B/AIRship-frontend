@@ -1,5 +1,7 @@
+import { Guard } from '@/shared/components/guards';
+
 const Page = () => {
-  return <>create card</>;
+  return <Guard>create card</Guard>;
 };
 
 export default Page;

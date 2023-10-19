@@ -2,6 +2,8 @@ import { ConfigProvider as AntdConfigProvider } from 'antd';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { StyledComponentsRegistry, theme } from '@/lib/antd';
+import { RecoilRoot } from '@/lib/recoil/RecoilRoot';
+import { AuthProvider } from '@/shared/hooks/auth';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +21,11 @@ export default function RootLayout({
     <html lang="ja">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <AntdConfigProvider theme={theme}>{children}</AntdConfigProvider>
+          <RecoilRoot>
+            <AuthProvider>
+              <AntdConfigProvider theme={theme}>{children}</AntdConfigProvider>
+            </AuthProvider>
+          </RecoilRoot>
         </StyledComponentsRegistry>
       </body>
     </html>
