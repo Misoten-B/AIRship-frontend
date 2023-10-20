@@ -1,7 +1,8 @@
 import { NextPage } from 'next';
+import { Guard } from '@/shared/components/guards';
 
 const Page: NextPage = () => {
-  return <>cards</>;
+  return <Guard>cards</Guard>;
 };
 
 export default Page;
