@@ -1,1 +1,1 @@
-export { Guard } from './Guards';
+export { Guard } from './Guard';

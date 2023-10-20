@@ -6,9 +6,9 @@ const { persistAtom } = recoilPersist();
 
 export const firebaseUserState = atom<{
   token: string | undefined;
-  currentUser: User | null | undefined;
+  currentUser: User | undefined;
 }>({
   key: 'firebaseUserState',
-  default: undefined,
+  default: { token: undefined, currentUser: null },
   effects: [persistAtom],
 });
