@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
-import { Divider } from '../layouts';
 import { useAuth } from '@/shared/hooks/auth';
 
 type Props = {
@@ -22,5 +21,5 @@ export const Guard = ({ children }: Props) => {
     return <></>;
   }
 
-  return <Divider>{children}</Divider>;
+  return children;
 };

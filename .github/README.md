@@ -21,8 +21,9 @@
     │   └── layouts  // Ant DesignのLayout
     ├── hooks
     │   ├── auth     // 認証に関する共通hook
-    │   └── openapi  // Open APiに基づく共通hook
-    └── types
+    │   └── restapi  // restapi共通hook
+    ├── schemas      // zodのスキーマ定義など
+    └── types        // 共通の型
 ```
 
 ## Getting started
