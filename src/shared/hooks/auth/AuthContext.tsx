@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { useRecoilState } from 'recoil';
 import { firebaseSignIn, firebaseSignOut } from '@/lib/firebase';
-import { firebaseUserState } from '@/lib/recoil';
+import { firebaseUserState } from '@/shared/lib/recoil';
 import { User } from '@/shared/types';
 
 type AuthContextProps = {
