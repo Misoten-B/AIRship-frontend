@@ -1,9 +1,10 @@
 import { ConfigProvider as AntdConfigProvider } from 'antd';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
-import { StyledComponentsRegistry, theme } from '@/lib/antd';
-import { RecoilRoot } from '@/lib/recoil/RecoilRoot';
+import { StyledComponentsRegistry } from '@/lib/antd';
 import { AuthProvider } from '@/shared/hooks/auth';
+import { theme } from '@/shared/lib/antd';
+import { RecoilRoot } from '@/shared/lib/recoil/RecoilRoot';
 
 const inter = Inter({ subsets: ['latin'] });
 
