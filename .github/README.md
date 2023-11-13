@@ -14,19 +14,14 @@
 ├── app     // Next.js 13 App Routeを使用
 ├── lib     // ライブラリのラップなど(ドメインの知識を持たない)
 └── shared  // 共通のコード
-    ├── component
-    │   ├── common   // Ant DesignのData Entry, Layout以外
-    │   ├── forms    // Ant DesignのData Entry
-    │   ├── guards   // 認証が必要なページで使用
-    │   ├── layouts  // Ant DesignのLayout
-    │   └── lib      // 抽象化したコンポーネント(この中で使用する)
+    ├── components
+    │   ├── common   // Ant Designコンポーネントのラップ
+    │   └── features // ドメインの知識を持つコンポーネント
     ├── hooks
-    │   ├── auth     // 認証に関する共通hook
-    │   └── restapi  // restapi共通hook
     ├── lib          // ライブラリのラップなど(ドメインの知識を持つ)
     │   ├── antd     // デザイントークンなど
     │   └── zod      // restapi共通hook
-    └── types        // 共通の型
+    └── types
 ```
 
 ## Getting started

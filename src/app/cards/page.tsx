@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { Guard } from '@/shared/components/guards';
+import { Guard } from '@/shared/components/features';
 
 const Page: NextPage = () => {
   return <Guard>cards</Guard>;
