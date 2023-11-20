@@ -5,22 +5,20 @@
 #### 技術スタック
 
 - [Next.js](https://nextjs.org/): `^13.x`
-- [Ant Design](https://ant.design/)
+- [Ant Design](https://mantine.dev/)
 
 #### ディレクトリ構造
 
 ```
 ./src
 ├── app     // Next.js 13 App Routeを使用
-├── lib     // ライブラリのラップなど(ドメインの知識を持たない)
 └── shared  // 共通のコード
     ├── components
     │   ├── common   // Ant Designコンポーネントのラップ
     │   └── features // ドメインの知識を持つコンポーネント
     ├── hooks
-    ├── lib          // ライブラリのラップなど(ドメインの知識を持つ)
-    │   ├── antd     // デザイントークンなど
-    │   └── zod      // restapi共通hook
+    ├── lib          // ライブラリのラップなど
+    │   └── mantine// 共通のデザイントークン
     └── types
 ```
 

@@ -1,11 +1,14 @@
-import { Content, Header, Layout } from '../../common/Layout';
+import { ReactNode } from 'react';
+import { AirshipLogo, AirshipTitle } from '../../features/AirshipLogo';
 
-type Props = {};
-export const GlobalNav = ({}: Props) => {
+type Props = {
+  children: ReactNode;
+};
+export const GlobalNav = ({ children }: Props) => {
   return (
-    <Layout>
-      <Header></Header>
-      <Content></Content>
-    </Layout>
+    <>
+      <AirshipLogo />
+      <AirshipTitle />
+    </>
   );
 };

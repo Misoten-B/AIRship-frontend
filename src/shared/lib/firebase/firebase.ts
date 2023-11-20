@@ -3,6 +3,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
+  EmailAuthProvider,
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
@@ -23,7 +24,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export const firebaseSignIn = async () => {
+export const firebaseSignInWithEmail = async () => {
+  const provider = new EmailAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential!.accessToken;
+    return { token: token, user: result.user };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const firebaseSignInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
   try {
