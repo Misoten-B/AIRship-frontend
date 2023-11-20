@@ -5,7 +5,7 @@
 #### 技術スタック
 
 - [Next.js](https://nextjs.org/): `^13.x`
-- [Ant Design](https://mantine.dev/)
+- [Mantine](https://mantine.dev/)
 
 #### ディレクトリ構造
 
@@ -14,7 +14,7 @@
 ├── app     // Next.js 13 App Routeを使用
 └── shared  // 共通のコード
     ├── components
-    │   ├── common   // Ant Designコンポーネントのラップ
+    │   ├── common   // Mantineコンポーネントのラップ
     │   └── features // ドメインの知識を持つコンポーネント
     ├── hooks
     ├── lib          // ライブラリのラップなど
@@ -29,7 +29,7 @@
 `package.json`が更新されるたびに実行してください。
 
 ```
-npm ci
+npm ci && npm run prepare && npm run dev
 ```
 
 #### OpenAPI
