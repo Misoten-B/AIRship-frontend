@@ -1,4 +1,4 @@
-import { Guard } from '@/shared/components/guards';
+import { Guard } from '@/shared/components/features';
 
 const Page = () => {
   return <Guard>create card</Guard>;

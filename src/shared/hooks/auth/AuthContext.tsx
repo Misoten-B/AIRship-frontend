@@ -9,7 +9,10 @@ import {
   useState,
 } from 'react';
 import { useRecoilState } from 'recoil';
-import { firebaseSignIn, firebaseSignOut } from '@/lib/firebase';
+import {
+  firebaseSignInWithGoogle,
+  firebaseSignOut,
+} from '@/shared/lib/firebase';
 import { firebaseUserState } from '@/shared/lib/recoil';
 import { User } from '@/shared/types';
 
@@ -35,7 +38,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const login = useCallback(async () => {
     try {
-      const credential = await firebaseSignIn();
+      const credential = await firebaseSignInWithGoogle();
       if (!credential) return;
       const cu = {
         displayName: credential.user.displayName,
