@@ -29,7 +29,7 @@
 `package.json`が更新されるたびに実行してください。
 
 ```
-npm ci && npm run prepare && npm run dev
+npm ci && npm run prepare && npm run apigen && npm run dev
 ```
 
 #### OpenAPI
