@@ -16,6 +16,7 @@
     "@ant-design/cssinjs": "^1.17.2",
     "@ant-design/pro-components": "^2.6.35",
     "@aspida/axios": "^1.14.0",
+    "@google/model-viewer": "^3.3.0",
     "@hookform/resolvers": "^3.3.2",
     "@mantine/core": "^7.2.2",
     "@mantine/dates": "^7.2.2",
