@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { AuthProvider } from '@/shared/hooks/auth';
+import { AxiosProvider } from '@/shared/lib/axios/AxiosProvider';
 import { ThemeProvider } from '@/shared/lib/mantine';
 import { RecoilRoot } from '@/shared/lib/recoil/RecoilRoot';
 
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <RecoilRoot>
           <AuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <AxiosProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </AxiosProvider>
           </AuthProvider>
         </RecoilRoot>
       </body>

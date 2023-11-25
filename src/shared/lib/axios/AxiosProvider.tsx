@@ -7,8 +7,10 @@ import { useRecoilState } from 'recoil';
 import { firebaseUserState } from '../recoil/atom';
 import api from '@/api/$api';
 
+const baseURL = process.env.NEXT_PUBLIC_API_ORIGIN;
+
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_ORIGIN,
+  baseURL,
 });
 const apiType = api(aspida(axiosInstance));
 type Api = typeof apiType;
@@ -29,12 +31,12 @@ export const AxiosProvider = ({ children }: Props) => {
       return undefined;
     }
     const headers =
-      currentUser.token == null
+      currentUser === null
         ? undefined
         : { Authorization: `Bearer ${currentUser.token}` };
 
     const axiosInstance = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_ORIGIN,
+      baseURL,
       headers: headers,
     });
 
