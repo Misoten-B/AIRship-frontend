@@ -1,3 +1,3 @@
-import { TextInput as MantineInput } from '@mantine/core';
+import { TextInput as MantineInput } from 'react-hook-form-mantine';
 
 export const TextInput = MantineInput;
