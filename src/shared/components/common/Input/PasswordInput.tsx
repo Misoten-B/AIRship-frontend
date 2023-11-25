@@ -1,3 +1,3 @@
-import { PasswordInput as MantineInput } from '@mantine/core';
+import { PasswordInput as MantineInput } from 'react-hook-form-mantine';
 
 export const PasswordInput = MantineInput;

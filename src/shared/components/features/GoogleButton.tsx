@@ -10,7 +10,12 @@ export const GoogleButton = () => {
   }, [login]);
 
   return (
-    <Button leftSection={<IconBrandGoogle />} onClick={handleClick}>
+    <Button
+      leftSection={<IconBrandGoogle />}
+      onClick={handleClick}
+      radius="xl"
+      variant="light"
+    >
       Continue with Google
     </Button>
   );
