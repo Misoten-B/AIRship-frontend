@@ -3,7 +3,7 @@
 import aspida from '@aspida/axios';
 import axios from 'axios';
 import { ReactNode, createContext, useContext, useMemo } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { firebaseUserState } from '../recoil/atom';
 import api from '@/api/$api';
 
@@ -24,7 +24,7 @@ type Props = {
   children: ReactNode;
 };
 export const AxiosProvider = ({ children }: Props) => {
-  const [currentUser, _] = useRecoilState(firebaseUserState);
+  const currentUser = useRecoilValue(firebaseUserState);
 
   const apiClient = useMemo(() => {
     if (currentUser === undefined) {
