@@ -1,11 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { RegisterCard } from './RegisterCard';
-import { Anchor } from '@/shared/components/common/Anchor';
 import { Divider } from '@/shared/components/common/Divider';
 import { Flex } from '@/shared/components/common/Layout';
 import { Center } from '@/shared/components/common/Layout/Center';
 import { Stack } from '@/shared/components/common/Layout/Stack';
+import { Anchor } from '@/shared/components/common/Navigation';
 
 import { Title } from '@/shared/components/common/Title';
 import { GoogleButton } from '@/shared/components/features/GoogleButton';
