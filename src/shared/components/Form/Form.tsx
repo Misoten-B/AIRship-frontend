@@ -1,3 +1,3 @@
-import { Form as ReactHook } from 'react-hook-form';
+import { Form as ReactHookForm } from 'react-hook-form';
 
-export const Form = ReactHook;
+export const Form = ReactHookForm;
