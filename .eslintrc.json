@@ -1,12 +1,6 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:storybook/recommended"
-  ],
-  "plugins": [
-    "unused-imports",
-    "import"
-  ],
+  "extends": ["next/core-web-vitals", "plugin:storybook/recommended"],
+  "plugins": ["unused-imports", "import"],
   "rules": {
     "unused-imports/no-unused-imports": "error",
     "import/order": [
