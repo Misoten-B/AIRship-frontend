@@ -34,20 +34,19 @@ type Props = {
 export const AuthProvider = ({ children }: Props) => {
   const [firebaseUser, setFirebaseUser] = useRecoilState(firebaseUserState);
   const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
-  const [token, setToken] = useState<string | undefined>(undefined);
 
   const login = useCallback(async () => {
     try {
       const credential = await firebaseSignInWithGoogle();
       if (!credential) return;
-      const cu = {
+      const cu: User = {
         displayName: credential.user.displayName,
         email: credential.user.email,
         photoURL: credential.user.photoURL,
+        token: credential.token,
       };
       setCurrentUser(cu);
-      setToken(credential.token);
-      setFirebaseUser({ token: credential.token, currentUser: cu });
+      setFirebaseUser(cu);
     } catch (error) {
       console.debug(error);
     }
@@ -57,20 +56,18 @@ export const AuthProvider = ({ children }: Props) => {
     try {
       await firebaseSignOut();
       setCurrentUser(null);
-      setToken(undefined);
-      setFirebaseUser({ token: undefined, currentUser: null });
+      setFirebaseUser(null);
     } catch (error) {
       throw error;
     }
   }, [setFirebaseUser]);
 
   useEffect(() => {
-    setCurrentUser(firebaseUser?.currentUser);
-    setToken(firebaseUser?.token);
+    setCurrentUser(firebaseUser);
   }, [firebaseUser]);
 
   return (
-    <AuthContext.Provider value={{ token, currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

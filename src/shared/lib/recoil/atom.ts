@@ -4,11 +4,8 @@ import { User } from '@/shared/types';
 
 const { persistAtom } = recoilPersist();
 
-export const firebaseUserState = atom<{
-  token: string | undefined;
-  currentUser: User | undefined;
-}>({
+export const firebaseUserState = atom<User>({
   key: 'firebaseUserState',
-  default: { token: undefined, currentUser: null },
+  default: null,
   effects: [persistAtom],
 });
