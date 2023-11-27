@@ -67,5 +67,5 @@ jobs:
         with:
           app-name: 'airship'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_816019B47BF94B2AB9AAF3464C0FD2D2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1B401B69D94B45169D9390FAC226A9C2 }}
           package: .
