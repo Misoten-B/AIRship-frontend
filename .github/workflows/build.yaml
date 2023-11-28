@@ -40,7 +40,7 @@ jobs:
       - name: Run Prettier
         run: |
           npm ci
-          npm apigen
+          npm run apigen
           npx prettier --write ${{ env.GIT_DIFF_FILTERED }}
         if: env.GIT_DIFF
       - uses: stefanzweifel/git-auto-commit-action@v4
