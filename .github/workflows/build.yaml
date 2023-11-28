@@ -7,62 +7,61 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20.x'
-        cache: 'npm'
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: 'npm'
 
-    # - name: cache-node-modules
-    #   uses: actions/cache@v3
-    #   id: node_modules_cache_id
-    #   with:
-    #     path: node_modules
-    #     key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-    #       ${{ runner.os }}-build-
-    #       ${{ runner.os }}-
+      # - name: cache-node-modules
+      #   uses: actions/cache@v3
+      #   id: node_modules_cache_id
+      #   with:
+      #     path: node_modules
+      #     key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+      #       ${{ runner.os }}-build-
+      #       ${{ runner.os }}-
 
+      # - name: Install Dependencies
+      #   if: ${{ steps.node_modules_cache_id.outputs.cache-hit }} == 'false'
+      #   run: npm ci
 
-    # - name: Install Dependencies
-    #   if: ${{ steps.node_modules_cache_id.outputs.cache-hit }} == 'false'
-    #   run: npm ci
+      - uses: technote-space/get-diff-action@v6
+        with:
+          PATTERNS: |
+            **/*.{ts,tsx,js,jsx,json}
 
-    - uses: technote-space/get-diff-action@v6
-      with:
-        PATTERNS: |
-          **/*.{ts,tsx,js,jsx,json}
+      - name: Run Prettier
+        run: |
+          npm ci
+          npm run apigen
+          npx prettier --write ${{ env.GIT_DIFF_FILTERED }}
+        if: env.GIT_DIFF
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply Prettier Change
 
-    - name: Run Prettier
-      run: |
-        npm ci
-        npx prettier --write ${{ env.GIT_DIFF_FILTERED }}
-      if: env.GIT_DIFF
-    - uses: stefanzweifel/git-auto-commit-action@v4 
-      with:
-        commit_message: Apply Prettier Change
-
-    - name: eslint
-      uses: reviewdog/action-eslint@v1
-      with:
+      - name: eslint
+        uses: reviewdog/action-eslint@v1
+        with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
-          eslint_flags: "src/**/*.{ts,tsx}"
+          eslint_flags: 'src/**/*.{ts,tsx}'
           fail_on_error: true
-    
-    - name: Build
-      run: npm run build
-      env:
-        NEXT_PUBLIC_API_KEY: ${{ vars.NEXT_PUBLIC_API_KEY }}
-        NEXT_PUBLIC_AUTH_DOMAIN: ${{ vars.NEXT_PUBLIC_AUTH_DOMAIN }}
-        NEXT_PUBLIC_PROJECT_ID: ${{ vars.NEXT_PUBLIC_PROJECT_ID }}
-        NEXT_PUBLIC_STORAGE_BUCKET: ${{ vars.NEXT_PUBLIC_STORAGE_BUCKET }}
-        NEXT_PUBLIC_MESSAGING_SENDER_ID: ${{ vars.NEXT_PUBLIC_MESSAGING_SENDER_ID }}
-        NEXT_PUBLIC_APP_ID: ${{ vars.NEXT_PUBLIC_APP_ID }}
-        NEXT_PUBLIC_MEASUREMENT_ID: ${{ vars.NEXT_PUBLIC_MEASUREMENT_ID }}
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_KEY: ${{ vars.NEXT_PUBLIC_API_KEY }}
+          NEXT_PUBLIC_AUTH_DOMAIN: ${{ vars.NEXT_PUBLIC_AUTH_DOMAIN }}
+          NEXT_PUBLIC_PROJECT_ID: ${{ vars.NEXT_PUBLIC_PROJECT_ID }}
+          NEXT_PUBLIC_STORAGE_BUCKET: ${{ vars.NEXT_PUBLIC_STORAGE_BUCKET }}
+          NEXT_PUBLIC_MESSAGING_SENDER_ID: ${{ vars.NEXT_PUBLIC_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_APP_ID: ${{ vars.NEXT_PUBLIC_APP_ID }}
+          NEXT_PUBLIC_MEASUREMENT_ID: ${{ vars.NEXT_PUBLIC_MEASUREMENT_ID }}
