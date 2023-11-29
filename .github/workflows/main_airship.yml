@@ -36,6 +36,9 @@ jobs:
           NEXT_PUBLIC_APP_ID: ${{ vars.NEXT_PUBLIC_APP_ID }}
           NEXT_PUBLIC_MEASUREMENT_ID: ${{ vars.NEXT_PUBLIC_MEASUREMENT_ID }}
 
+      - name: Edit start script
+        run: npm pkg set scripts.start="./node_modules/next/dist/bin/next"
+
       - name: Zip artifact for deployment
         run: zip -ry release.zip ./* .next
 
