@@ -37,10 +37,10 @@ jobs:
           NEXT_PUBLIC_MEASUREMENT_ID: ${{ vars.NEXT_PUBLIC_MEASUREMENT_ID }}
 
       - name: Edit start script
-        run: npm pkg set scripts.start="./node_modules/next/dist/bin/next"
+        run: npm pkg set scripts.start="./node_modules/next/dist/bin/next start"
 
       - name: Zip artifact for deployment
-        run: zip -ry release.zip ./* .next
+        run: zip -ryq release.zip ./* .next
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -62,7 +62,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip -q release.zip
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
