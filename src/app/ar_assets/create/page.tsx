@@ -3,6 +3,7 @@ import { CreateArAssetStepper } from './_components/CreateArAssetStepper';
 
 const Page = () => {
   return (
+    // MEMO: Stepper関連のUI実装が終わったら消しておく
     // <Guard>
     <CreateArAssetStepper />
     // </Guard>

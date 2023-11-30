@@ -28,7 +28,6 @@ export const CreateArAssetStepper = () => {
     setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
   };
 
-  // Allow the user to freely go back and forth between visited steps.
   const shouldAllowSelectStep = (step: number) =>
     highestStepVisited >= step && active !== step && active !== 3;
 
@@ -74,29 +73,31 @@ export const CreateArAssetStepper = () => {
           </Stepper.Completed>
         </Stepper>
       </Container>
-      {active == 3 ? (
-        <Anchor component={Link} href="/ar_assets">
-          QRコード一覧へ
-        </Anchor>
-      ) : (
-        <Group justify="center" mt="xl">
-          {active !== 0 && (
-            <Button
-              variant="default"
-              onClick={() => handleStepChange(active - 1)}
-            >
-              前のステップに戻る
-            </Button>
-          )}
-          {active !== 2 ? (
-            <Button onClick={() => handleStepChange(active + 1)}>
-              次のステップへ
-            </Button>
-          ) : (
-            <Button onClick={() => handleStepChange(active + 1)}>完了</Button>
-          )}
-        </Group>
-      )}
+      <Container>
+        {active == 3 ? (
+          <Anchor component={Link} href="/ar_assets">
+            QRコード一覧へ
+          </Anchor>
+        ) : (
+          <Group justify="center" mt="xl">
+            {active !== 0 && (
+              <Button
+                variant="default"
+                onClick={() => handleStepChange(active - 1)}
+              >
+                前のステップに戻る
+              </Button>
+            )}
+            {active !== 2 ? (
+              <Button onClick={() => handleStepChange(active + 1)}>
+                次のステップへ
+              </Button>
+            ) : (
+              <Button onClick={() => handleStepChange(active + 1)}>完了</Button>
+            )}
+          </Group>
+        )}
+      </Container>
     </>
   );
 };
