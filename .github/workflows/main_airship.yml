@@ -40,7 +40,7 @@ jobs:
         run: npm pkg set scripts.start="/home/wwwroot/node_modules/next/dist/bin/next start"
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./* .next
+        run: tar -zcvf release.tar.gz ./
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -62,7 +62,7 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip -q release.zip
+        run: tar -xvf release.tar.gz
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
