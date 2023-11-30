@@ -40,7 +40,7 @@ jobs:
         run: npm pkg set scripts.start="/home/wwwroot/node_modules/next/dist/bin/next start"
 
       - name: Zip artifact for deployment
-        run: zip -ryq release.zip ./* .next
+        run: zip -r release.zip ./* .next
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
