@@ -32,48 +32,46 @@ export const CreateArAssetStepper = () => {
     highestStepVisited >= step && active !== step && active !== 3;
 
   return (
-    <>
-      <Container>
-        <Stepper
-          active={active}
-          onStepClick={setActive}
-          radius="sm"
-          size="xs"
-          iconSize={20}
-          styles={{
-            separator: { margin: '2px' },
-            stepLabel: { fontSize: '9px' },
-            stepDescription: { fontSize: '7px' },
-            stepBody: { margin: '3px' },
-          }}
+    <Container>
+      <Stepper
+        active={active}
+        onStepClick={setActive}
+        radius="sm"
+        size="xs"
+        iconSize={20}
+        styles={{
+          separator: { margin: '2px' },
+          stepLabel: { fontSize: '9px' },
+          stepDescription: { fontSize: '7px' },
+          stepBody: { margin: '3px' },
+        }}
+      >
+        <Stepper.Step
+          label="3Dモデルの選択"
+          description="アップロードと選択"
+          allowStepSelect={shouldAllowSelectStep(0)}
         >
-          <Stepper.Step
-            label="3Dモデルの選択"
-            description="アップロードと選択"
-            allowStepSelect={shouldAllowSelectStep(0)}
-          >
-            <Select3dModel />
-          </Stepper.Step>
-          <Stepper.Step
-            label="音声データの設定"
-            description="録音と話させる文章の登録"
-            allowStepSelect={shouldAllowSelectStep(1)}
-          >
-            <SpeakingSettings />
-          </Stepper.Step>
-          <Stepper.Step
-            label="QRコード内画像"
-            description="画像をアップロード"
-            allowStepSelect={shouldAllowSelectStep(2)}
-          >
-            <UploadQRCodeInsideImage />
-          </Stepper.Step>
-          <Stepper.Completed>
-            <CompletedArAsset />
-          </Stepper.Completed>
-        </Stepper>
-      </Container>
-      <Container>
+          <Select3dModel />
+        </Stepper.Step>
+        <Stepper.Step
+          label="音声データの設定"
+          description="録音と話させる文章の登録"
+          allowStepSelect={shouldAllowSelectStep(1)}
+        >
+          <SpeakingSettings />
+        </Stepper.Step>
+        <Stepper.Step
+          label="QRコード内画像"
+          description="画像をアップロード"
+          allowStepSelect={shouldAllowSelectStep(2)}
+        >
+          <UploadQRCodeInsideImage />
+        </Stepper.Step>
+        <Stepper.Completed>
+          <CompletedArAsset />
+        </Stepper.Completed>
+      </Stepper>
+      <Group justify="center">
         {active == 3 ? (
           <Anchor component={Link} href="/ar_assets">
             QRコード一覧へ
@@ -97,7 +95,7 @@ export const CreateArAssetStepper = () => {
             )}
           </Group>
         )}
-      </Container>
-    </>
+      </Group>
+    </Container>
   );
 };
