@@ -1,11 +1,11 @@
-import { IconUpload } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Image } from '@/shared/components/common/Image';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { SampleQrCodeImage } from '@/shared/components/features/QRCodeImage';
+import { IconUpload } from '@/shared/components/icons/IconUpload';
 
 export const UploadQRCodeInsideImage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -19,7 +19,7 @@ export const UploadQRCodeInsideImage = () => {
       </Text>
       <Center>
         <Stack>
-          <Image src="/QRcode.svg" alt="#" />
+          <SampleQrCodeImage />
           {file && (
             <Text size="sm" ta="center" mt="sm" c="gray.6">
               {file.name}
