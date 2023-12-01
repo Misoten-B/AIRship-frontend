@@ -21,7 +21,7 @@ export const UploadQRCodeInsideImage = () => {
         <Stack>
           <Image src="/QRcode.svg" alt="#" />
           {file && (
-            <Text size="sm" ta="center" mt="sm" c={'gray.6'}>
+            <Text size="sm" ta="center" mt="sm" c="gray.6">
               {file.name}
             </Text>
           )}
