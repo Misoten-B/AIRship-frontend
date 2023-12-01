@@ -39,7 +39,7 @@ export const Select3dModel = () => {
           </Stack>
         </Grid.Col>
       </Grid>
-      <Divider my="sm" labelPosition="center"></Divider>
+      <Divider my="sm" labelPosition="center" />
 
       <Title order={5} c="blue.6" mb={4}>
         アップロードした3Dモデル
