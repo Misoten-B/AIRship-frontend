@@ -22,19 +22,19 @@ export const Select3dModel = () => {
       <Grid gutter="sm">
         <Grid.Col span={4}>
           <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#"></Image>
+            <Image src="/3dmodel_image.svg" alt="#" />
             <Radio size="xs" />
           </Stack>
         </Grid.Col>
         <Grid.Col span={4}>
           <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#"></Image>
+            <Image src="/3dmodel_image.svg" alt="#" />
             <Radio size="xs" />
           </Stack>
         </Grid.Col>
         <Grid.Col span={4}>
           <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#"></Image>
+            <Image src="/3dmodel_image.svg" alt="#" />
             <Radio size="xs" />
           </Stack>
         </Grid.Col>
@@ -56,7 +56,7 @@ export const Select3dModel = () => {
         </Grid.Col>
         <Grid.Col span={4}>
           <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#"></Image>
+            <Image src="/3dmodel_image.svg" alt="#" />
             <Radio size="xs" />
           </Stack>
         </Grid.Col>
