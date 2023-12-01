@@ -1,8 +1,7 @@
 import { Container } from '@/shared/components/common/Container';
 import { Divider } from '@/shared/components/common/Divider';
 import { Image } from '@/shared/components/common/Image';
-import { FileInput } from '@/shared/components/common/Input/FileInput';
-import { Radio } from '@/shared/components/common/Input/Radio';
+import { FileInput, Radio } from '@/shared/components/common/Input';
 import { Grid, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
@@ -51,7 +50,7 @@ export const Select3dModel = () => {
       <Grid>
         <Grid.Col span={4}>
           <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#"></Image>
+            <Image src="/3dmodel_image.svg" alt="#" />
             <Radio size="xs" />
           </Stack>
         </Grid.Col>
@@ -70,7 +69,7 @@ export const Select3dModel = () => {
               root: { height: '100%' },
               input: { height: 'calc(100% - 28px)' },
             }}
-          ></FileInput>
+          />
         </Grid.Col>
       </Grid>
     </Container>
