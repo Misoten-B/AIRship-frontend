@@ -6,7 +6,25 @@ import { Grid, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 
-export const Select3dModel = () => {
+const mock3dModels: { id: number; imageSrc: string }[] = [
+  {
+    id: 1,
+    imageSrc: '3d_model_image.svg',
+  },
+  {
+    id: 2,
+    imageSrc: '3d_model_image.svg',
+  },
+  {
+    id: 3,
+    imageSrc: '3d_model_image.svg',
+  },
+];
+
+type Props = {};
+export const Select3dModel = ({}: Props) => {
+  const sampleModels = mock3dModels;
+  const uploadedModels = mock3dModels;
   return (
     <Container>
       <Title order={3} mb={16}>
@@ -15,29 +33,21 @@ export const Select3dModel = () => {
       <Title order={5} mb={4}>
         サンプル3Dモデル
       </Title>
-      <Title order={6} mb={12}>
+      <Text size="xs" c="gray.6" mb={12}>
         用意できる3Dモデルがない場合はサンプルからお選びください
-      </Title>
+      </Text>
 
       <Grid gutter="sm">
-        <Grid.Col span={4}>
-          <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#" />
-            <Radio size="xs" />
-          </Stack>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#" />
-            <Radio size="xs" />
-          </Stack>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#" />
-            <Radio size="xs" />
-          </Stack>
-        </Grid.Col>
+        {sampleModels.map(({ id, imageSrc }) => {
+          return (
+            <Grid.Col key={id} span={4}>
+              <Stack gap="sm" align="center">
+                <Image src={imageSrc} alt={`${id} 3d model`} />
+                <Radio size="xs" />
+              </Stack>
+            </Grid.Col>
+          );
+        })}
       </Grid>
       <Divider my="sm" labelPosition="center" />
 
@@ -48,18 +58,16 @@ export const Select3dModel = () => {
         自分でアップロードした3Dモデルを選択するにはアップロードする必要があります
       </Text>
       <Grid>
-        <Grid.Col span={4}>
-          <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#" />
-            <Radio size="xs" />
-          </Stack>
-        </Grid.Col>
-        <Grid.Col span={4}>
-          <Stack gap="sm" align="center">
-            <Image src="/3dmodel_image.svg" alt="#" />
-            <Radio size="xs" />
-          </Stack>
-        </Grid.Col>
+        {uploadedModels.map(({ id, imageSrc }) => {
+          return (
+            <Grid.Col key={id} span={4}>
+              <Stack gap="sm" align="center">
+                <Image src={imageSrc} alt={`${id} 3d model`} />
+                <Radio size="xs" />
+              </Stack>
+            </Grid.Col>
+          );
+        })}
         <Grid.Col span={4}>
           <FileInput
             placeholder="アップロード"
