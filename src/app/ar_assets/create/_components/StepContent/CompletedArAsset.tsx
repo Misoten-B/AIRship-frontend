@@ -23,7 +23,11 @@ export const CompletedArAsset = () => {
         </Notification>
         <Center>
           <Stack>
-            <QRCode url="https://airship.com" imageSrc="/logo.svg" size={200} />
+            <QRCode
+              url="https://airship.com"
+              imageSrc="/airship-logo-column.svg"
+              size={200}
+            />
             <Text size="sm" c="gray" w={240}>
               カメラで読み取るとARで3D画像と生成された声を聞くことができます。
             </Text>
