@@ -1,10 +1,10 @@
-import { ActionIcon } from '@mantine/core';
-import { IconMicrophone } from '@tabler/icons-react';
+import { ActionIcon } from '@/shared/components/common/Button';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { IconMicrophone } from '@/shared/components/icons/IconMicrophone';
 
 export const RecordedModelSettings = () => {
   return (
