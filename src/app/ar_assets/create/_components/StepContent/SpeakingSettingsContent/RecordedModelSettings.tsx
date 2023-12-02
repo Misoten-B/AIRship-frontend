@@ -8,7 +8,7 @@ import { IconMicrophone } from '@/shared/components/icons/IconMicrophone';
 export const RecordedModelSettings = () => {
   return (
     <Container p={0}>
-      <Title order={5} c="blue.6" mb={4}>
+      <Title order={5} mb={4}>
         生成元音声の設定
       </Title>
       <Text size="xs" c="gray.6" mb={12}>
@@ -31,7 +31,7 @@ export const RecordedModelSettings = () => {
           タップして録音
         </Button>
       </Stack>
-      <Title order={6} c="blue.6" mb={4}>
+      <Title order={6} mb={4}>
         録音音声
       </Title>
       <Text size="xs" c="gray.6" mb={12}>

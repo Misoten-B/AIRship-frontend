@@ -9,7 +9,7 @@ import { Title } from '@/shared/components/common/Title';
 export const SpeakingSettings = () => {
   return (
     <Container>
-      <Title order={3} c="blue.6" mb={16}>
+      <Title order={3} mb={16}>
         音声データの設定
       </Title>
       <RecordedModelSettings />

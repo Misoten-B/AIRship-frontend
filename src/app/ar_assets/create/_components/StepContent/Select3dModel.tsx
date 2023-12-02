@@ -9,15 +9,15 @@ import { Title } from '@/shared/components/common/Title';
 export const Select3dModel = () => {
   return (
     <Container>
-      <Title order={3} c="blue.6" mb={16}>
+      <Title order={3} mb={16}>
         3Dモデルの選択
       </Title>
-      <Title order={5} c="blue.6" mb={4}>
+      <Title order={5} mb={4}>
         サンプル3Dモデル
       </Title>
-      <Text size="xs" c="gray.6" mb={12}>
+      <Title order={6} mb={12}>
         用意できる3Dモデルがない場合はサンプルからお選びください
-      </Text>
+      </Title>
 
       <Grid gutter="sm">
         <Grid.Col span={4}>
@@ -41,7 +41,7 @@ export const Select3dModel = () => {
       </Grid>
       <Divider my="sm" labelPosition="center" />
 
-      <Title order={5} c="blue.6" mb={4}>
+      <Title order={5} mb={4}>
         アップロードした3Dモデル
       </Title>
       <Text size="xs" c="gray.6" mb={12}>
