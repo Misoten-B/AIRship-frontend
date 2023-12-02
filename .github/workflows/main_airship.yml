@@ -30,6 +30,14 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
+        build-args: |
+          API_KEY=${{ vars.API_KEY }}
+          AUTH_DOMAIN=${{ vars.AUTH_DOMAIN }}
+          PROJECT_ID=${{ vars.PROJECT_ID }}
+          STORAGE_BUCKET=${{ vars.STORAGE_BUCKET }}
+          MESSAGING_SENDER_ID=${{ vars.MESSAGING_SENDER }}
+          APP_ID=${{ vars.APP_ID }}
+          MEASUREMENT_ID=${{ vars.MEASUREMENT_ID }}
         tags: airship.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_b57b1b3d1e854cadbaacad28c7f5a4ea }}/airship-frontend:${{ github.sha }}
         file: ./Dockerfile
 
