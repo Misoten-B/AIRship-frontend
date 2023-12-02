@@ -9,9 +9,11 @@ import {
 } from './StepContent';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Group } from '@/shared/components/common/Layout';
+import { Group, Space } from '@/shared/components/common/Layout';
 import { Anchor } from '@/shared/components/common/Navigation';
 import { Stepper } from '@/shared/components/common/Stepper';
+import { IconChevronLeft } from '@/shared/components/icons/IconChevronLeft';
+import { IconChevronRight } from '@/shared/components/icons/IconChevronRight';
 
 export const CreateArAssetStepper = () => {
   const [active, setActive] = useState(0);
@@ -71,31 +73,43 @@ export const CreateArAssetStepper = () => {
           <CompletedArAsset />
         </Stepper.Completed>
       </Stepper>
-      <Group justify="center">
-        {active == 3 ? (
-          <Anchor component={Link} href="/ar_assets">
-            QRコード一覧へ
-          </Anchor>
-        ) : (
-          <Group justify="center" mt="xl">
-            {active !== 0 && (
-              <Button
-                variant="default"
-                onClick={() => handleStepChange(active - 1)}
-              >
-                前のステップに戻る
-              </Button>
-            )}
-            {active !== 2 ? (
-              <Button onClick={() => handleStepChange(active + 1)}>
-                次のステップへ
-              </Button>
-            ) : (
-              <Button onClick={() => handleStepChange(active + 1)}>完了</Button>
-            )}
-          </Group>
-        )}
-      </Group>
+
+      {active == 3 ? (
+        <Anchor component={Link} href="/ar_assets">
+          QRコード一覧へ
+        </Anchor>
+      ) : (
+        <Group
+          my="xl"
+          p={0}
+          justify={active !== 0 ? 'space-between' : 'flex-end'}
+        >
+          {active !== 0 && (
+            <Button
+              variant="outline"
+              size="xs"
+              leftSection={<IconChevronLeft size={14} />}
+              onClick={() => handleStepChange(active - 1)}
+            >
+              前のステップ
+            </Button>
+          )}
+          {active !== 2 ? (
+            <Button
+              size="xs"
+              rightSection={<IconChevronRight size={14} />}
+              onClick={() => handleStepChange(active + 1)}
+            >
+              次のステップへ
+            </Button>
+          ) : (
+            <Button size="xs" onClick={() => handleStepChange(active + 1)}>
+              完了
+            </Button>
+          )}
+        </Group>
+      )}
+      <Space h="md" />
     </Container>
   );
 };
