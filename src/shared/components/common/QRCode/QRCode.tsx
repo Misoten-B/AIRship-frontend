@@ -1,27 +1,30 @@
 import { QRCodeSVG } from 'qrcode.react';
+import { Paper } from '../Layout';
 
 type Props = {
   url: string;
   imageSrc: string;
+  size: number;
 };
 export const QRCode = (props: Props) => {
-  const { url, imageSrc } = props;
+  const { url, imageSrc, size } = props;
   return (
-    <QRCodeSVG
-      value={url}
-      size={128}
-      bgColor={'#ffffff'}
-      fgColor={'#000000'}
-      level={'L'}
-      includeMargin={true}
-      imageSettings={{
-        src: imageSrc,
-        x: undefined,
-        y: undefined,
-        height: 24,
-        width: 24,
-        excavate: true,
-      }}
-    />
+    <Paper radius="md" withBorder p="md" pb={10}>
+      <QRCodeSVG
+        value={url}
+        size={size}
+        bgColor={'#ffffff'}
+        fgColor={'#000000'}
+        level={'L'}
+        imageSettings={{
+          src: imageSrc,
+          x: undefined,
+          y: undefined,
+          height: size / 4.5,
+          width: size / 4.5,
+          excavate: true,
+        }}
+      />
+    </Paper>
   );
 };
