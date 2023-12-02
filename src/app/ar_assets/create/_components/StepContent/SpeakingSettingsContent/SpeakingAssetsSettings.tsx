@@ -1,3 +1,4 @@
+import { useForm } from 'react-hook-form';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Textarea } from '@/shared/components/common/Input';
@@ -6,6 +7,7 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 
 export const SpeakingAssetsSettings = () => {
+  const { control } = useForm();
   return (
     <Container p={0}>
       <Title order={5} mb={4}>
@@ -31,6 +33,7 @@ export const SpeakingAssetsSettings = () => {
         <Textarea
           // TODO: wip
           name=""
+          control={control}
           placeholder="100文字以下で入力してください。"
           autosize
           minRows={3}
