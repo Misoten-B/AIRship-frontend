@@ -29,6 +29,8 @@ export const SpeakingAssetsSettings = () => {
       </Text>
       <Stack align="flex-start" justify="flex-start" mb={12} gap="xs">
         <Textarea
+          // TODO: wip
+          name=""
           placeholder="100文字以下で入力してください。"
           autosize
           minRows={3}

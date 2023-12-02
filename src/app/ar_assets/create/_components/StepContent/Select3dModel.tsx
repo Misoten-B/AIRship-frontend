@@ -1,8 +1,10 @@
+import { useForm } from 'react-hook-form';
 import { Container } from '@/shared/components/common/Container';
 import { Divider } from '@/shared/components/common/Divider';
 import { Image } from '@/shared/components/common/Image';
-import { FileInput, Radio } from '@/shared/components/common/Input';
+import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Stack } from '@/shared/components/common/Layout';
+import { Radio } from '@/shared/components/common/Radio';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 
@@ -23,6 +25,8 @@ const mock3dModels: { id: number; imageSrc: string }[] = [
 
 type Props = {};
 export const Select3dModel = ({}: Props) => {
+  // TODO: wip
+  const { control } = useForm();
   const sampleModels = mock3dModels;
   const uploadedModels = mock3dModels;
   return (
@@ -43,7 +47,8 @@ export const Select3dModel = ({}: Props) => {
             <Grid.Col key={id} span={4}>
               <Stack gap="sm" align="center">
                 <Image src={imageSrc} alt={`${id} 3d model`} />
-                <Radio size="xs" />
+                {/* TODO: wip */}
+                <Radio name="" control={control} size="xs" />
               </Stack>
             </Grid.Col>
           );
@@ -63,13 +68,17 @@ export const Select3dModel = ({}: Props) => {
             <Grid.Col key={id} span={4}>
               <Stack gap="sm" align="center">
                 <Image src={imageSrc} alt={`${id} 3d model`} />
-                <Radio size="xs" />
+                {/* TODO: wip */}
+                <Radio name="" control={control} size="xs" />
               </Stack>
             </Grid.Col>
           );
         })}
         <Grid.Col span={4}>
           <FileInput
+            // TODO: wip
+            name=""
+            control={control}
             placeholder="アップロード"
             size="xs"
             styles={{
