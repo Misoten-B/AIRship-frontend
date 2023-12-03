@@ -6,6 +6,7 @@
 
 - [Next.js](https://nextjs.org/): `^13.x`
 - [Mantine](https://mantine.dev/)
+- [aspida](https://github.com/aspida/aspida)
 
 #### ディレクトリ構造
 
@@ -34,4 +35,12 @@ npm ci && npm run prepare && npm run apigen && npm run dev
 
 #### OpenAPI
 
-未実装です。
+次のコードでOpenAPIの型を自動生成することができます。
+
+```
+npm run apigen
+```
+
+`swagger.yaml`について生成に失敗した場合は`aspida.config.js`の`inputFile`をバックエンドリポジトリの`/docs/swagger.yaml`の直近のコミットへ書き換えてください。
+
+(例) `https://github.com/Misoten-B/airship-backend/blob/<コミットID>/docs/swagger.yaml`
