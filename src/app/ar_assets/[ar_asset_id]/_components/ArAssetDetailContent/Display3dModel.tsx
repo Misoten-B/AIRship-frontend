@@ -15,7 +15,7 @@ export const Display3dModel = () => {
         3Dモデルデータを登録すると、QRコードから3DモデルをARとして表示させることができます。
       </Text>
       <Group justify="center" mt={8}>
-        <Image src="/3dmodel_image.svg" alt="#" height={160} />
+        <Image src="/3d_model_image.svg" alt="3d_model_image" height={160} />
         <Button variant="outline" color="orange" radius="xl">
           選択する
         </Button>
