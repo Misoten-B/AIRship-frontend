@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
-import { Guard } from '@/shared/components/features';
+import { ArAssetList } from './_components/ArAssetList';
 
 const Page: NextPage = () => {
-  return <Guard>ar_asset</Guard>;
+  return <ArAssetList />;
 };
 
 export default Page;
