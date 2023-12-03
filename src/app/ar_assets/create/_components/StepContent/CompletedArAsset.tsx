@@ -5,7 +5,7 @@ import { Center, Stack } from '@/shared/components/common/Layout';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
 import { IconArrowBarToDown, IconCheck } from '@/shared/components/icons';
-import { rem } from '@/shared/util/converter';
+import { rem } from '@/shared/utils/converter';
 
 export const CompletedArAsset = () => {
   const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
