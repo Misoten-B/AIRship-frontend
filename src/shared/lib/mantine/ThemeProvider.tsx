@@ -9,6 +9,13 @@ import { colors } from './colors';
 export const theme = createTheme({
   primaryColor: 'blue',
   colors: colors,
+  components: {
+    Title: {
+      defaultProps: {
+        c: 'blue.6',
+      },
+    },
+  },
 });
 
 type Props = {

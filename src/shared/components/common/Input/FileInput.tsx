@@ -1,3 +1,3 @@
-import { FileInput as MantineFileInput } from '@mantine/core';
+import { FileInput as MantineFileInput } from 'react-hook-form-mantine';
 
 export const FileInput = MantineFileInput;

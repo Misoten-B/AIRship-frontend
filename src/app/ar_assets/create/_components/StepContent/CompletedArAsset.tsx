@@ -3,9 +3,9 @@ import { Container } from '@/shared/components/common/Container';
 import { Notification } from '@/shared/components/common/Feedback';
 import { Center, Stack } from '@/shared/components/common/Layout';
 import { QRCode } from '@/shared/components/common/QRCode';
-import { rem } from '@/shared/components/common/Style';
 import { Text } from '@/shared/components/common/Text';
 import { IconArrowBarToDown, IconCheck } from '@/shared/components/icons';
+import { rem } from '@/shared/utils/converter';
 
 export const CompletedArAsset = () => {
   const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;

@@ -11,7 +11,7 @@ export const UploadQRCodeInsideImage = () => {
   const [file, setFile] = useState<File | null>(null);
   return (
     <Container>
-      <Title order={5} c="blue.6" mb={4}>
+      <Title order={5} mb={4}>
         QRコード内画像
       </Title>
       <Text size="xs" c="gray.6" mb={28}>
