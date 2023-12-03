@@ -1,13 +1,7 @@
 import { NextPage } from 'next';
-import { Button } from '@/shared/components/common/Button';
-import { QRCode } from '@/shared/components/common/QRCode';
+import { LoginButton } from '@/shared/components/features';
 
 const Page: NextPage = () => {
-  return (
-    <>
-      <Button>Button</Button>
-      <QRCode url="https://airship.com" imageSrc="/logo.svg" size={128} />
-    </>
-  );
+  return <LoginButton />;
 };
 export default Page;
