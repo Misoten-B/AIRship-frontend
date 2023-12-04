@@ -1,4 +1,3 @@
-'use client';
 import { Button } from '@/shared/components/common/Button';
 import { Image } from '@/shared/components/common/Image';
 import { Group, Stack } from '@/shared/components/common/Layout';

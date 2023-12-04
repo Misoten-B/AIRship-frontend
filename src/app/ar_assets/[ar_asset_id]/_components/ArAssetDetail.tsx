@@ -1,4 +1,3 @@
-'use client';
 import {
   Display3dModel,
   QRCodeInsideImage,
