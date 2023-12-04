@@ -4,7 +4,7 @@ import { Container } from '@/shared/components/common/Container';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
-import { SampleQrCodeImage } from '@/shared/components/features/QRCodeImage';
+import { SampleQrCodeImage } from '@/shared/components/features';
 import { IconUpload } from '@/shared/components/icons/IconUpload';
 
 export const UploadQRCodeInsideImage = () => {

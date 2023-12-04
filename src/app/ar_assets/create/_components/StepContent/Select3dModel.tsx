@@ -11,15 +11,15 @@ import { Title } from '@/shared/components/common/Title';
 const mock3dModels: { id: number; imageSrc: string }[] = [
   {
     id: 1,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
   {
     id: 2,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
   {
     id: 3,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
 ];
 
