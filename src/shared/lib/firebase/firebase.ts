@@ -42,7 +42,11 @@ export const firebaseSignInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential!.accessToken;
+    const token = auth.currentUser?.getIdToken().then((token) => {
+      console.debug('token', token);
+      return token;
+    });
+    console.debug('token', token);
     return { token: token, user: result.user };
   } catch (error) {
     throw error;
