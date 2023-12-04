@@ -11,15 +11,15 @@ import { Title } from '@/shared/components/common/Title';
 const mock3dModels: { id: number; imageSrc: string }[] = [
   {
     id: 1,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
   {
     id: 2,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
   {
     id: 3,
-    imageSrc: '3d_model_image.svg',
+    imageSrc: '/3d_model_image.svg',
   },
 ];
 
@@ -46,7 +46,7 @@ export const Select3dModel = ({}: Props) => {
           return (
             <Grid.Col key={id} span={4}>
               <Stack gap="sm" align="center">
-                <Image src={'/' + imageSrc} alt={`${id} 3d model`} />
+                <Image src={imageSrc} alt={`${id} 3d model`} />
                 {/* TODO: wip */}
                 <Radio name="" control={control} size="xs" />
               </Stack>
@@ -67,7 +67,7 @@ export const Select3dModel = ({}: Props) => {
           return (
             <Grid.Col key={id} span={4}>
               <Stack gap="sm" align="center">
-                <Image src={'/' + imageSrc} alt={`${id} 3d model`} />
+                <Image src={imageSrc} alt={`${id} 3d model`} />
                 {/* TODO: wip */}
                 <Radio name="" control={control} size="xs" />
               </Stack>
