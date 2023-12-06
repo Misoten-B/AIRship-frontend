@@ -7,3 +7,4 @@ export { Paper } from './Paper';
 export { Space } from './Space';
 export { Stack } from './Stack';
 export { Grid } from './Grid';
+export { SimpleGrid } from './SimpleGrid';
