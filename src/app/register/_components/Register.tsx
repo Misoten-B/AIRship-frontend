@@ -13,26 +13,24 @@ import { AirshipMainVisual } from '@/shared/components/features/MainVisual';
 
 export const Register = () => {
   return (
-    <>
-      <Flex align="center" direction="column">
-        <AirshipMainVisual maw={800} />
-        <Stack gap="lg" justify="center" mt="lg">
-          <Title order={3} ta="center">
-            新規登録
-          </Title>
-          <RegisterCard />
-          <Divider label="または" m="lg" />
+    <Flex align="center" direction="column">
+      <AirshipMainVisual maw={800} />
+      <Stack gap="lg" justify="center" mt="lg">
+        <Title order={3} ta="center">
+          新規登録
+        </Title>
+        <RegisterCard />
+        <Divider label="または" m="lg" />
 
-          <Center>
-            <Stack gap="xl">
-              <GoogleButton />
-              <Anchor component={Link} href="/login">
-                アカウントを既にお持ちの方はこちら
-              </Anchor>
-            </Stack>
-          </Center>
-        </Stack>
-      </Flex>
-    </>
+        <Center>
+          <Stack gap="xl">
+            <GoogleButton />
+            <Anchor component={Link} href="/login">
+              アカウントを既にお持ちの方はこちら
+            </Anchor>
+          </Stack>
+        </Center>
+      </Stack>
+    </Flex>
   );
 };
