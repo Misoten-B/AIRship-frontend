@@ -10,6 +10,19 @@ import {
 } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 
+const arAssets = [
+  {
+    url: 'https://airship.azurewebsites.net/',
+    text: '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
+    id: 'string',
+  },
+  {
+    url: 'https://airship.azurewebsites.net/',
+    text: '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
+    id: 'string',
+  },
+];
+
 export const ArAssetList = () => {
   return (
     <Container bg="blue.1" p={0}>
@@ -40,14 +53,15 @@ export const ArAssetList = () => {
         </Flex>
       </Center>
       <Center>
-        <Flex px={16} align="center" direction="column">
+        <Flex justify="space-around" direction="column">
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <ArAssetCard />
-            <ArAssetCard />
-          </SimpleGrid>
-          <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <ArAssetCard />
-            <ArAssetCard />
+            {arAssets.map((arAsset, index) => (
+              <ArAssetCard
+                text={arAsset.text}
+                key={arAsset.id}
+                url={arAsset.url}
+              />
+            ))}
           </SimpleGrid>
         </Flex>
       </Center>
