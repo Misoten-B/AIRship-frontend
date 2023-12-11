@@ -9,3 +9,4 @@ export { IconPencil } from './IconPencil';
 export { IconQrcode } from './IconQrcode';
 export { IconSpeakerphone } from './IconSpeakerphone';
 export { IconUpload } from './IconUpload';
+export { IconExposurePlus1 } from './IconExposurePlus1';
