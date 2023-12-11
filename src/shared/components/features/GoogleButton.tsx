@@ -1,13 +1,16 @@
 import { IconBrandGoogle } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { Button } from '@/shared/components/common/Button';
 import { useAuth } from '@/shared/hooks/auth';
 
 export const GoogleButton = () => {
+  const router = useRouter();
   const { login } = useAuth();
   const handleClick = useCallback(async () => {
     login && (await login());
-  }, [login]);
+    router.push('/cards');
+  }, [login, router]);
 
   return (
     <Button

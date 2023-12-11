@@ -25,7 +25,7 @@ const arAssets = [
 
 export const ArAssetList = () => {
   return (
-    <Container bg="blue.1" p={0}>
+    <Container p={0}>
       <Center bg="white">
         <Flex gap={8} px={24} py={12} mb={16}>
           <Stack gap={0}>
