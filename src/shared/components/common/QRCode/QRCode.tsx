@@ -4,8 +4,8 @@ import { AspectRatio } from '../Layout/AspectRatio';
 
 type Props = {
   url: string;
-  imageSrc?: string;
   size: number;
+  imageSrc?: string;
 };
 export const QRCode = (props: Props) => {
   const { url, imageSrc, size } = props;
