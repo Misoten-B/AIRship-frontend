@@ -2,54 +2,68 @@
 import { useState } from 'react';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { AspectRatio } from '@/shared/components/common/Layout/AspectRatio';
+import { Center, Flex } from '@/shared/components/common/Layout';
 import { BusinessCard } from '@/shared/components/features';
+import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCard/BusinessCardAspectRatio';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
 const cardData = [
   { id: 1, name: '1' },
   { id: 2, name: '2' },
   { id: 3, name: '3' },
-  { id: 4, name: '4' },
-  { id: 5, name: '5' },
-  { id: 6, name: '6' },
 ];
 
 export const Cards = () => {
+  const isPC = useMediaQuery('(min-width: 768px)');
+  const defaultBusinessCardWidht = 379;
   const [selectedCard, setSelectedCard] = useState<number>(1);
   const diffTop = 120;
-  const ButtonTop = diffTop * (cardData.length + 2);
-  const height = ButtonTop;
-  return (
+  const ButtonTop = diffTop * (cardData.length + 1) + 40;
+  const height = ButtonTop + 200;
+  return isPC ? (
+    <Container w={'100%'}>
+      <Flex w="100%" wrap="wrap" gap="lg" justify="space-around">
+        {cardData.map((card, index) => (
+          <BusinessCard key={card.id} text={card.name} />
+        ))}
+        <BusinessCardAspectRatio w={defaultBusinessCardWidht}>
+          <Button variant="default">+</Button>
+        </BusinessCardAspectRatio>
+      </Flex>
+    </Container>
+  ) : (
     <Container mt={80} pos="relative" h={height}>
-      {cardData.map((card, index) => {
-        const top = index * diffTop;
-        return (
-          <BusinessCard
-            key={card.id}
-            text={card.name}
-            style={{
-              zIndex: cardData.length + index,
-              transform:
-                selectedCard === card.id
-                  ? 'translateY(-80px)'
-                  : selectedCard > index
-                  ? 'translateY(-40px)'
-                  : 'translateY(40px)',
-              transition: 'transform 0.2s ease-out',
-              cursor: 'pointer',
-              position: 'absolute',
-              top: top,
-              left: '0',
-            }}
-            onClick={() => setSelectedCard(card.id)}
-          />
-        );
-      })}
-      <AspectRatio ratio={91 / 55} w={412} mb={20}>
-        <Button variant="default" top={ButtonTop}>
-          +
-        </Button>
-      </AspectRatio>
+      <Center>
+        {cardData.map((card, index) => {
+          const top = index * diffTop;
+          return (
+            <BusinessCard
+              key={card.id}
+              text={card.name}
+              style={{
+                zIndex: cardData.length + index,
+                transform:
+                  selectedCard === card.id
+                    ? 'translate(-50%, -80px)'
+                    : selectedCard > index
+                    ? 'translate(-50%, -40px)'
+                    : 'translate(-50%, 40px)',
+                transition: 'transform 0.2s ease-out',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: top,
+                left: '50%',
+              }}
+              onClick={() => setSelectedCard(card.id)}
+            />
+          );
+        })}
+        <BusinessCardAspectRatio w={defaultBusinessCardWidht} m={0}>
+          <Button variant="default" top={ButtonTop}>
+            +
+          </Button>
+        </BusinessCardAspectRatio>
+      </Center>
     </Container>
   );
 };
