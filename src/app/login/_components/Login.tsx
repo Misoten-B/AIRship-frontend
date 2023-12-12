@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { RegisterCard } from './RegisterCard';
+import { LoginCard } from './RegisterCard/LoginCard';
 import { Divider } from '@/shared/components/common/Divider';
 import { Flex } from '@/shared/components/common/Layout';
 import { Center } from '@/shared/components/common/Layout/Center';
@@ -12,22 +12,22 @@ import { GoogleButton } from '@/shared/components/features/GoogleButton';
 import { AirshipMainVisual } from '@/shared/components/features/MainVisual';
 import { ROUTES } from '@/shared/types/Page';
 
-export const Register = () => {
+export const Login = () => {
   return (
     <Flex align="center" direction="column">
       <AirshipMainVisual maw={800} />
-      <Stack gap="lg" justify="center" mt="lg" pb="lg">
+      <Stack gap="lg" justify="center" mt="lg" p="lg">
         <Title order={3} ta="center">
-          新規登録
+          ログイン
         </Title>
-        <RegisterCard />
+        <LoginCard />
         <Divider label="または" m="lg" />
 
         <Center>
           <Stack gap="xl">
             <GoogleButton />
-            <Anchor component={Link} href={ROUTES.login}>
-              アカウントを既にお持ちの方はこちら
+            <Anchor component={Link} href={ROUTES.register}>
+              アカウントをお持ちでない方はこちら
             </Anchor>
           </Stack>
         </Center>
