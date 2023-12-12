@@ -1,5 +1,4 @@
 'use client';
-import { useDisclosure } from '@mantine/hooks';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Divider } from '@/shared/components/common/Divider';
@@ -10,27 +9,30 @@ import { Modal } from '@/shared/components/common/Modal';
 import { Radio } from '@/shared/components/common/Radio';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useForm } from '@/shared/hooks/useForm';
+
+const mock3dModels: { id: number; imageSrc: string }[] = [
+  {
+    id: 1,
+    imageSrc: '/3d_model_image.svg',
+  },
+  {
+    id: 2,
+    imageSrc: '/3d_model_image.svg',
+  },
+  {
+    id: 3,
+    imageSrc: '/3d_model_image.svg',
+  },
+];
 
 export const Display3dModel = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const mock3dModels: { id: number; imageSrc: string }[] = [
-    {
-      id: 1,
-      imageSrc: '/3d_model_image.svg',
-    },
-    {
-      id: 2,
-      imageSrc: '/3d_model_image.svg',
-    },
-    {
-      id: 3,
-      imageSrc: '/3d_model_image.svg',
-    },
-  ];
   const { control } = useForm();
   const sampleModels = mock3dModels;
   const uploadedModels = mock3dModels;
+
   return (
     <Stack gap={0}>
       <Title order={5} c="blue.6" mb={4}>
@@ -84,6 +86,7 @@ export const Display3dModel = () => {
                   </Grid.Col>
                 );
               })}
+
               <Grid.Col span={4}>
                 <FileInput
                   // TODO: wip
