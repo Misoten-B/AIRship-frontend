@@ -1,5 +1,6 @@
 'use client';
 
+import { getAuth } from 'firebase/auth';
 import {
   ReactNode,
   createContext,
@@ -39,11 +40,13 @@ export const AuthProvider = ({ children }: Props) => {
     try {
       const credential = await firebaseSignInWithGoogle();
       if (!credential) return;
+      const token = await getAuth().currentUser?.getIdToken();
+      console.debug(token);
       const cu: User = {
         displayName: credential.user.displayName,
         email: credential.user.email,
         photoURL: credential.user.photoURL,
-        token: credential.token,
+        token: token,
       };
       setCurrentUser(cu);
       setFirebaseUser(cu);
