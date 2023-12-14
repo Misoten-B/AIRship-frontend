@@ -1,4 +1,4 @@
-type Page = 'register' | 'login' | 'cards' | 'ar-assets' | 'sign-out';
+type Page = 'register' | 'login' | 'cards' | 'arAssets' | 'signOut';
 
 export const ROUTES = {
   register: '/register',
@@ -6,4 +6,4 @@ export const ROUTES = {
   cards: '/cards',
   arAssets: '/ar-assets',
   signOut: '/sign-out',
-} as const;
+} as const satisfies Record<Page, string>;
