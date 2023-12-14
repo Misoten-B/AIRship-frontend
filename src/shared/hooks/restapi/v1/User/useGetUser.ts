@@ -1,10 +1,11 @@
+'use client';
 import useSWR from 'swr';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
 
-export const useGetUser = (userId: string) => {
+export const useGetUser = (disabled: boolean) => {
   const { api } = useApiClient();
   return useSWR(
-    api?.v1.users._user_id(userId).$path(),
-    () => api?.v1.users._user_id(userId).$get(),
+    disabled ? undefined : api?.v1.users.myprofile.$path(),
+    () => api?.v1.users.myprofile.$get(),
   );
 };

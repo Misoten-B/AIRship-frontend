@@ -20,7 +20,7 @@ import { User } from '@/shared/types';
 type AuthContextProps = {
   token?: string;
   currentUser?: User;
-  login?: () => Promise<void>;
+  login?: () => Promise<string | undefined>;
   logout?: () => Promise<void>;
 };
 
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: Props) => {
       const credential = await firebaseSignInWithGoogle();
       if (!credential) return;
       const token = await getAuth().currentUser?.getIdToken();
-      console.debug(token);
+
       const cu: User = {
         displayName: credential.user.displayName,
         email: credential.user.email,
@@ -50,8 +50,9 @@ export const AuthProvider = ({ children }: Props) => {
       };
       setCurrentUser(cu);
       setFirebaseUser(cu);
+      return token;
     } catch (error) {
-      console.debug(error);
+      throw error;
     }
   }, [setFirebaseUser]);
 

@@ -8,7 +8,7 @@ import { Stack } from '@/shared/components/common/Layout/Stack';
 import { Anchor } from '@/shared/components/common/Navigation';
 
 import { Title } from '@/shared/components/common/Title';
-import { GoogleButton } from '@/shared/components/features/GoogleButton';
+import { LoginGoogleButton } from '@/shared/components/features';
 import { AirshipMainVisual } from '@/shared/components/features/MainVisual';
 import { ROUTES } from '@/shared/types/Page';
 
@@ -16,7 +16,7 @@ export const Login = () => {
   return (
     <Flex align="center" direction="column">
       <AirshipMainVisual maw={800} />
-      <Stack gap="lg" justify="center" mt="lg" p="lg">
+      <Stack gap="lg" justify="center" mt="lg">
         <Title order={3} ta="center">
           ログイン
         </Title>
@@ -25,7 +25,7 @@ export const Login = () => {
 
         <Center>
           <Stack gap="xl">
-            <GoogleButton />
+            <LoginGoogleButton />
             <Anchor component={Link} href={ROUTES.register}>
               アカウントをお持ちでない方はこちら
             </Anchor>
