@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { ARAsset } from '../_types';
 import { Button } from '@/shared/components/common/Button';

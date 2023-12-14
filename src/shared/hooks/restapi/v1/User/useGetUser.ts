@@ -5,6 +5,6 @@ export const useGetUser = (userId: string) => {
   const { api } = useApiClient();
   return useSWR(
     api?.v1.users._user_id(userId).$path(),
-    () => api?.v1.users._user_id(userId).$get(),
+    () => api?.v1.users.myprofile.$get(),
   );
 };

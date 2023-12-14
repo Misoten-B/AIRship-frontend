@@ -1,3 +1,5 @@
+'use client';
+
 import { ARAsset } from '../_types';
 import { ArAssetCard } from './ArAssetCard';
 import { SimpleGrid } from '@/shared/components/common/Layout';
@@ -21,7 +23,7 @@ const arAssets = [
   },
 ] satisfies ARAsset[];
 
-export const ArAssetGrid = async () => {
+export const ArAssetGrid = () => {
   return (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>
       {arAssets.map((arAsset) => (
