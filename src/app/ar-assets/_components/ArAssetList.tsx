@@ -1,36 +1,12 @@
-'use client';
 import Link from 'next/link';
-import { ARAsset } from '../_types';
-import { ArAssetCard } from './ArAssetCard';
+import { Suspense } from 'react';
+import { ArAssetGrid } from './ArAssetGrid';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import {
-  Center,
-  Flex,
-  SimpleGrid,
-  Stack,
-} from '@/shared/components/common/Layout';
+import { Center, Flex, Stack } from '@/shared/components/common/Layout';
+import { Loader } from '@/shared/components/common/Loader';
 import { Text } from '@/shared/components/common/Text';
 import { ROUTES } from '@/shared/constants';
-
-const arAssets = [
-  {
-    id: 'string1',
-    qrcode_image_path: '/airship-logo-column.svg',
-    speaking_audio_path: 'https://airship.azurewebsites.net/',
-    speaking_description:
-      '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
-    three_dimentional_path: 'https://airship.azurewebsites.net/',
-  },
-  {
-    id: 'string2',
-    qrcode_image_path: '/airship-logo-column.svg',
-    speaking_audio_path: 'https://airship.azurewebsites.net/',
-    speaking_description:
-      '私の名前は山田二郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
-    three_dimentional_path: 'https://airship.azurewebsites.net/',
-  },
-] as const satisfies ARAsset[];
 
 export const ArAssetList = () => {
   return (
@@ -65,11 +41,9 @@ export const ArAssetList = () => {
       </Center>
       <Center>
         <Flex justify="space-around" direction="column">
-          <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            {arAssets.map((arAsset) => (
-              <ArAssetCard key={arAsset.id} arAsset={arAsset} />
-            ))}
-          </SimpleGrid>
+          <Suspense fallback={<Loader />}>
+            <ArAssetGrid />
+          </Suspense>
         </Flex>
       </Center>
     </Container>
