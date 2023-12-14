@@ -1,10 +1,9 @@
 'use client';
-import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { GoogleButton } from '../common/Button';
-import { ErrorNotificationData } from '../common/Feedback/ErrorNotification';
+import { ErrorNotificationData, notifications } from '../common/Feedback';
 import { useAuth } from '@/shared/hooks/auth';
 import { useCreateUser } from '@/shared/hooks/restapi/v1/User';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
