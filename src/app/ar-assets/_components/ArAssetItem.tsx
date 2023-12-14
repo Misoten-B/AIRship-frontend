@@ -14,7 +14,7 @@ type Props = {
   arAsset: Dto_ArAssetsResponse;
 };
 
-export const ArAssetCard = ({ arAsset }: Props) => {
+export const ArAssetItem = ({ arAsset }: Props) => {
   const {
     id,
     qrcode_image_path,
