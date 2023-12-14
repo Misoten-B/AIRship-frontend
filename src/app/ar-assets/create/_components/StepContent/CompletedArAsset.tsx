@@ -12,6 +12,7 @@ export const CompletedArAsset = () => {
   return (
     <Container mt={12} mb={64}>
       <Stack>
+        {/* TODO: Notificationを置き換える */}
         {/* <Notification
           icon={checkIcon}
           color="green"
