@@ -36,3 +36,5 @@ next-env.d.ts
 
 /src/api/
 openapi.yml
+
+.nvmrc
