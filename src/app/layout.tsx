@@ -1,3 +1,4 @@
+import { Notifications } from '@mantine/notifications';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { AuthProvider } from '@/shared/hooks/auth';
@@ -23,7 +24,10 @@ export default function RootLayout({
         <RecoilRoot>
           <AuthProvider>
             <AxiosProvider>
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <Notifications />
+                {children}
+              </ThemeProvider>
             </AxiosProvider>
           </AuthProvider>
         </RecoilRoot>

@@ -1,1 +1,2 @@
-export { Notification } from './Notification';
+export { notifications } from './Notifications';
+export { ErrorNotificationData } from './ErrorNotificationData';

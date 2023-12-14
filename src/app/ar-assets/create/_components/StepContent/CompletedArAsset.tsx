@@ -1,6 +1,5 @@
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Notification } from '@/shared/components/common/Feedback';
 import { Center, Stack } from '@/shared/components/common/Layout';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
@@ -13,14 +12,15 @@ export const CompletedArAsset = () => {
   return (
     <Container mt={12} mb={64}>
       <Stack>
-        <Notification
+        {/* TODO: Notificationを置き換える */}
+        {/* <Notification
           icon={checkIcon}
           color="green"
           withCloseButton={false}
           mb={24}
         >
           QRコードの作成が完了しました！
-        </Notification>
+        </Notification> */}
         <Center>
           <Stack>
             <QRCode
