@@ -19,11 +19,9 @@ const arAssets = [
       '私の名前は山田二郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
     three_dimentional_path: 'https://airship.azurewebsites.net/',
   },
-] as const satisfies ARAsset[];
+] satisfies ARAsset[];
 
 export const ArAssetGrid = async () => {
-  await sleep(3000);
-
   return (
     <SimpleGrid cols={{ base: 1, sm: 2 }}>
       {arAssets.map((arAsset) => (
@@ -32,5 +30,3 @@ export const ArAssetGrid = async () => {
     </SimpleGrid>
   );
 };
-
-const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));

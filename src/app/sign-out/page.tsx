@@ -1,8 +1,9 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
-import { ROUTES } from '@/shared/types/Page';
 
 const Page = () => {
   const { logout } = useAuth();
@@ -11,7 +12,7 @@ const Page = () => {
   useEffect(() => {
     (async () => {
       logout && (await logout());
-      router.replace(ROUTES.login);
+      router.replace(ROUTES.login.base);
     })();
   }, [logout, router]);
 

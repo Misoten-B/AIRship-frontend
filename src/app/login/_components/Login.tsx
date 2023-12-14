@@ -10,7 +10,7 @@ import { Anchor } from '@/shared/components/common/Navigation';
 import { Title } from '@/shared/components/common/Title';
 import { GoogleButton } from '@/shared/components/features/GoogleButton';
 import { AirshipMainVisual } from '@/shared/components/features/MainVisual';
-import { ROUTES } from '@/shared/types/Page';
+import { ROUTES } from '@/shared/constants';
 
 export const Login = () => {
   return (
@@ -26,7 +26,7 @@ export const Login = () => {
         <Center>
           <Stack gap="xl">
             <GoogleButton />
-            <Anchor component={Link} href={ROUTES.register}>
+            <Anchor component={Link} href={ROUTES.register.base}>
               アカウントをお持ちでない方はこちら
             </Anchor>
           </Stack>

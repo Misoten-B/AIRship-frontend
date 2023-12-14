@@ -1,10 +1,8 @@
 import Link from 'next/link';
-import { Suspense } from 'react';
 import { ArAssetGrid } from './ArAssetGrid';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Flex, Stack } from '@/shared/components/common/Layout';
-import { Loader } from '@/shared/components/common/Loader';
 import { Text } from '@/shared/components/common/Text';
 import { ROUTES } from '@/shared/constants';
 
@@ -41,9 +39,7 @@ export const ArAssetList = () => {
       </Center>
       <Center>
         <Flex justify="space-around" direction="column">
-          <Suspense fallback={<Loader />}>
-            <ArAssetGrid />
-          </Suspense>
+          <ArAssetGrid />
         </Flex>
       </Center>
     </Container>
