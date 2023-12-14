@@ -75,7 +75,7 @@ export const CreateArAssetStepper = () => {
       </Stepper>
 
       {active == 3 ? (
-        <Anchor component={Link} href="/ar_assets">
+        <Anchor component={Link} href="/ar-assets">
           QRコード一覧へ
         </Anchor>
       ) : (

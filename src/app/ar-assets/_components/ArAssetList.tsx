@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Stack,
 } from '@/shared/components/common/Layout';
+import { Anchor } from '@/shared/components/common/Navigation';
 import { Text } from '@/shared/components/common/Text';
 
 const arAssets = [
@@ -32,15 +33,17 @@ export const ArAssetList = () => {
             <Text size="xs" c="orange" ta="center" mb={4}>
               3Dモデルと話させる文章を登録して QRコード化させます
             </Text>
-            <Button
-              variant="filled"
-              color="orange"
-              size="md"
-              radius="xl"
-              w="100%"
-            >
-              <Text>QRコードの新規作成</Text>
-            </Button>
+            <Anchor href="/ar-assets/create">
+              <Button
+                variant="filled"
+                color="orange"
+                size="md"
+                radius="xl"
+                w="100%"
+              >
+                <Text>QRコードの新規作成</Text>
+              </Button>
+            </Anchor>
           </Stack>
           <Stack gap={0}>
             <Text size="xs" c="blue" ta="center" mb={4}>

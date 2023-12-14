@@ -2,6 +2,7 @@ import { Button } from '@/shared/components/common/Button';
 import { Divider } from '@/shared/components/common/Divider';
 import { Image } from '@/shared/components/common/Image';
 import { Card, Flex } from '@/shared/components/common/Layout';
+import { Anchor } from '@/shared/components/common/Navigation';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
@@ -35,12 +36,14 @@ export const ArAssetCard = ({ text, url }: Props) => {
       </Card.Section>
       <Card.Section>
         <Divider mt="md" />
-        <Button
-          variant="subtle"
-          size="md"
-          fullWidth
-          leftSection={<IconPencil />}
-        />
+        <Anchor href="ar-assets/[ar_asset_id]">
+          <Button
+            variant="subtle"
+            size="md"
+            fullWidth
+            leftSection={<IconPencil />}
+          />
+        </Anchor>
       </Card.Section>
     </Card>
   );
