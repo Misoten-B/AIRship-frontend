@@ -1,14 +1,14 @@
 'use client';
+
 import Link from 'next/link';
 import { RegisterCard } from './RegisterCard';
 import { Divider } from '@/shared/components/common/Divider';
 import { Center, Flex, Stack } from '@/shared/components/common/Layout';
 import { Anchor } from '@/shared/components/common/Navigation';
-
 import { Title } from '@/shared/components/common/Title';
 import { SigninGoogleButton } from '@/shared/components/features';
-import { AirshipMainVisual } from '@/shared/components/features';
-import { ROUTES } from '@/shared/types/Page';
+import { AirshipMainVisual } from '@/shared/components/features/MainVisual';
+import { ROUTES } from '@/shared/constants';
 
 export const Register = () => {
   return (
@@ -24,7 +24,7 @@ export const Register = () => {
         <Center>
           <Stack gap="xl">
             <SigninGoogleButton />
-            <Anchor component={Link} href={ROUTES.login}>
+            <Anchor component={Link} href={ROUTES.login.base}>
               アカウントを既にお持ちの方はこちら
             </Anchor>
           </Stack>
