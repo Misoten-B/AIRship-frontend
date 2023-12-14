@@ -1,4 +1,6 @@
 'use client';
+import Link from 'next/link';
+import { ARAsset } from '../_types';
 import { ArAssetCard } from './ArAssetCard';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -9,19 +11,26 @@ import {
   Stack,
 } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
+import { ROUTES } from '@/shared/constants';
 
 const arAssets = [
   {
-    url: 'https://airship.azurewebsites.net/',
-    text: '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
-    id: 'string',
+    id: 'string1',
+    qrcode_image_path: '/airship-logo-column.svg',
+    speaking_audio_path: 'https://airship.azurewebsites.net/',
+    speaking_description:
+      '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
+    three_dimentional_path: 'https://airship.azurewebsites.net/',
   },
   {
-    url: 'https://airship.azurewebsites.net/',
-    text: '私の名前は山田太郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
-    id: 'string',
+    id: 'string2',
+    qrcode_image_path: '/airship-logo-column.svg',
+    speaking_audio_path: 'https://airship.azurewebsites.net/',
+    speaking_description:
+      '私の名前は山田二郎です。好きなことはゲームをすることとカラオケで歌を歌うことです。長所は笑顔で接することです',
+    three_dimentional_path: 'https://airship.azurewebsites.net/',
   },
-];
+] as const satisfies ARAsset[];
 
 export const ArAssetList = () => {
   return (
@@ -33,10 +42,12 @@ export const ArAssetList = () => {
               3Dモデルと話させる文章を登録して QRコード化させます
             </Text>
             <Button
-              variant="filled"
               color="orange"
-              size="md"
+              component={Link}
+              href={ROUTES.arAssets.create}
               radius="xl"
+              size="md"
+              variant="filled"
               w="100%"
             >
               <Text>QRコードの新規作成</Text>
@@ -55,12 +66,8 @@ export const ArAssetList = () => {
       <Center>
         <Flex justify="space-around" direction="column">
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            {arAssets.map((arAsset, index) => (
-              <ArAssetCard
-                text={arAsset.text}
-                key={arAsset.id}
-                url={arAsset.url}
-              />
+            {arAssets.map((arAsset) => (
+              <ArAssetCard key={arAsset.id} arAsset={arAsset} />
             ))}
           </SimpleGrid>
         </Flex>

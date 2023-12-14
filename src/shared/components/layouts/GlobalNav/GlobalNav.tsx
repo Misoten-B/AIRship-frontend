@@ -11,16 +11,16 @@ import { AirshipLogoRow } from '../../features/AirshipLogo';
 import { IconCards } from '../../icons/IconCards';
 import { IconLogout } from '../../icons/IconLogout';
 import { IconQrcode } from '../../icons/IconQrcode';
-import { ROUTES } from '@/shared/types/Page';
+import { ROUTES } from '@/shared/constants';
 
 type Props = {
   children: ReactNode;
 };
 
 const navigationItems = [
-  { label: '名刺一覧', href: ROUTES.cards, icon: IconCards },
-  { label: 'QR一覧', href: ROUTES.arAssets, icon: IconQrcode },
-  { label: 'Sign out', href: ROUTES.signOut, icon: IconLogout },
+  { label: '名刺一覧', href: ROUTES.cards.base, icon: IconCards },
+  { label: 'QR一覧', href: ROUTES.arAssets.base, icon: IconQrcode },
+  { label: 'Sign out', href: ROUTES.signOut.base, icon: IconLogout },
 ];
 
 export const GlobalNav = ({ children }: Props) => {
