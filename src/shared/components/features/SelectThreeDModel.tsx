@@ -51,7 +51,7 @@ export const SelectThreeDModel = ({ control, setValue }: Props) => {
         withAsterisk
       >
         <Grid gutter="sm">
-          {data.map(({ ID: id, Path: path }) => {
+          {data.map(({ id, path }) => {
             return (
               <ImageRadioButton
                 key={id}
