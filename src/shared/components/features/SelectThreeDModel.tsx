@@ -67,24 +67,6 @@ export const SelectThreeDModel = ({ control, setValue }: Props) => {
         </Grid>
         <Divider my="sm" labelPosition="center" />
       </Radio.Group>
-      {/* <Radio.Group
-        control={control}
-        name="threeDModel"
-        label="アップロードした3Dモデル"
-        description="自分でアップロードした3Dモデルを選択するにはアップロードする必要があります"
-        withAsterisk
-      >
-        <Grid>
-          {.map(({ id, imageSrc }) => (
-            <ImageRadioButton
-              onClick={(value) => setValue('threeDModel', value)}
-              key={id}
-              imageSrc={imageSrc}
-              value={id}
-            />
-          ))}
-        </Grid>
-      </Radio.Group> */}
     </>
   );
 };
