@@ -1,11 +1,49 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Stack } from '@/shared/components/common/Layout';
+import { Center, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconMicrophone } from '@/shared/components/icons/IconMicrophone';
+import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
+
+const MAX_RECORDING_TIME = 10;
 
 export const RecordedModelSettings = () => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const {
+    isRecording,
+    recordingTime,
+    startRecording,
+    stopRecording,
+    recordingBlob,
+  } = useAudioRecorder();
+
+  useEffect(() => {
+    if (!isRecording) return;
+    if (recordingTime <= MAX_RECORDING_TIME) return;
+
+    stopRecording();
+  }, [isRecording, recordingTime, stopRecording]);
+
+  useEffect(() => {
+    if (!recordingBlob) return;
+
+    // 録音データのセットアップ
+    const audio = audioRef.current!;
+    audio.src = URL.createObjectURL(recordingBlob);
+  }, [recordingBlob]);
+
+  const handleToggleRecording = () => {
+    if (isRecording) {
+      stopRecording();
+      return;
+    }
+    startRecording();
+  };
+
   return (
     <Container p={0}>
       <Title order={5} mb={4}>
@@ -21,6 +59,7 @@ export const RecordedModelSettings = () => {
           size="xl"
           radius="xl"
           aria-label="Settings"
+          onClick={handleToggleRecording}
         >
           <IconMicrophone
             style={{ width: '70%', height: '70%' }}
@@ -30,6 +69,7 @@ export const RecordedModelSettings = () => {
         <Button variant="transparent" color="orange" size="compact-xs">
           タップして録音
         </Button>
+        <Center>{recordingTime}</Center>
       </Stack>
       <Title order={6} mb={4}>
         録音音声
@@ -37,7 +77,7 @@ export const RecordedModelSettings = () => {
       <Text size="xs" c="gray.6" mb={12}>
         生成される音声はこの録音データを元に生成されます
       </Text>
-      <audio controls src=""></audio>
+      <audio ref={audioRef} controls />
     </Container>
   );
 };
