@@ -1,37 +1,40 @@
 'use client';
+import { z } from 'zod';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Divider } from '@/shared/components/common/Divider';
 import { Image } from '@/shared/components/common/Image';
 import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Group, Stack } from '@/shared/components/common/Layout';
 import { Modal } from '@/shared/components/common/Modal';
-import { Radio } from '@/shared/components/common/Radio';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useForm } from '@/shared/hooks/useForm';
 
-const mock3dModels: { id: number; imageSrc: string }[] = [
-  {
-    id: 1,
-    imageSrc: '/3d_model_image.svg',
-  },
-  {
-    id: 2,
-    imageSrc: '/3d_model_image.svg',
-  },
-  {
-    id: 3,
-    imageSrc: '/3d_model_image.svg',
-  },
-];
+const schema = z.object({
+  threeDModel: z.string(),
+});
+
+const fileInputSchema = z.object({
+  fileInput: z.string(),
+});
+
+type FormSchemaType = z.infer<typeof schema>;
+type FileInputSchemaType = z.infer<typeof fileInputSchema>;
 
 export const Display3dModel = () => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { control } = useForm();
-  const sampleModels = mock3dModels;
-  const uploadedModels = mock3dModels;
+  const { control, setValue } = useForm<FormSchemaType>({
+    defaultValues: {
+      threeDModel: '',
+    },
+  });
+  const { control: fileInputControl } = useForm<FileInputSchemaType>({
+    defaultValues: {
+      fileInput: '',
+    },
+  });
 
   return (
     <Stack gap={0}>
@@ -53,55 +56,23 @@ export const Display3dModel = () => {
               サンプルから選択してください
             </Text>
 
-            <Grid gutter="sm">
-              {sampleModels.map(({ id, imageSrc }) => {
-                return (
-                  <Grid.Col key={id} span={4}>
-                    <Stack gap="sm" align="center">
-                      <Image src={imageSrc} alt={`${id} 3d model`} />
-                      {/* TODO: wip */}
-                      <Radio name="" control={control} size="xs" />
-                    </Stack>
-                  </Grid.Col>
-                );
-              })}
-            </Grid>
-            <Divider my="sm" labelPosition="center" />
+            <SelectThreeDModel control={control} setValue={setValue} />
 
-            <Title order={5} mb={4} c="dark">
-              アップロードした3Dモデル
-            </Title>
-            <Text size="xs" c="gray.6" mb={12}>
-              自分でアップロードした3Dモデルになっております。
-            </Text>
-            <Grid>
-              {uploadedModels.map(({ id, imageSrc }) => {
-                return (
-                  <Grid.Col key={id} span={4}>
-                    <Stack gap="sm" align="center">
-                      <Image src={imageSrc} alt={`${id} 3d model`} />
-                      {/* TODO: wip */}
-                      <Radio name="" control={control} size="xs" />
-                    </Stack>
-                  </Grid.Col>
-                );
-              })}
+            <Grid.Col span={4}>
+              <FileInput
+                // TODO: wip
+                name="fileInput"
+                control={fileInputControl}
+                placeholder="アップロード"
+                size="xs"
+                styles={{
+                  wrapper: { height: '100%' },
+                  root: { height: '100%' },
+                  input: { height: 'calc(100% - 28px)' },
+                }}
+              />
+            </Grid.Col>
 
-              <Grid.Col span={4}>
-                <FileInput
-                  // TODO: wip
-                  name=""
-                  control={control}
-                  placeholder="アップロード"
-                  size="xs"
-                  styles={{
-                    wrapper: { height: '100%' },
-                    root: { height: '100%' },
-                    input: { height: 'calc(100% - 28px)' },
-                  }}
-                />
-              </Grid.Col>
-            </Grid>
             <Button onClick={close} w="100%" radius="md">
               選択
             </Button>
