@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+
 import {
   CompletedArAsset,
   Select3dModel,
@@ -14,6 +15,7 @@ import { Anchor } from '@/shared/components/common/Navigation';
 import { Stepper } from '@/shared/components/common/Stepper';
 import { IconChevronLeft } from '@/shared/components/icons/IconChevronLeft';
 import { IconChevronRight } from '@/shared/components/icons/IconChevronRight';
+import { ROUTES } from '@/shared/constants';
 
 export const CreateArAssetStepper = () => {
   const [active, setActive] = useState(0);
@@ -75,7 +77,7 @@ export const CreateArAssetStepper = () => {
       </Stepper>
 
       {active == 3 ? (
-        <Anchor component={Link} href="/ar_assets">
+        <Anchor component={Link} href={ROUTES.arAssets.base}>
           QRコード一覧へ
         </Anchor>
       ) : (
