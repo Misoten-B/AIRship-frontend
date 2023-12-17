@@ -1,0 +1,16 @@
+'use client';
+
+import { Loader } from '@/shared/components/common/Loader';
+import { BusinessCard } from '@/shared/components/features';
+import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
+
+export const CardPage = () => {
+  // TODO: id修正
+  const { data, error, isLoading } = useGetBusinessCard('1');
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <Loader />;
+
+  if (!data) return null;
+  return <BusinessCard text={data.displayName ?? '名無し'} />;
+};
