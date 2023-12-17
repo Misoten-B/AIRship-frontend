@@ -1,16 +1,18 @@
-export { IconArrowBarToDown } from '@tabler/icons-react';
-export { IconCards } from '@tabler/icons-react';
-export { IconCheck } from '@tabler/icons-react';
-export { IconChevronLeft } from '@tabler/icons-react';
-export { IconChevronRight } from '@tabler/icons-react';
-export { IconLogout } from '@tabler/icons-react';
-export { IconMicrophone } from '@tabler/icons-react';
-export { IconPencil } from '@tabler/icons-react';
-export { IconQrcode } from '@tabler/icons-react';
-export { IconSpeakerphone } from '@tabler/icons-react';
-export { IconUpload } from '@tabler/icons-react';
-export { IconExposurePlus1 } from '@tabler/icons-react';
-export { IconSun } from '@tabler/icons-react';
-export { IconMoon } from '@tabler/icons-react';
-export { IconBrandGoogle } from '@tabler/icons-react';
-export { IconX } from '@tabler/icons-react';
+export {
+  IconArrowBarToDown,
+  IconCards,
+  IconCheck,
+  IconChevronLeft,
+  IconChevronRight,
+  IconLogout,
+  IconMicrophone,
+  IconPencil,
+  IconQrcode,
+  IconSpeakerphone,
+  IconUpload,
+  IconExposurePlus1,
+  IconSun,
+  IconMoon,
+  IconBrandGoogle,
+  IconX,
+} from '@tabler/icons-react';
