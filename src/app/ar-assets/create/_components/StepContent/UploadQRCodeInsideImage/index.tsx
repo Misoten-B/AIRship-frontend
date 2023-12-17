@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import {
+  useRequestBodiesValue,
+  useSetRequestBodies,
+} from '../../RequestBodiesProvider';
 import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
@@ -10,13 +14,55 @@ import {
   IconChevronRight,
   IconUpload,
 } from '@/shared/components/icons';
+import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
 
 type Props = {
   prevStep: () => void;
 };
 
 export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
+  const requestBodies = useRequestBodiesValue();
+  const setRequestBodies = useSetRequestBodies();
+
+  const { updateUser } = useUpdateUser();
+  const { createArAsset } = useCreateArAsset();
+
   const [file, setFile] = useState<File | null>(null);
+
+  const setQrCodeInsideImage = useCallback(
+    (file: File | null) => {
+      setRequestBodies((prev) => ({
+        ...prev,
+        '2': {
+          image: file ?? undefined,
+        },
+      }));
+    },
+    [setRequestBodies],
+  );
+
+  const handleUpload = (file: File | null) => {
+    setFile(file);
+    setQrCodeInsideImage(file);
+  };
+
+  const handleClick = useCallback(async () => {
+    const select3DModel = requestBodies['0']!;
+    const speakingSetting = requestBodies['1']!;
+    const qrCodeInsideImage = requestBodies['2'];
+
+    const audio = speakingSetting.audio;
+    if (audio) {
+      await updateUser(true, audio);
+    }
+    await createArAsset(
+      qrCodeInsideImage?.image,
+      speakingSetting.text,
+      select3DModel.id,
+    );
+  }, [requestBodies, updateUser, createArAsset]);
+
   return (
     <Container>
       <Title order={5} mb={4}>
@@ -34,7 +80,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
             </Text>
           )}
           <Group justify="center">
-            <FileButton onChange={setFile} accept="image/png,image/jpeg">
+            <FileButton onChange={handleUpload} accept="image/png,image/jpeg">
               {(props) => (
                 <Button {...props} w={200} leftSection={<IconUpload />}>
                   画像アップロード
@@ -55,7 +101,11 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
         >
           前のステップ
         </Button>
-        <Button size="xs" rightSection={<IconChevronRight size={14} />}>
+        <Button
+          size="xs"
+          rightSection={<IconChevronRight size={14} />}
+          onClick={handleClick}
+        >
           完了
         </Button>
       </Group>
