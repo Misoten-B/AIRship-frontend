@@ -13,5 +13,5 @@ export const CardPage = () => {
   if (isLoading) return <Loader />;
 
   if (!data) return null;
-  return <BusinessCard text={data.displayName ?? '名無し'} />;
+  return <BusinessCard card={data} />;
 };
