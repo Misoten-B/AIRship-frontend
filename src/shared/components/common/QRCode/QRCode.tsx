@@ -6,11 +6,12 @@ type Props = {
   url: string;
   size: number;
   imageSrc?: string;
+  style?: React.CSSProperties;
 };
 export const QRCode = (props: Props) => {
   const { url, imageSrc, size } = props;
   return (
-    <Center>
+    <Center {...props}>
       <Paper radius="md" withBorder p="md" pb={10}>
         <AspectRatio ratio={1} w={size} h={size}>
           <QRCodeSVG

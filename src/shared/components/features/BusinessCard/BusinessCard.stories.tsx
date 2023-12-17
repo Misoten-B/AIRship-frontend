@@ -9,5 +9,27 @@ export default meta;
 type Story = StoryObj<typeof BusinessCard>;
 
 export const Main: Story = {
-  render: () => <BusinessCard text={'1'}></BusinessCard>,
+  render: () => (
+    <BusinessCard
+      card={{
+        accessCount: undefined,
+        address: undefined,
+        businessCardBackgroundColor: undefined,
+        businessCardBackgroundImage: undefined,
+        businessCardName: undefined,
+        businessCardPartsCoordinate: undefined,
+        companyName: undefined,
+        department: undefined,
+        displayName: undefined,
+        email: undefined,
+        id: undefined,
+        officialPosition: undefined,
+        phoneNumber: undefined,
+        postalCode: undefined,
+        speakingAudioPath: undefined,
+        speakingDescription: undefined,
+        threeDimentionalModel: undefined,
+      }}
+    ></BusinessCard>
+  ),
 };

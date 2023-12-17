@@ -10,7 +10,7 @@ import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCa
 import { useGetBusinessCards } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
-const defaultBusinessCardWidht = 379;
+const defaultBusinessCardWidht = 1254 / 3;
 const diffTop = 120;
 
 type State = {
@@ -46,7 +46,7 @@ export const Cards = () => {
     <Container w={'100%'}>
       <Flex w="100%" wrap="wrap" gap="lg" justify="space-around">
         {data.map((card) => (
-          <BusinessCard key={card.id} text={card.displayName ?? '名無し'} />
+          <BusinessCard key={card.id} card={card} />
         ))}
         <BusinessCardAspectRatio w={defaultBusinessCardWidht}>
           <Button variant="default">+</Button>
@@ -61,7 +61,7 @@ export const Cards = () => {
           return (
             <BusinessCard
               key={card.id}
-              text={card.displayName ?? '名無し'}
+              card={card}
               style={{
                 zIndex: data.length + index,
                 transform:
