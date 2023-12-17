@@ -1,8 +1,8 @@
 import { Control, UseFormSetValue } from 'react-hook-form';
 import { Divider } from '../common/Divider';
-import { Image } from '../common/Image';
 import { Grid, Stack } from '../common/Layout';
 import { Loader } from '../common/Loader';
+import { ModelViewer } from '../common/ModelViewer';
 import { Radio } from '../common/Radio';
 import { useGetThreeDimentionalModels } from '@/shared/hooks/restapi/v1/ThreeDimentionalModel';
 
@@ -19,15 +19,20 @@ type ImageRadioOptionProps = {
 
 const ImageRadioButton = ({ value, path, onClick }: ImageRadioOptionProps) => {
   return (
-    <Grid.Col key={value} span={4}>
-      <Stack gap="sm" align="center" onClick={() => onClick(value)}>
-        {/* <ModelViewer
+    <Grid.Col
+      key={value}
+      span={4}
+      onClick={() => onClick(value)}
+      style={{ cursor: 'pointer' }}
+    >
+      <Stack gap="sm" align="center">
+        <ModelViewer
           glb={path}
           alt={`${value} 3d model`}
           poster={''}
-          usdz={''}
-        /> */}
-        <Image src={path} alt={`${value} 3d model`} />
+          // usdz={'/cat.usdz'}
+          style={{ width: '100%' }}
+        />
         <Radio.Item value={value} size="xs" />
       </Stack>
     </Grid.Col>
@@ -47,23 +52,20 @@ export const SelectThreeDModel = ({ control, setValue }: Props) => {
         control={control}
         name="threeDModel"
         label="3Dモデル"
-        description="用意できる3Dモデルがない場合はサンプルからお選びください"
+        description="サンプルもしくはアップロードした3Dモデルを選択してください"
         withAsterisk
       >
         <Grid gutter="sm">
-          {data.map(({ id, path }) => {
-            return (
-              <ImageRadioButton
-                key={id}
-                path={path!}
-                onClick={(value) => {
-                  console.log(value, path);
-                  setValue('threeDModel', value);
-                }}
-                value={id!}
-              />
-            );
-          })}
+          {data.map(({ id, path }) => (
+            <ImageRadioButton
+              key={id}
+              path={path!}
+              onClick={(value) => {
+                setValue('threeDModel', value);
+              }}
+              value={id!}
+            />
+          ))}
         </Grid>
         <Divider my="sm" labelPosition="center" />
       </Radio.Group>
