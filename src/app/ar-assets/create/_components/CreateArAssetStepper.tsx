@@ -16,8 +16,44 @@ import { Stepper } from '@/shared/components/common/Stepper';
 import { IconChevronLeft, IconChevronRight } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
 
+const steps = [0, 1, 2, 3] as const;
+type Step = (typeof steps)[number];
+
+type StepInput<T extends Step> = T extends 0
+  ? { id: string } | undefined
+  : T extends 1
+  ? { audio: File; text: string } | undefined
+  : T extends 2
+  ? { image?: File } | undefined
+  : T extends 3
+  ? null
+  : never;
+
+export type RequestBodyies = {
+  [key in Step]: StepInput<key>;
+};
+
+type State = {
+  active: Step;
+  requestBodyies: RequestBodyies;
+};
+
+const initialState: State = {
+  active: 0,
+  requestBodyies: {
+    '0': undefined,
+    '1': undefined,
+    '2': undefined,
+    '3': null,
+  },
+};
+
 export const CreateArAssetStepper = () => {
-  const [active, setActive] = useState(0);
+  const [requestBodyies, setRequestBodyies] = useState(
+    initialState.requestBodyies,
+  );
+  const [active, setActive] = useState(initialState.active);
+
   const [highestStepVisited, setHighestStepVisited] = useState(active);
 
   const handleStepChange = (nextStep: number) => {
@@ -27,8 +63,8 @@ export const CreateArAssetStepper = () => {
       return;
     }
 
-    setActive(nextStep);
-    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
+    setActive(nextStep as Step);
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep) as Step);
   };
 
   const shouldAllowSelectStep = (step: number) =>
@@ -38,7 +74,6 @@ export const CreateArAssetStepper = () => {
     <Container>
       <Stepper
         active={active}
-        onStepClick={setActive}
         radius="sm"
         size="xs"
         iconSize={20}
@@ -100,6 +135,7 @@ export const CreateArAssetStepper = () => {
               size="xs"
               rightSection={<IconChevronRight size={14} />}
               onClick={() => handleStepChange(active + 1)}
+              disabled={requestBodyies[active as Step] === undefined}
             >
               次のステップへ
             </Button>
@@ -111,6 +147,20 @@ export const CreateArAssetStepper = () => {
         </Group>
       )}
       <Space h="md" />
+
+      {/* TODO: 仮実装 */}
+      <button
+        onClick={() => {
+          setRequestBodyies((prev) => {
+            return {
+              ...prev,
+              '0': { id: '1' },
+            };
+          });
+        }}
+      >
+        STEP0
+      </button>
     </Container>
   );
 };

@@ -1,7 +1,5 @@
-import {
-  RecordedModelSettings,
-  SpeakingAssetsSettings,
-} from './SpeakingSettingsContent';
+import { RecordedModelSettings } from './RecordedModelSettings';
+import { SpeakingAssetsSettings } from './SpeakingAssetsSettings';
 import { Container } from '@/shared/components/common/Container';
 import { Divider } from '@/shared/components/common/Divider';
 import { Title } from '@/shared/components/common/Title';
