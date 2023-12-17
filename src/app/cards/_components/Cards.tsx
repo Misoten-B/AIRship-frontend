@@ -10,7 +10,7 @@ import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCa
 import { useGetBusinessCards } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
-const defaultBusinessCardWidht = 379;
+const defaultBusinessCardWidht = 1254 / 3;
 const diffTop = 120;
 
 type State = {
