@@ -29,18 +29,18 @@ type StepInput<T extends Step> = T extends 0
   ? null
   : never;
 
-export type RequestBodyies = {
+export type RequestBodies = {
   [key in Step]: StepInput<key>;
 };
 
 type State = {
   active: Step;
-  requestBodyies: RequestBodyies;
+  requestBodies: RequestBodies;
 };
 
 const initialState: State = {
   active: 0,
-  requestBodyies: {
+  requestBodies: {
     '0': undefined,
     '1': undefined,
     '2': undefined,
@@ -49,8 +49,8 @@ const initialState: State = {
 };
 
 export const CreateArAssetStepper = () => {
-  const [requestBodyies, setRequestBodyies] = useState(
-    initialState.requestBodyies,
+  const [requestBodies, setRequestBodies] = useState(
+    initialState.requestBodies,
   );
   const [active, setActive] = useState(initialState.active);
 
@@ -135,7 +135,7 @@ export const CreateArAssetStepper = () => {
               size="xs"
               rightSection={<IconChevronRight size={14} />}
               onClick={() => handleStepChange(active + 1)}
-              disabled={requestBodyies[active as Step] === undefined}
+              disabled={requestBodies[active as Step] === undefined}
             >
               次のステップへ
             </Button>
@@ -151,7 +151,7 @@ export const CreateArAssetStepper = () => {
       {/* TODO: 仮実装 */}
       <button
         onClick={() => {
-          setRequestBodyies((prev) => {
+          setRequestBodies((prev) => {
             return {
               ...prev,
               '0': { id: '1' },
