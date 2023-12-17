@@ -18,10 +18,10 @@ type Props = {
 export const ArAssetItem = ({ arAsset }: Props) => {
   const {
     id,
-    qrcode_image_path,
-    speaking_description,
-    speaking_audio_path,
-    three_dimentional_path,
+    qrcodeImagePath,
+    threeDimentionalPath,
+    speakingAudioPath,
+    speakingDescription,
   } = arAsset;
 
   if (!id) return null;
@@ -31,17 +31,17 @@ export const ArAssetItem = ({ arAsset }: Props) => {
         <Flex gap={16} justify="space-around">
           <QRCode
             url={getQRCodeUrl(id)}
-            imageSrc={qrcode_image_path}
+            imageSrc={qrcodeImagePath}
             size={100}
           />
-          <Image src={three_dimentional_path} alt="#" />
+          <Image src={threeDimentionalPath} alt="#" />
         </Flex>
       </Card.Section>
       <Card.Section>
         <Flex direction="column" align="flex-start">
           <audio
             controls
-            src={speaking_audio_path}
+            src={speakingAudioPath}
             style={{ width: '100%', height: '30px' }}
           />
           <Title order={6} c="blue.6" mt={16} mb={4}>
@@ -49,7 +49,7 @@ export const ArAssetItem = ({ arAsset }: Props) => {
             話させる文章
           </Title>
           <Text size="xs" lineClamp={2}>
-            {speaking_description}
+            {speakingDescription}
           </Text>
         </Flex>
       </Card.Section>
