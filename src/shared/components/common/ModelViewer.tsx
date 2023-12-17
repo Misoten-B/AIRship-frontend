@@ -13,6 +13,7 @@ declare global {
         ar: boolean;
         scale: string;
         children?: Element;
+        style?: {};
       };
     }
   }
@@ -21,7 +22,7 @@ declare global {
 type Props = {
   poster: string;
   glb: string;
-  usdz: string;
+  usdz?: string;
   alt: string;
   autoRotate?: boolean;
   ar?: boolean;
@@ -36,6 +37,7 @@ type Props = {
     left?: number | string;
     right?: number | string;
   };
+  style?: object;
 };
 export const ModelViewerCore = (props: Props) => {
   return (
@@ -53,6 +55,7 @@ export const ModelViewerCore = (props: Props) => {
       scale={
         props.scale ? `${props.scale} ${props.scale} ${props.scale}` : '1 1 1'
       }
+      style={props.style}
     >
       {props.children}
     </model-viewer>

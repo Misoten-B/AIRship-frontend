@@ -2,11 +2,7 @@
 const nextConfig = {
   webpack: (config) => {
     config.ignoreWarnings = [
-      {
-        module: /@ffmpeg\/ffmpeg/,
-        message:
-          /Critical dependency: the request of a dependency is an expression/,
-      },
+      /Critical dependency: the request of a dependency is an expression/,
     ];
 
     return config;
