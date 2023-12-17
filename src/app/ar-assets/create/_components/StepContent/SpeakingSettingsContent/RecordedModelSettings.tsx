@@ -55,11 +55,14 @@ export const RecordedModelSettings = () => {
         inputFileName,
         outputFileName,
       );
-      const wavBlob = new Blob([output], { type: 'audio/wav' });
+
+      // const wavBlob = new Blob([output], { type: 'audio/wav' });
+      const wavFile = new File([output], outputFileName);
 
       // 録音データのセットアップ
       const audio = audioRef.current!;
-      audio.src = URL.createObjectURL(wavBlob);
+      // audio.src = URL.createObjectURL(wavBlob);
+      audio.src = URL.createObjectURL(wavFile);
     })();
   }, [recordingBlob]);
 
