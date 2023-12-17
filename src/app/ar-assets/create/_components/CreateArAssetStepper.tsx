@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -8,6 +9,7 @@ import {
   SpeakingSettings,
   UploadQRCodeInsideImage,
 } from './StepContent';
+import { Step } from './types';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Group, Space } from '@/shared/components/common/Layout';
@@ -16,42 +18,15 @@ import { Stepper } from '@/shared/components/common/Stepper';
 import { IconChevronLeft, IconChevronRight } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
 
-const steps = [0, 1, 2, 3] as const;
-type Step = (typeof steps)[number];
-
-type StepInput<T extends Step> = T extends 0
-  ? { id: string } | undefined
-  : T extends 1
-  ? { audio: File; text: string } | undefined
-  : T extends 2
-  ? { image?: File } | undefined
-  : T extends 3
-  ? null
-  : never;
-
-export type RequestBodies = {
-  [key in Step]: StepInput<key>;
-};
-
 type State = {
   active: Step;
-  requestBodies: RequestBodies;
 };
 
 const initialState: State = {
   active: 0,
-  requestBodies: {
-    '0': undefined,
-    '1': undefined,
-    '2': undefined,
-    '3': null,
-  },
 };
 
 export const CreateArAssetStepper = () => {
-  const [requestBodies, setRequestBodies] = useState(
-    initialState.requestBodies,
-  );
   const [active, setActive] = useState(initialState.active);
 
   const [highestStepVisited, setHighestStepVisited] = useState(active);
@@ -135,7 +110,6 @@ export const CreateArAssetStepper = () => {
               size="xs"
               rightSection={<IconChevronRight size={14} />}
               onClick={() => handleStepChange(active + 1)}
-              disabled={requestBodies[active as Step] === undefined}
             >
               次のステップへ
             </Button>
@@ -147,20 +121,6 @@ export const CreateArAssetStepper = () => {
         </Group>
       )}
       <Space h="md" />
-
-      {/* TODO: 仮実装 */}
-      <button
-        onClick={() => {
-          setRequestBodies((prev) => {
-            return {
-              ...prev,
-              '0': { id: '1' },
-            };
-          });
-        }}
-      >
-        STEP0
-      </button>
     </Container>
   );
 };
