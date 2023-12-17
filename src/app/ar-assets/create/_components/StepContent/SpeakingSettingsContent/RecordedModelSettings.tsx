@@ -37,7 +37,7 @@ export const RecordedModelSettings = () => {
       <Text size="xs" c="gray.6" mb={12}>
         生成される音声はこの録音データを元に生成されます
       </Text>
-      <audio controls src=""></audio>
+      <audio controls src="" style={{ width: '100%' }}></audio>
     </Container>
   );
 };
