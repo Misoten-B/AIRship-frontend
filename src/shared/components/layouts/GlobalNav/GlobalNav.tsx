@@ -1,17 +1,24 @@
 'use client';
 
+import { useMantineColorScheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
-import { Button } from '../../common/Button';
+import { ReactNode, useCallback } from 'react';
+import { useRecoilState } from 'recoil';
+import { ActionIcon, Button } from '../../common/Button';
 import { AppShell, Group, Stack } from '../../common/Layout';
 import { Burger } from '../../common/Navigation';
 import { AirshipLogoRow } from '../../features/AirshipLogo';
-import { IconCards } from '../../icons/IconCards';
-import { IconLogout } from '../../icons/IconLogout';
-import { IconQrcode } from '../../icons/IconQrcode';
+import {
+  IconCards,
+  IconLogout,
+  IconMoon,
+  IconQrcode,
+  IconSun,
+} from '../../icons';
 import { ROUTES } from '@/shared/constants';
+import { globalState } from '@/shared/lib/recoil/atom';
 
 type Props = {
   children: ReactNode;
@@ -24,8 +31,19 @@ const navigationItems = [
 ];
 
 export const GlobalNav = ({ children }: Props) => {
+  const [globalConfig, setGlobalConfig] = useRecoilState(globalState);
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const [isOpen, { toggle }] = useDisclosure();
   const currentPath = usePathname();
+  const dark = colorScheme === 'dark';
+
+  const handleSwitchColorScheme = useCallback(
+    (cs: 'light' | 'dark') => {
+      setGlobalConfig({ ...globalConfig, dark: cs === 'dark' ? true : false });
+      setColorScheme(cs);
+    },
+    [globalConfig, setColorScheme, setGlobalConfig],
+  );
 
   return (
     <AppShell
@@ -38,9 +56,28 @@ export const GlobalNav = ({ children }: Props) => {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={isOpen} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <AirshipLogoRow h={50} />
+        <Group h="100%" px="md" justify="space-between">
+          <Group h="100%" gap="md">
+            <Burger
+              opened={isOpen}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <AirshipLogoRow h={50} />
+          </Group>
+          <ActionIcon
+            variant="outline"
+            color={dark ? 'yellow' : 'blue'}
+            onClick={() => handleSwitchColorScheme(dark ? 'light' : 'dark')}
+            title="Toggle color scheme"
+          >
+            {dark ? (
+              <IconSun style={{ width: 18, height: 18 }} />
+            ) : (
+              <IconMoon style={{ width: 18, height: 18 }} />
+            )}
+          </ActionIcon>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
