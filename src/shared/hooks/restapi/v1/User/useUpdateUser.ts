@@ -7,14 +7,14 @@ export const useUpdateUser = (userId: string) => {
   const updateUser = useCallback(
     async (isToured: boolean, recordedVoice: File | ReadStream | undefined) => {
       try {
-        return await api?.v1.users._user_id(userId).$put({
+        return await api?.v1.users.$put({
           body: { isToured: isToured, recorded_voice: recordedVoice },
         });
       } catch (error) {
         throw error;
       }
     },
-    [api?.v1.users, userId],
+    [api?.v1.users],
   );
   return { updateUser };
 };
