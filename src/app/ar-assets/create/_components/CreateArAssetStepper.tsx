@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { useRequestBodiesValue } from './RequestBodiesProvider';
 import {
   CompletedArAsset,
   Select3dModel,
@@ -29,7 +30,13 @@ const initialState: State = {
 export const CreateArAssetStepper = () => {
   const [active, setActive] = useState(initialState.active);
 
-  const [highestStepVisited, setHighestStepVisited] = useState(active);
+  const requestBodies = useRequestBodiesValue();
+  console.log(requestBodies);
+
+  const nextStep = () =>
+    setActive((prev) => (prev < 3 ? ((prev + 1) as Step) : prev));
+  const prevStep = () =>
+    setActive((prev) => (prev > 0 ? ((prev - 1) as Step) : prev));
 
   const handleStepChange = (nextStep: number) => {
     const isOutOfBounds = nextStep > 3 || nextStep < 0;
@@ -39,11 +46,7 @@ export const CreateArAssetStepper = () => {
     }
 
     setActive(nextStep as Step);
-    setHighestStepVisited((hSC) => Math.max(hSC, nextStep) as Step);
   };
-
-  const shouldAllowSelectStep = (step: number) =>
-    highestStepVisited >= step && active !== step && active !== 3;
 
   return (
     <Container>
@@ -52,6 +55,7 @@ export const CreateArAssetStepper = () => {
         radius="sm"
         size="xs"
         iconSize={20}
+        allowNextStepsSelect={false}
         styles={{
           separator: { margin: '2px' },
           stepLabel: { fontSize: '9px' },
@@ -59,26 +63,17 @@ export const CreateArAssetStepper = () => {
           stepBody: { margin: '3px' },
         }}
       >
-        <Stepper.Step
-          label="3Dモデルの選択"
-          description="アップロードと選択"
-          allowStepSelect={shouldAllowSelectStep(0)}
-        >
-          <Select3dModel />
+        <Stepper.Step label="3Dモデルの選択" description="アップロードと選択">
+          <Select3dModel nextStep={nextStep} />
         </Stepper.Step>
         <Stepper.Step
           label="音声データの設定"
           description="録音と話させる文章の登録"
-          allowStepSelect={shouldAllowSelectStep(1)}
         >
-          <SpeakingSettings />
+          <SpeakingSettings nextStep={nextStep} prevStep={prevStep} />
         </Stepper.Step>
-        <Stepper.Step
-          label="QRコード内画像"
-          description="画像をアップロード"
-          allowStepSelect={shouldAllowSelectStep(2)}
-        >
-          <UploadQRCodeInsideImage />
+        <Stepper.Step label="QRコード内画像" description="画像をアップロード">
+          <UploadQRCodeInsideImage prevStep={prevStep} />
         </Stepper.Step>
         <Stepper.Completed>
           <CompletedArAsset />

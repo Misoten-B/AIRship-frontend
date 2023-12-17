@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useSetRequestBodies } from '../../RequestBodiesProvider';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Textarea } from '@/shared/components/common/Input';
@@ -7,7 +8,24 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 
 export const SpeakingAssetsSettings = () => {
-  const { control } = useForm();
+  const setRequestBodies = useSetRequestBodies();
+  const { handleSubmit, control } = useForm({
+    defaultValues: {
+      text: '',
+    },
+  });
+
+  const setSpeakingText = (data: any) => {
+    console.log(data.text);
+    setRequestBodies((prev) => ({
+      ...prev,
+      '1': {
+        ...prev['1'],
+        text: data.text,
+      },
+    }));
+  };
+
   return (
     <Container p={0}>
       <Title order={5} mb={4}>
@@ -30,19 +48,26 @@ export const SpeakingAssetsSettings = () => {
         登録した声がAI化されて再生される文章です
       </Text>
       <Stack align="flex-start" justify="flex-start" mb={12} gap="xs">
-        <Textarea
-          // TODO: wip
-          name=""
-          control={control}
-          placeholder="100文字以下で入力してください。"
-          autosize
-          minRows={3}
-          mb={8}
-          w={'100%'}
-        />
-        <Button variant="outline" color="orange" size="xs" radius="xl">
-          保存して合成音声を生成する
-        </Button>
+        <form onSubmit={handleSubmit(setSpeakingText)}>
+          <Textarea
+            name="text"
+            control={control}
+            placeholder="100文字以下で入力してください。"
+            autosize
+            minRows={3}
+            mb={8}
+            w={'100%'}
+          />
+          <Button
+            variant="outline"
+            color="orange"
+            size="xs"
+            radius="xl"
+            type="submit"
+          >
+            保存して合成音声を生成する
+          </Button>
+        </form>
       </Stack>
     </Container>
   );

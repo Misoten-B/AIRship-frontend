@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useSetRequestBodies } from '../../RequestBodiesProvider';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Stack } from '@/shared/components/common/Layout';
@@ -13,6 +14,8 @@ import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
 const MAX_RECORDING_TIME = 10;
 
 export const RecordedModelSettings = () => {
+  const setRequestBodies = useSetRequestBodies();
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const ffmpegRef = useRef(new FFmpeg());
 
@@ -23,6 +26,19 @@ export const RecordedModelSettings = () => {
     stopRecording,
     recordingBlob,
   } = useAudioRecorder();
+
+  const setAudio = useCallback(
+    (file: File) => {
+      setRequestBodies((prev) => ({
+        ...prev,
+        '1': {
+          ...prev['1'],
+          audio: file,
+        },
+      }));
+    },
+    [setRequestBodies],
+  );
 
   useEffect(() => {
     if (!isRecording) return;
@@ -61,8 +77,10 @@ export const RecordedModelSettings = () => {
       // 録音データのセットアップ
       const audio = audioRef.current!;
       audio.src = URL.createObjectURL(wavFile);
+
+      setAudio(wavFile);
     })();
-  }, [recordingBlob]);
+  }, [recordingBlob, setAudio]);
 
   const handleToggleRecording = () => {
     if (isRecording) {

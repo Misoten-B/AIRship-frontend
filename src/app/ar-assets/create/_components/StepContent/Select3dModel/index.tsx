@@ -1,9 +1,16 @@
+import { useCallback } from 'react';
 import { z } from 'zod';
+import {
+  useRequestBodiesValue,
+  useSetRequestBodies,
+} from '../../RequestBodiesProvider';
+import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { FileInput } from '@/shared/components/common/Input';
-import { Grid } from '@/shared/components/common/Layout';
+import { Grid, Group } from '@/shared/components/common/Layout';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
+import { IconChevronRight } from '@/shared/components/icons/IconChevronRight';
 import { useForm } from '@/shared/hooks/useForm';
 
 const schema = z.object({
@@ -17,9 +24,11 @@ const fileInputSchema = z.object({
 type FormSchemaType = z.infer<typeof schema>;
 type FileInputSchemaType = z.infer<typeof fileInputSchema>;
 
-type Props = {};
+type Props = {
+  nextStep: () => void;
+};
 
-export const Select3dModel = ({}: Props) => {
+export const Select3dModel = ({ nextStep }: Props) => {
   const { control, setValue } = useForm<FormSchemaType>({
     defaultValues: {
       threeDModel: '',
@@ -30,6 +39,21 @@ export const Select3dModel = ({}: Props) => {
       fileInput: '',
     },
   });
+
+  const requestBodies = useRequestBodiesValue();
+  const setRequestBodies = useSetRequestBodies();
+
+  const set3DModelID = useCallback(
+    (id: string) => {
+      setRequestBodies((prev) => ({
+        ...prev,
+        '0': {
+          id,
+        },
+      }));
+    },
+    [setRequestBodies],
+  );
 
   return (
     <Container>
@@ -54,6 +78,21 @@ export const Select3dModel = ({}: Props) => {
           />
         </Grid.Col>
       </Grid>
+
+      <div>
+        {/* FIXME: 仮実装 */}
+        <button onClick={() => set3DModelID('test-value')}>値の設定</button>
+        <Group my="xl" p={0} justify={'flex-end'}>
+          <Button
+            size="xs"
+            rightSection={<IconChevronRight size={14} />}
+            onClick={nextStep}
+            disabled={requestBodies[0] === undefined}
+          >
+            次のステップへ
+          </Button>
+        </Group>
+      </div>
     </Container>
   );
 };

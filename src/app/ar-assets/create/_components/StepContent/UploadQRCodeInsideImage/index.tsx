@@ -5,9 +5,17 @@ import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SampleQrCodeImage } from '@/shared/components/features';
-import { IconUpload } from '@/shared/components/icons';
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconUpload,
+} from '@/shared/components/icons';
 
-export const UploadQRCodeInsideImage = () => {
+type Props = {
+  prevStep: () => void;
+};
+
+export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   return (
     <Container>
@@ -36,6 +44,21 @@ export const UploadQRCodeInsideImage = () => {
           </Group>
         </Stack>
       </Center>
+
+      {/* FIXME: 仮実装 */}
+      <Group my="xl" p={0} justify={'space-between'}>
+        <Button
+          variant="outline"
+          size="xs"
+          leftSection={<IconChevronLeft size={14} />}
+          onClick={prevStep}
+        >
+          前のステップ
+        </Button>
+        <Button size="xs" rightSection={<IconChevronRight size={14} />}>
+          完了
+        </Button>
+      </Group>
     </Container>
   );
 };
