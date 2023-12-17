@@ -27,9 +27,6 @@ export const Cards = () => {
   const isPC = useMediaQuery('(min-width: 768px)');
   const [selectedCard, setSelectedCard] = useState(initialState.selectedCard);
 
-  // const ButtonTop = diffTop * (cardData.length + 1) + 40;
-  // const height = ButtonTop + 200;
-
   // 計算が重くないから必要ないかも
   const ButtonTop = useMemo(() => {
     const length = data?.length ?? 0;
@@ -68,8 +65,7 @@ export const Cards = () => {
               style={{
                 zIndex: data.length + index,
                 transform:
-                  // selectedCard === card.id
-                  selectedCard === 1
+                  selectedCard === index
                     ? 'translate(-50%, -80px)'
                     : selectedCard > index
                     ? 'translate(-50%, -40px)'
@@ -80,8 +76,7 @@ export const Cards = () => {
                 top: top,
                 left: '50%',
               }}
-              // onClick={() => setSelectedCard(card.id)}
-              onClick={() => setSelectedCard(1)}
+              onClick={() => setSelectedCard(index)}
             />
           );
         })}
