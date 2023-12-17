@@ -4,7 +4,7 @@ import { Button, FileButton } from '@/shared/components/common/Button';
 import { Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
-import { IconUpload } from '@/shared/components/icons/IconUpload';
+import { IconUpload } from '@/shared/components/icons';
 
 export const QRCodeInsideImage = () => {
   const [file, setFile] = useState<File | null>(null);
