@@ -1,5 +1,5 @@
 import { NotificationData } from '@mantine/notifications';
-import { IconX } from '../../icons/IconX';
+import { IconX } from '../../icons';
 
 export const ErrorNotificationData = (
   title: string,

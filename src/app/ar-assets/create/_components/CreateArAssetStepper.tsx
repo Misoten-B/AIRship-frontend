@@ -13,8 +13,7 @@ import { Container } from '@/shared/components/common/Container';
 import { Group, Space } from '@/shared/components/common/Layout';
 import { Anchor } from '@/shared/components/common/Navigation';
 import { Stepper } from '@/shared/components/common/Stepper';
-import { IconChevronLeft } from '@/shared/components/icons/IconChevronLeft';
-import { IconChevronRight } from '@/shared/components/icons/IconChevronRight';
+import { IconChevronLeft, IconChevronRight } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
 
 export const CreateArAssetStepper = () => {

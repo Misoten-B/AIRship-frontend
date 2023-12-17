@@ -114,6 +114,8 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
         h="100%"
         style={{
           transform: `scale(${scale})`,
+          background: 'white',
+          color: 'black',
         }}
       >
         <Text

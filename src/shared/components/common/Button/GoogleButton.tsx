@@ -1,4 +1,4 @@
-import { IconBrandGoogle } from '../../icons/IconBrandGoogle';
+import { IconBrandGoogle } from '../../icons';
 import { Button } from '.';
 
 type Props = {

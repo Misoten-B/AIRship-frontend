@@ -12,11 +12,15 @@ export const QRCode = (props: Props) => {
   const { url, imageSrc, size } = props;
   return (
     <Center {...props}>
-      <Paper radius="md" withBorder p="md" pb={10}>
+      <Paper
+        radius="md"
+        p="md"
+        pb={10}
+        style={{ backgroundColor: 'white', border: '1px solid gray' }}
+      >
         <AspectRatio ratio={1} w={size} h={size}>
           <QRCodeSVG
             value={url}
-            // size={size}
             bgColor={'#ffffff'}
             fgColor={'#000000'}
             level={'L'}

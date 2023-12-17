@@ -6,7 +6,7 @@ import { Container } from '@/shared/components/common/Container';
 import { Center, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
-import { IconMicrophone } from '@/shared/components/icons/IconMicrophone';
+import { IconMicrophone } from '@/shared/components/icons';
 import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
 import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
 
