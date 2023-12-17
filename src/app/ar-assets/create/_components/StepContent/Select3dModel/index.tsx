@@ -10,7 +10,7 @@ import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Group } from '@/shared/components/common/Layout';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
-import { IconChevronRight } from '@/shared/components/icons/IconChevronRight';
+import { IconChevronRight } from '@/shared/components/icons';
 import { useForm } from '@/shared/hooks/useForm';
 
 const schema = z.object({
