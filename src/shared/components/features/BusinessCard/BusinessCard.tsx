@@ -35,6 +35,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
   const { ref, width, height } = useElementSize();
   const [scale, setScale] = useState(1);
 
+  // TODO: 動作確認後に削除
   const rawBusinessCardPartsCoordinate = {
     displayNameX: 112,
     displayNameY: 266,

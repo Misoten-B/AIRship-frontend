@@ -14,8 +14,8 @@ export const useUpdateArAsset = (arAssetId: string) => {
         return api?.v1.users.ar_assets._ar_assets_id(arAssetId).$put({
           body: {
             qrcodeIcon: qrCodeIcon,
-            speaking_description: speakingDescription,
-            three_dimentional_ID: threeDimentionalId,
+            speakingDescription: speakingDescription,
+            threeDimentionalID: threeDimentionalId,
           },
         });
       } catch (error) {

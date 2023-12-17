@@ -10,7 +10,7 @@ export const useCreateBusinessCardBackground = () => {
         return api?.v1.users.business_card_backgrounds.$post({
           body: {
             BusinessCardBackgroundImage: image,
-            business_card_background_color: color,
+            businessCardBackgroundColor: color,
           },
         });
       } catch (error) {

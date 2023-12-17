@@ -14,8 +14,8 @@ export const useCreateArAsset = () => {
         return api?.v1.users.ar_assets.$post({
           body: {
             qrcodeIcon: qrCodeIcon,
-            speaking_description: speakingDescription,
-            three_dimentional_ID: threeDimentionalId,
+            speakingDescription: speakingDescription,
+            threeDimentionalID: threeDimentionalId,
           },
         });
       } catch (error) {
