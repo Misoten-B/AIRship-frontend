@@ -3,6 +3,7 @@ export const ROUTES = {
     base: '/ar-assets',
     create: '/ar-assets/create',
     detail: (id: string) => `/ar-assets/${id}`,
+    public: (id: string) => `/ar-assets/${id}/public`,
   },
   cards: {
     base: '/cards',

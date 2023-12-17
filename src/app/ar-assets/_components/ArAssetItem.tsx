@@ -7,6 +7,7 @@ import { Card, Flex } from '@/shared/components/common/Layout';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { getQRCodeUrl } from '@/shared/components/features';
 import { IconPencil, IconSpeakerphone } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
 
@@ -28,7 +29,11 @@ export const ArAssetItem = ({ arAsset }: Props) => {
     <Card radius="md" withBorder mx={16} padding={0} pt={20} px={20} my={8}>
       <Card.Section mb={16}>
         <Flex gap={16} justify="space-around">
-          <QRCode url={id} imageSrc={qrcode_image_path} size={100} />
+          <QRCode
+            url={getQRCodeUrl(id)}
+            imageSrc={qrcode_image_path}
+            size={100}
+          />
           <Image src={three_dimentional_path} alt="#" />
         </Flex>
       </Card.Section>

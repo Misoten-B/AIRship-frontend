@@ -1,5 +1,5 @@
 import { ImageProps } from '@mantine/core';
-import { Image } from '../common/Image';
+import { Image } from '@/shared/components/common/Image';
 
 type Props = Omit<ImageProps, 'src' | 'alt'>;
 export const SampleQrCodeImage = (props: Props) => {
