@@ -1,7 +1,5 @@
 'use client';
 
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import { useEffect, useRef } from 'react';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -10,6 +8,7 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconMicrophone } from '@/shared/components/icons/IconMicrophone';
 import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
+import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
 
 const MAX_RECORDING_TIME = 10;
 
@@ -36,22 +35,11 @@ export const RecordedModelSettings = () => {
     if (!recordingBlob) return;
 
     (async () => {
-      // FFmpegのセットアップ
-      const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
+      // ffmpegのロード
       const ffmpeg = ffmpegRef.current;
+      await loadFFmpeg(ffmpeg);
 
-      await ffmpeg.load({
-        coreURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.js`,
-          'text/javascript',
-        ),
-        wasmURL: await toBlobURL(
-          `${baseURL}/ffmpeg-core.wasm`,
-          'application/wasm',
-        ),
-      });
-
-      // 録音データの変換
+      // ファイルへ
       const inputFileName = 'input.webm';
       const outputFileName = 'output.wav';
 
@@ -60,20 +48,18 @@ export const RecordedModelSettings = () => {
         lastModified: Date.now(),
       });
 
-      await ffmpeg.writeFile(inputFileName, await fetchFile(file));
-      await ffmpeg.exec(['-i', inputFileName, outputFileName]);
-      const output = await ffmpeg.readFile(outputFileName);
-
+      // 変換
+      const output = await transcodeFile(
+        ffmpeg,
+        file,
+        inputFileName,
+        outputFileName,
+      );
       const wavBlob = new Blob([output], { type: 'audio/wav' });
 
       // 録音データのセットアップ
       const audio = audioRef.current!;
       audio.src = URL.createObjectURL(wavBlob);
-
-      // const link = document.createElement('a');
-      // link.href = audio.src;
-      // link.download = 'recorded.wav';
-      // link.click();
     })();
   }, [recordingBlob]);
 
