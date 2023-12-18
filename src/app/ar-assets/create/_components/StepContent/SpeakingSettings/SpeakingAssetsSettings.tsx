@@ -16,7 +16,6 @@ export const SpeakingAssetsSettings = () => {
   });
 
   const setSpeakingText = (data: any) => {
-    console.log(data.text);
     setRequestBodies((prev) => ({
       ...prev,
       '1': {

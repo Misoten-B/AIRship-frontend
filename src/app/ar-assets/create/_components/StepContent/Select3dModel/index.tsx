@@ -29,9 +29,12 @@ type Props = {
 };
 
 export const Select3dModel = ({ nextStep }: Props) => {
+  const requestBodies = useRequestBodiesValue();
+  const setRequestBodies = useSetRequestBodies();
+
   const { control, setValue } = useForm<FormSchemaType>({
     defaultValues: {
-      threeDModel: '',
+      threeDModel: requestBodies[0]?.id ?? '',
     },
   });
   const { control: fileInputControl } = useForm<FileInputSchemaType>({
@@ -39,9 +42,6 @@ export const Select3dModel = ({ nextStep }: Props) => {
       fileInput: '',
     },
   });
-
-  const requestBodies = useRequestBodiesValue();
-  const setRequestBodies = useSetRequestBodies();
 
   const set3DModelID = useCallback(
     (id: string) => {
@@ -87,7 +87,6 @@ export const Select3dModel = ({ nextStep }: Props) => {
         </Grid>
       </Container>
 
-      {/* FIXME: 仮実装 */}
       <Group my="xl" p={0} justify={'flex-end'}>
         <Button
           size="xs"

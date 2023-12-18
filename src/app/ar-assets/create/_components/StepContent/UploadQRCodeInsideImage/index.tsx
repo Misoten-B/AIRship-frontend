@@ -110,7 +110,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
           </Stack>
         </Center>
       </Container>
-      {/* FIXME: 仮実装 */}
       <Group my="xl" p={0} justify={'space-between'}>
         <Button
           variant="outline"
