@@ -55,13 +55,19 @@ export const Select3dModel = ({ nextStep }: Props) => {
     [setRequestBodies],
   );
 
+  const handleSetValue = (value: string) => {
+    if (!value) return;
+    setValue('threeDModel', value);
+    set3DModelID(value);
+  };
+
   return (
     <Container>
       <Title order={3} mb={16}>
         3Dモデルの選択
       </Title>
 
-      <SelectThreeDModel control={control} setValue={setValue} />
+      <SelectThreeDModel control={control} setValue={handleSetValue} />
 
       <Grid>
         <Grid.Col span={4}>
@@ -81,7 +87,6 @@ export const Select3dModel = ({ nextStep }: Props) => {
 
       <div>
         {/* FIXME: 仮実装 */}
-        <button onClick={() => set3DModelID('test-value')}>値の設定</button>
         <Group my="xl" p={0} justify={'flex-end'}>
           <Button
             size="xs"

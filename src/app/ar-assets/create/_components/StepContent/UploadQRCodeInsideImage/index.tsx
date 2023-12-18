@@ -16,6 +16,7 @@ import {
 } from '@/shared/components/icons';
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
 import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
+import { useDisclosure } from '@/shared/hooks/useDisclosure';
 
 type Props = {
   prevStep: () => void;
@@ -24,6 +25,7 @@ type Props = {
 export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
+  const [loading, { toggle }] = useDisclosure();
 
   const { updateUser } = useUpdateUser();
   const { createArAsset } = useCreateArAsset();
@@ -48,20 +50,28 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   };
 
   const handleClick = useCallback(async () => {
-    const select3DModel = requestBodies['0']!;
-    const speakingSetting = requestBodies['1']!;
-    const qrCodeInsideImage = requestBodies['2'];
+    toggle();
 
-    const audio = speakingSetting.audio;
-    if (audio) {
-      await updateUser(true, audio);
+    try {
+      const select3DModel = requestBodies['0']!;
+      const speakingSetting = requestBodies['1']!;
+      const qrCodeInsideImage = requestBodies['2'];
+
+      const audio = speakingSetting.audio;
+      if (audio) {
+        await updateUser(true, audio);
+      }
+      await createArAsset(
+        qrCodeInsideImage?.image,
+        speakingSetting.text,
+        select3DModel.id,
+      );
+    } catch (error) {
+      console.error(error);
     }
-    await createArAsset(
-      qrCodeInsideImage?.image,
-      speakingSetting.text,
-      select3DModel.id,
-    );
-  }, [requestBodies, updateUser, createArAsset]);
+
+    toggle();
+  }, [requestBodies, updateUser, createArAsset, toggle]);
 
   return (
     <Container>
@@ -105,6 +115,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
           size="xs"
           rightSection={<IconChevronRight size={14} />}
           onClick={handleClick}
+          loading={loading}
         >
           完了
         </Button>
