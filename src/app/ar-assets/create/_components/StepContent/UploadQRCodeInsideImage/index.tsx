@@ -74,33 +74,34 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   }, [requestBodies, updateUser, createArAsset, toggle]);
 
   return (
-    <Container>
-      <Title order={5} mb={4}>
-        QRコード内画像
-      </Title>
-      <Text size="xs" c="gray.6" mb={28}>
-        QRコード真ん中に表示される画像です
-      </Text>
-      <Center>
-        <Stack>
-          <SampleQrCodeImage />
-          {file && (
-            <Text size="sm" ta="center" mt="sm" c="gray.6">
-              {file.name}
-            </Text>
-          )}
-          <Group justify="center">
-            <FileButton onChange={handleUpload} accept="image/png,image/jpeg">
-              {(props) => (
-                <Button {...props} w={200} leftSection={<IconUpload />}>
-                  画像アップロード
-                </Button>
-              )}
-            </FileButton>
-          </Group>
-        </Stack>
-      </Center>
-
+    <>
+      <Container>
+        <Title order={5} mb={4}>
+          QRコード内画像
+        </Title>
+        <Text size="xs" c="gray.6" mb={28}>
+          QRコード真ん中に表示される画像です
+        </Text>
+        <Center>
+          <Stack>
+            <SampleQrCodeImage />
+            {file && (
+              <Text size="sm" ta="center" mt="sm" c="gray.6">
+                {file.name}
+              </Text>
+            )}
+            <Group justify="center">
+              <FileButton onChange={handleUpload} accept="image/png,image/jpeg">
+                {(props) => (
+                  <Button {...props} w={200} leftSection={<IconUpload />}>
+                    画像アップロード
+                  </Button>
+                )}
+              </FileButton>
+            </Group>
+          </Stack>
+        </Center>
+      </Container>
       {/* FIXME: 仮実装 */}
       <Group my="xl" p={0} justify={'space-between'}>
         <Button
@@ -120,6 +121,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
           完了
         </Button>
       </Group>
-    </Container>
+    </>
   );
 };

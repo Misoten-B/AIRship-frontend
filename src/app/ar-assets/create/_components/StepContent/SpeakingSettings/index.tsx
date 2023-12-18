@@ -28,13 +28,15 @@ export const SpeakingSettings = ({ nextStep, prevStep }: Props) => {
   };
 
   return (
-    <Container>
-      <Title order={3} mb={16}>
-        音声データの設定
-      </Title>
-      <RecordedModelSettings />
-      <Divider my="sm" />
-      <SpeakingAssetsSettings />
+    <>
+      <Container>
+        <Title order={3} mb={16}>
+          音声データの設定
+        </Title>
+        <RecordedModelSettings />
+        <Divider my="sm" />
+        <SpeakingAssetsSettings />
+      </Container>
 
       {/* FIXME: 仮実装 */}
       <Group my="xl" p={0} justify={'space-between'}>
@@ -55,6 +57,6 @@ export const SpeakingSettings = ({ nextStep, prevStep }: Props) => {
           次のステップへ
         </Button>
       </Group>
-    </Container>
+    </>
   );
 };

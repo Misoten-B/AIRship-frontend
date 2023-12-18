@@ -62,42 +62,42 @@ export const Select3dModel = ({ nextStep }: Props) => {
   };
 
   return (
-    <Container>
-      <Title order={3} mb={16}>
-        3Dモデルの選択
-      </Title>
+    <>
+      <Container>
+        <Title order={3} mb={16}>
+          3Dモデルの選択
+        </Title>
 
-      <SelectThreeDModel control={control} setValue={handleSetValue} />
+        <SelectThreeDModel control={control} setValue={handleSetValue} />
 
-      <Grid>
-        <Grid.Col span={4}>
-          <FileInput
-            control={fileInputControl}
-            name="fileInput"
-            placeholder="アップロード"
-            size="xs"
-            styles={{
-              wrapper: { height: '100%' },
-              root: { height: '100%' },
-              input: { height: 'calc(100% - 28px)' },
-            }}
-          />
-        </Grid.Col>
-      </Grid>
+        <Grid>
+          <Grid.Col span={4}>
+            <FileInput
+              control={fileInputControl}
+              name="fileInput"
+              placeholder="アップロード"
+              size="xs"
+              styles={{
+                wrapper: { height: '100%' },
+                root: { height: '100%' },
+                input: { height: 'calc(100% - 28px)' },
+              }}
+            />
+          </Grid.Col>
+        </Grid>
+      </Container>
 
-      <div>
-        {/* FIXME: 仮実装 */}
-        <Group my="xl" p={0} justify={'flex-end'}>
-          <Button
-            size="xs"
-            rightSection={<IconChevronRight size={14} />}
-            onClick={nextStep}
-            disabled={requestBodies[0] === undefined}
-          >
-            次のステップへ
-          </Button>
-        </Group>
-      </div>
-    </Container>
+      {/* FIXME: 仮実装 */}
+      <Group my="xl" p={0} justify={'flex-end'}>
+        <Button
+          size="xs"
+          rightSection={<IconChevronRight size={14} />}
+          onClick={nextStep}
+          disabled={requestBodies[0] === undefined}
+        >
+          次のステップへ
+        </Button>
+      </Group>
+    </>
   );
 };
