@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { useSetRequestBodies } from '../../RequestBodiesProvider';
+import {
+  useRequestBodiesValue,
+  useSetRequestBodies,
+} from '../../RequestBodiesProvider';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Textarea } from '@/shared/components/common/Input';
@@ -8,10 +11,12 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 
 export const SpeakingAssetsSettings = () => {
+  const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
+
   const { handleSubmit, control } = useForm({
     defaultValues: {
-      text: '',
+      text: requestBodies['1']?.text ?? '',
     },
   });
 
