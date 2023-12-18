@@ -1,5 +1,7 @@
+import { ArAssets } from './_components/ArAssets';
+
 const Page = () => {
-  return <h1>Public</h1>;
+  return <ArAssets />;
 };
 
 export default Page;

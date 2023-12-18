@@ -15,4 +15,5 @@ export {
   IconMoon,
   IconBrandGoogle,
   IconX,
+  IconPlayerPlay,
 } from '@tabler/icons-react';
