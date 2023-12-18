@@ -32,24 +32,19 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const { updateUser } = useUpdateUser();
   const { createArAsset } = useCreateArAsset();
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(requestBodies['2']?.image);
 
   const setQrCodeInsideImage = useCallback(
-    (file: File | null) => {
+    (file?: File) => {
       setRequestBodies((prev) => ({
         ...prev,
         '2': {
-          image: file ?? undefined,
+          image: file,
         },
       }));
     },
     [setRequestBodies],
   );
-
-  const handleUpload = (file: File | null) => {
-    setFile(file);
-    setQrCodeInsideImage(file);
-  };
 
   const handleClick = useCallback(async () => {
     open();
@@ -63,6 +58,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
       if (audio) {
         await updateUser(true, audio);
       }
+
       await createArAsset(
         qrCodeInsideImage?.image,
         speakingSetting.text,
@@ -74,6 +70,13 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
 
     close();
   }, [requestBodies, updateUser, createArAsset, open, close]);
+
+  const handleUpload = (file: File | null) => {
+    if (!file) return;
+
+    setFile(file);
+    setQrCodeInsideImage(file);
+  };
 
   return (
     <Box pos="relative">
