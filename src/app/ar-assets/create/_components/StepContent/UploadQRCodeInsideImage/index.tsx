@@ -3,9 +3,11 @@ import {
   useRequestBodiesValue,
   useSetRequestBodies,
 } from '../../RequestBodiesProvider';
+import { Box } from '@/shared/components/common/Box';
 import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
+import { LoadingOverlay } from '@/shared/components/common/Loader';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SampleQrCodeImage } from '@/shared/components/features';
@@ -25,7 +27,7 @@ type Props = {
 export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
-  const [loading, { toggle }] = useDisclosure();
+  const [loading, { close, open }] = useDisclosure();
 
   const { updateUser } = useUpdateUser();
   const { createArAsset } = useCreateArAsset();
@@ -50,7 +52,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   };
 
   const handleClick = useCallback(async () => {
-    toggle();
+    open();
 
     try {
       const select3DModel = requestBodies['0']!;
@@ -70,11 +72,17 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
       console.error(error);
     }
 
-    toggle();
-  }, [requestBodies, updateUser, createArAsset, toggle]);
+    close();
+  }, [requestBodies, updateUser, createArAsset, open, close]);
 
   return (
-    <>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: 'sm', blur: 2 }}
+      />
+
       <Container>
         <Title order={5} mb={4}>
           QRコード内画像
@@ -116,11 +124,10 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
           size="xs"
           rightSection={<IconChevronRight size={14} />}
           onClick={handleClick}
-          loading={loading}
         >
           完了
         </Button>
       </Group>
-    </>
+    </Box>
   );
 };
