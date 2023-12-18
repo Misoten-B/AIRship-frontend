@@ -8,7 +8,7 @@ type StepInput<T extends Step> = T extends 0
   : T extends 2
   ? { image?: File } | undefined
   : T extends 3
-  ? null
+  ? string | undefined
   : never;
 
 export type RequestBodies = {

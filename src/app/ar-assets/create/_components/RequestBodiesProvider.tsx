@@ -13,7 +13,7 @@ const initialValue: RequestBodies = {
   '0': undefined,
   '1': undefined,
   '2': undefined,
-  '3': null,
+  '3': undefined,
 };
 
 const requestBodiesContext = createContext(initialValue);
