@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -16,6 +17,7 @@ import { Space } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
 import { Stepper } from '@/shared/components/common/Stepper';
 import { Text } from '@/shared/components/common/Text';
+import { ROUTES } from '@/shared/constants';
 import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 
 type State = {
@@ -46,7 +48,14 @@ export const CreateArAssetStepper = () => {
     return (
       <Container>
         <Text>先に生成する必要あり</Text>
-        <Button variant="filled" size="md" radius="xl" w="100%">
+        <Button
+          variant="filled"
+          size="md"
+          radius="xl"
+          w="100%"
+          component={Link}
+          href={ROUTES.record.base}
+        >
           <Text>声を登録する</Text>
         </Button>
       </Container>

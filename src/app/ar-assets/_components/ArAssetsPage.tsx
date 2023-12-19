@@ -31,7 +31,14 @@ export const ArAssetsPage = () => {
             <Text size="xs" c="blue" ta="center" mb={4}>
               5秒ほど自分の声を登録するとAI化されます
             </Text>
-            <Button variant="filled" size="md" radius="xl" w="100%">
+            <Button
+              variant="filled"
+              size="md"
+              radius="xl"
+              w="100%"
+              component={Link}
+              href={ROUTES.record.base}
+            >
               <Text>声を登録する</Text>
             </Button>
           </Stack>
