@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import {
@@ -9,9 +10,13 @@ import {
   UploadQRCodeInsideImage,
 } from './StepContent';
 import { Step } from './types';
+import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Space } from '@/shared/components/common/Layout';
+import { Loader } from '@/shared/components/common/Loader';
 import { Stepper } from '@/shared/components/common/Stepper';
+import { Text } from '@/shared/components/common/Text';
+import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 
 type State = {
   active: Step;
@@ -22,12 +27,41 @@ const initialState: State = {
 };
 
 export const CreateArAssetStepper = () => {
+  const { data, error, isLoading } = useGetUser(false);
+  const router = useRouter();
+
   const [active, setActive] = useState(initialState.active);
 
   const nextStep = () =>
     setActive((prev) => (prev < 3 ? ((prev + 1) as Step) : prev));
   const prevStep = () =>
     setActive((prev) => (prev > 0 ? ((prev - 1) as Step) : prev));
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>falied to load user</div>;
+
+  if (!data) return null;
+
+  if (data.status == -1) {
+    return (
+      <Container>
+        <Text>先に生成する必要あり</Text>
+        <Button variant="filled" size="md" radius="xl" w="100%">
+          <Text>声を登録する</Text>
+        </Button>
+      </Container>
+    );
+  }
+
+  if (data.status == 0) {
+    return (
+      <div>
+        <Text>現在生成中</Text>
+        <Text>手動で更新する場合はこちらから</Text>
+        <Button onClick={() => router.refresh()}>リロード</Button>
+      </div>
+    );
+  }
 
   return (
     <Container>

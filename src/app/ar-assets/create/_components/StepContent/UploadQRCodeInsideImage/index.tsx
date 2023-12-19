@@ -59,17 +59,11 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
         await updateUser(true, audio);
       }
 
-      const res = await createArAsset(
+      await createArAsset(
         qrCodeInsideImage?.image,
         speakingSetting.text,
         select3DModel.id,
       );
-      if (!res) return;
-
-      const location = res.headers.Location; // Location: /{id}
-      const id = location.split('/')[1];
-
-      // TODO: セットして次のステップへ
     } catch (error) {
       console.error(error);
     }
