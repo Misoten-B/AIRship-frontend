@@ -1,9 +1,7 @@
 import { useRequestBodiesValue } from '../../RequestBodiesProvider';
-import { RecordedModelSettings } from './RecordedModelSettings';
 import { SpeakingAssetsSettings } from './SpeakingAssetsSettings';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Divider } from '@/shared/components/common/Divider';
 import { Group } from '@/shared/components/common/Layout';
 import { Title } from '@/shared/components/common/Title';
 import { IconChevronLeft, IconChevronRight } from '@/shared/components/icons';
@@ -23,8 +21,8 @@ export const SpeakingSettings = ({ nextStep, prevStep }: Props) => {
       return true;
     }
 
-    const { audio, text } = speakingSettingsValues;
-    return !audio || !text;
+    const { text } = speakingSettingsValues;
+    return !text;
   };
 
   return (
@@ -33,8 +31,6 @@ export const SpeakingSettings = ({ nextStep, prevStep }: Props) => {
         <Title order={3} mb={16}>
           音声データの設定
         </Title>
-        <RecordedModelSettings />
-        <Divider my="sm" />
         <SpeakingAssetsSettings />
       </Container>
 

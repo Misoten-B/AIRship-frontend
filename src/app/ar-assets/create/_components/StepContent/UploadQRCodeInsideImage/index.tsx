@@ -17,7 +17,6 @@ import {
   IconUpload,
 } from '@/shared/components/icons';
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
-import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
 import { useDisclosure } from '@/shared/hooks/useDisclosure';
 
 type Props = {
@@ -29,7 +28,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const setRequestBodies = useSetRequestBodies();
   const [loading, { close, open }] = useDisclosure();
 
-  const { updateUser } = useUpdateUser();
   const { createArAsset } = useCreateArAsset();
 
   const [file, setFile] = useState(requestBodies['2']?.image);
@@ -54,11 +52,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
       const speakingSetting = requestBodies['1']!;
       const qrCodeInsideImage = requestBodies['2'];
 
-      const audio = speakingSetting.audio;
-      if (audio) {
-        await updateUser(true, audio);
-      }
-
       await createArAsset(
         qrCodeInsideImage?.image,
         speakingSetting.text,
@@ -69,7 +62,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
     }
 
     close();
-  }, [requestBodies, updateUser, createArAsset, open, close]);
+  }, [requestBodies, createArAsset, open, close]);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;
