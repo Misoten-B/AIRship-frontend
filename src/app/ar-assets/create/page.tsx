@@ -1,4 +1,4 @@
-import { CreateArAssetStepper } from './_components/CreateArAssetStepper';
+import { CreateArAssetPage } from './_components/CreateArAssetStepper';
 import { RequestBodiesProvider } from './_components/RequestBodiesProvider';
 import { Guard } from '@/shared/components/features';
 import { GlobalNav } from '@/shared/components/layouts/GlobalNav';
@@ -8,7 +8,7 @@ const Page = () => {
     <Guard>
       <GlobalNav>
         <RequestBodiesProvider>
-          <CreateArAssetStepper />
+          <CreateArAssetPage />
         </RequestBodiesProvider>
       </GlobalNav>
     </Guard>

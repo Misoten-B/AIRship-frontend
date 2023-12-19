@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { CreateArAssetStepper } from './CreateArAssetStepper';
+import { CreateArAssetPage } from './CreateArAssetStepper';
 
-const meta: Meta<typeof CreateArAssetStepper> = {
+const meta: Meta<typeof CreateArAssetPage> = {
   component: undefined,
 };
 export default meta;
 
-type Story = StoryObj<typeof CreateArAssetStepper>;
+type Story = StoryObj<typeof CreateArAssetPage>;
 
 export const Main: Story = {
   render: () => {
-    return <CreateArAssetStepper />;
+    return <CreateArAssetPage />;
   },
 };
