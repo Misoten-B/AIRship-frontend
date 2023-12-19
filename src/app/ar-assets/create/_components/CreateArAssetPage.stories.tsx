@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { CreateArAssetPage } from './CreateArAssetStepper';
+import { CreateArAssetPage } from './CreateArAssetPage';
 
 const meta: Meta<typeof CreateArAssetPage> = {
   component: undefined,

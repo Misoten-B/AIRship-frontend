@@ -1,4 +1,4 @@
-import { CreateArAssetPage } from './_components/CreateArAssetStepper';
+import { CreateArAssetPage } from './_components/CreateArAssetPage';
 import { RequestBodiesProvider } from './_components/RequestBodiesProvider';
 import { Guard } from '@/shared/components/features';
 import { GlobalNav } from '@/shared/components/layouts/GlobalNav';
