@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
 
-export const useDeleteUser = (userId: string) => {
+export const useDeleteUser = () => {
   const { api } = useApiClient();
   const deleteUser = useCallback(async () => {
     try {

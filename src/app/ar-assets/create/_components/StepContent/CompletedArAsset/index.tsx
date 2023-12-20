@@ -1,13 +1,22 @@
+import { useRequestBodiesValue } from '../../RequestBodiesProvider';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Stack } from '@/shared/components/common/Layout';
+import { Loader } from '@/shared/components/common/Loader';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
-import { IconArrowBarToDown, IconCheck } from '@/shared/components/icons';
-import { rem } from '@/shared/utils/converter';
+import { getQRCodeUrl } from '@/shared/components/features';
+import { IconArrowBarToDown } from '@/shared/components/icons';
+import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
 
 export const CompletedArAsset = () => {
-  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
+  const requestBodies = useRequestBodiesValue();
+  const { isLoading, data, error } = useGetArAsset(requestBodies['3']!);
+
+  if (isLoading) return <Loader />;
+
+  if (error) return <div>failed to load</div>;
+  if (!data) return null;
 
   return (
     <Container mt={12} mb={64}>
@@ -24,9 +33,9 @@ export const CompletedArAsset = () => {
         <Center>
           <Stack>
             <QRCode
-              url="https://airship.com"
-              imageSrc="/airship-logo-column.svg"
-              size={200}
+              url={getQRCodeUrl(data.id!)}
+              imageSrc={data.qrcodeImagePath}
+              size={100}
             />
             <Text size="sm" c="gray" w={240}>
               カメラで読み取るとARで3D画像と生成された声を聞くことができます。

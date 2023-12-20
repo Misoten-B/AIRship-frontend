@@ -36,6 +36,10 @@ export const Display3dModel = () => {
     },
   });
 
+  const handleSetValue = (value: string) => {
+    setValue('threeDModel', value);
+  };
+
   return (
     <Stack gap={0}>
       <Title order={5} c="blue.6" mb={4}>
@@ -56,7 +60,7 @@ export const Display3dModel = () => {
               サンプルから選択してください
             </Text>
 
-            <SelectThreeDModel control={control} setValue={setValue} />
+            <SelectThreeDModel control={control} setValue={handleSetValue} />
 
             <Grid.Col span={4}>
               <FileInput

@@ -19,4 +19,7 @@ export const ROUTES = {
   signOut: {
     base: '/sign-out',
   },
+  record: {
+    base: '/record',
+  },
 } as const;
