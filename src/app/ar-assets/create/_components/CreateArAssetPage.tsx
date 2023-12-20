@@ -6,6 +6,7 @@ import {
   StatusProgressScreen,
 } from './Screens';
 import { Loader } from '@/shared/components/common/Loader';
+import { STATUS } from '@/shared/constants';
 import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 
 export const CreateArAssetPage = () => {
@@ -16,7 +17,7 @@ export const CreateArAssetPage = () => {
 
   if (!data) return null;
 
-  if (data.status == 1) return <CreateArAssetStepper />;
-  if (data.status == 0) return <StatusProgressScreen />;
+  if (data.status == STATUS.completed) return <CreateArAssetStepper />;
+  if (data.status == STATUS.inProgress) return <StatusProgressScreen />;
   return <StatusNoneScreen />;
 };
