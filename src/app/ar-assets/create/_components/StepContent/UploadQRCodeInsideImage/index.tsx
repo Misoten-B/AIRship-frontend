@@ -7,7 +7,6 @@ import { Box } from '@/shared/components/common/Box';
 import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
-import { LoadingOverlay } from '@/shared/components/common/Loader';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SampleQrCodeImage } from '@/shared/components/features';
@@ -17,7 +16,6 @@ import {
   IconUpload,
 } from '@/shared/components/icons';
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
 
 type Props = {
   prevStep: () => void;
@@ -26,7 +24,6 @@ type Props = {
 export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
-  const [loading, { close, open }] = useDisclosure();
 
   const { createArAsset } = useCreateArAsset();
 
@@ -45,8 +42,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
   );
 
   const handleClick = useCallback(async () => {
-    open();
-
     try {
       const select3DModel = requestBodies['0']!;
       const speakingSetting = requestBodies['1']!;
@@ -60,9 +55,7 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
     } catch (error) {
       console.error(error);
     }
-
-    close();
-  }, [requestBodies, createArAsset, open, close]);
+  }, [requestBodies, createArAsset]);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;
@@ -73,12 +66,6 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
 
   return (
     <Box pos="relative">
-      <LoadingOverlay
-        visible={loading}
-        zIndex={1000}
-        overlayProps={{ radius: 'sm', blur: 2 }}
-      />
-
       <Container>
         <Title order={5} mb={4}>
           QRコード内画像
