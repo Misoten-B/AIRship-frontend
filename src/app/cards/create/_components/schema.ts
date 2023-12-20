@@ -1,0 +1,26 @@
+import { z } from 'zod';
+
+export const createCardSchema = z.object({
+  // accessCount: z.number().optional(),
+  address: z.string().optional(),
+  // businessCardBackgroundColor: z.string().optional(),
+  // businessCardBackgroundImage: z.string().optional(),
+  businessCardName: z.string().optional(),
+  companyName: z.string().optional(),
+  department: z.string().optional(),
+  displayName: z.string().optional(),
+  email: z.string().optional(),
+  // id: z.string().optional(),
+  officialPosition: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  postalCode: z.string().optional(),
+  // speakingAudioPath: z.string().optional(),
+  // speakingDescription: z.string().optional(),
+  // threeDimentionalModel: z.string().optional(),
+
+  prefectures: z.string().optional(),
+  cityAndAddress: z.string().optional(),
+  buildingAndRoom: z.string().optional(),
+});
+
+export type CreateCardSchemaType = z.infer<typeof createCardSchema>;
