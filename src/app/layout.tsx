@@ -5,6 +5,7 @@ import { AuthProvider } from '@/shared/hooks/auth';
 import { AxiosProvider } from '@/shared/lib/axios/AxiosProvider';
 import { ThemeProvider } from '@/shared/lib/mantine';
 import { RecoilRoot } from '@/shared/lib/recoil/RecoilRoot';
+import { AppProvider } from '@/shared/providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,16 +22,19 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <RecoilRoot>
-          <AuthProvider>
-            <AxiosProvider>
-              <ThemeProvider>
-                <Notifications />
-                {children}
-              </ThemeProvider>
-            </AxiosProvider>
-          </AuthProvider>
-        </RecoilRoot>
+        {/* TODO: Providerをprovidersに移動する */}
+        <AppProvider>
+          <RecoilRoot>
+            <AuthProvider>
+              <AxiosProvider>
+                <ThemeProvider>
+                  <Notifications />
+                  {children}
+                </ThemeProvider>
+              </AxiosProvider>
+            </AuthProvider>
+          </RecoilRoot>
+        </AppProvider>
       </body>
     </html>
   );
