@@ -49,9 +49,9 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
       const qrCodeInsideImage = requestBodies['2'];
 
       const res = await createArAsset(
-        qrCodeInsideImage?.image,
-        speakingSetting.text,
+        speakingSetting.text!,
         select3DModel.id,
+        qrCodeInsideImage?.image,
       );
 
       if (!res) throw new Error('Failed to create AR asset');

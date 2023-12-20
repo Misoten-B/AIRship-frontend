@@ -6,9 +6,9 @@ export const useUpdateArAsset = (arAssetId: string) => {
   const { api } = useApiClient();
   const updateArAsset = useCallback(
     async (
+      speakingDescription: string,
+      threeDimentionalId: string,
       qrCodeIcon?: File | ReadStream,
-      speakingDescription?: string,
-      threeDimentionalId?: string,
     ) => {
       try {
         return api?.v1.users.ar_assets._ar_assets_id(arAssetId).$put({
