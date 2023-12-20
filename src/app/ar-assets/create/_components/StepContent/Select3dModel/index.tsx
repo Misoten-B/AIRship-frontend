@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import {
   useRequestBodiesValue,
@@ -11,18 +11,18 @@ import { Grid, Group } from '@/shared/components/common/Layout';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
 import { IconChevronRight } from '@/shared/components/icons';
+import { useCreateThreeDimentionalModel } from '@/shared/hooks/restapi/v1/ThreeDimentionalModel';
 import { useForm } from '@/shared/hooks/useForm';
 
 const schema = z.object({
   threeDModel: z.string(),
 });
 
-const fileInputSchema = z.object({
-  fileInput: z.string(),
-});
-
 type FormSchemaType = z.infer<typeof schema>;
-type FileInputSchemaType = z.infer<typeof fileInputSchema>;
+
+type FileFieldValues = {
+  fileInput: File;
+};
 
 type Props = {
   nextStep: () => void;
@@ -32,16 +32,37 @@ export const Select3dModel = ({ nextStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
 
+  const { createThreeDimentionalModel } = useCreateThreeDimentionalModel();
+
   const { control, setValue } = useForm<FormSchemaType>({
     defaultValues: {
       threeDModel: requestBodies[0]?.id ?? '',
     },
   });
-  const { control: fileInputControl } = useForm<FileInputSchemaType>({
+  const {
+    control: fileInputControl,
+    watch,
+    reset,
+  } = useForm<FileFieldValues>({
     defaultValues: {
-      fileInput: '',
+      fileInput: undefined,
     },
   });
+
+  useEffect(() => {
+    const subscription = watch(async (value) => {
+      const file = value.fileInput;
+      if (!file) return;
+
+      try {
+        await createThreeDimentionalModel(file);
+        reset({ fileInput: undefined });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [createThreeDimentionalModel, watch, reset]);
 
   const set3DModelID = useCallback(
     (id: string) => {
