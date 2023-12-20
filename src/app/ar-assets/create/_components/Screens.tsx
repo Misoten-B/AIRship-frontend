@@ -60,7 +60,7 @@ export const CreateArAssetStepper = () => {
         </Stepper.Step>
 
         <Stepper.Step label="QRコード内画像" description="画像をアップロード">
-          <UploadQRCodeInsideImage prevStep={prevStep} />
+          <UploadQRCodeInsideImage nextStep={nextStep} prevStep={prevStep} />
         </Stepper.Step>
 
         <Stepper.Completed>

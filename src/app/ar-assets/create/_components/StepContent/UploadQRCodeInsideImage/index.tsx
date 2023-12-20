@@ -18,10 +18,11 @@ import {
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
 
 type Props = {
+  nextStep: () => void;
   prevStep: () => void;
 };
 
-export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
+export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
 
@@ -47,15 +48,26 @@ export const UploadQRCodeInsideImage = ({ prevStep }: Props) => {
       const speakingSetting = requestBodies['1']!;
       const qrCodeInsideImage = requestBodies['2'];
 
-      await createArAsset(
+      const res = await createArAsset(
         qrCodeInsideImage?.image,
         speakingSetting.text,
         select3DModel.id,
       );
+
+      if (!res) throw new Error('Failed to create AR asset');
+
+      const location = (res.headers as any).location; // FIXME: 型の問題修正
+      const id = location.split('/')[1];
+
+      setRequestBodies((prev) => ({
+        ...prev,
+        '3': id,
+      }));
+      nextStep();
     } catch (error) {
       console.error(error);
     }
-  }, [requestBodies, createArAsset]);
+  }, [requestBodies, createArAsset, setRequestBodies, nextStep]);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;
