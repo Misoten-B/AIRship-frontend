@@ -56,7 +56,7 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
 
       if (!res) throw new Error('Failed to create AR asset');
 
-      const location = (res.headers as any).location; // FIXME: 型の問題修正
+      const location = (res.headers as any).location; // FIXME: 型の修正
       const id = location.split('/')[1];
 
       setRequestBodies((prev) => ({
