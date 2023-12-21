@@ -6,12 +6,12 @@ export const useCreateArAsset = () => {
   const { api } = useApiClient();
   const createArAsset = useCallback(
     async (
+      speakingDescription: string,
+      threeDimentionalId: string,
       qrCodeIcon?: File | ReadStream,
-      speakingDescription?: string,
-      threeDimentionalId?: string,
     ) => {
       try {
-        return api?.v1.users.ar_assets.$post({
+        return api?.v1.users.ar_assets.post({
           body: {
             qrcodeIcon: qrCodeIcon,
             speakingDescription: speakingDescription,

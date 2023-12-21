@@ -1,4 +1,4 @@
-import { Control, UseFormSetValue } from 'react-hook-form';
+import { Control } from 'react-hook-form';
 import { Divider } from '../common/Divider';
 import { Grid, Stack } from '../common/Layout';
 import { Loader } from '../common/Loader';
@@ -8,7 +8,7 @@ import { useGetThreeDimentionalModels } from '@/shared/hooks/restapi/v1/ThreeDim
 
 type Props = {
   control: Control<{ threeDModel: string }>;
-  setValue: UseFormSetValue<{ threeDModel: string }>;
+  setValue: (value: string) => void;
 };
 
 type ImageRadioOptionProps = {
@@ -60,9 +60,7 @@ export const SelectThreeDModel = ({ control, setValue }: Props) => {
             <ImageRadioButton
               key={id}
               path={path!}
-              onClick={(value) => {
-                setValue('threeDModel', value);
-              }}
+              onClick={setValue}
               value={id!}
             />
           ))}

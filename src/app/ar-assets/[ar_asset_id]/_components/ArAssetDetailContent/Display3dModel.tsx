@@ -9,8 +9,8 @@ import { Modal } from '@/shared/components/common/Modal';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useForm } from '@/shared/hooks/useForm';
+import { useDisclosure } from '@/shared/lib/mantine';
 
 const schema = z.object({
   threeDModel: z.string(),
@@ -36,6 +36,10 @@ export const Display3dModel = () => {
     },
   });
 
+  const handleSetValue = (value: string) => {
+    setValue('threeDModel', value);
+  };
+
   return (
     <Stack gap={0}>
       <Title order={5} c="blue.6" mb={4}>
@@ -56,7 +60,7 @@ export const Display3dModel = () => {
               サンプルから選択してください
             </Text>
 
-            <SelectThreeDModel control={control} setValue={setValue} />
+            <SelectThreeDModel control={control} setValue={handleSetValue} />
 
             <Grid.Col span={4}>
               <FileInput

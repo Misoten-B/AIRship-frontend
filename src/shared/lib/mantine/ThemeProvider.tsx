@@ -1,6 +1,7 @@
 'use client';
 
 import '@mantine/core/styles.css';
+
 import { MantineProvider } from '@mantine/core';
 import { createTheme } from '@mantine/core';
 import { ReactNode, useEffect, useState } from 'react';

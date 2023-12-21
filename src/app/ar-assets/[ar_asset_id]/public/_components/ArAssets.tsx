@@ -1,21 +1,31 @@
 'use client';
 
+import { useCallback } from 'react';
 import { Button } from '@/shared/components/common/Button';
+import { Loader } from '@/shared/components/common/Loader';
 import { ModelViewer } from '@/shared/components/common/ModelViewer';
 import { IconPlayerPlay } from '@/shared/components/icons';
+import { useGetPublicArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
 
-export const ArAssets = () => {
-  const voicePath = '/ktok_test.wav';
+export const ArAssets = ({ id }: { id: string }) => {
+  const { data, isLoading, error } = useGetPublicArAsset(id);
 
-  const playVoice = () => {
-    const audio = new Audio(voicePath);
+  const playVoice = useCallback(() => {
+    const audioPath = data?.speakingAudioPath;
+    if (!audioPath) return;
+
+    const audio = new Audio(audioPath);
     audio.play();
-  };
+  }, [data]);
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>falied to fetch</div>;
+  if (!data) return null;
 
   return (
     <ModelViewer
       poster={''}
-      glb={'/dog.glb'}
+      glb={data.threeDimentionalPath ?? '/dog.glb'}
       alt={''}
       height="100%"
       ar

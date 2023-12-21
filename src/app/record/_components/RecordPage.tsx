@@ -1,18 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Center, Stack } from '@/shared/components/common/Layout';
+import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconMicrophone } from '@/shared/components/icons';
+import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
 import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
 import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
 
 const MAX_RECORDING_TIME = 10;
 
-export const RecordedModelSettings = () => {
+export const RecordPage = () => {
+  const { updateUser } = useUpdateUser();
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const ffmpegRef = useRef(new FFmpeg());
 
@@ -24,6 +27,7 @@ export const RecordedModelSettings = () => {
     recordingBlob,
   } = useAudioRecorder();
 
+  // 録音時間がMAX_RECORDING_TIMEを超えたら録音を停止する
   useEffect(() => {
     if (!isRecording) return;
     if (recordingTime <= MAX_RECORDING_TIME) return;
@@ -31,45 +35,57 @@ export const RecordedModelSettings = () => {
     stopRecording();
   }, [isRecording, recordingTime, stopRecording]);
 
+  // 録音データが更新されたらセットする
   useEffect(() => {
     if (!recordingBlob) return;
 
-    (async () => {
-      // ffmpegのロード
-      const ffmpeg = ffmpegRef.current;
-      await loadFFmpeg(ffmpeg);
-
-      // ファイルへ
-      const inputFileName = 'input.webm';
-      const outputFileName = 'output.wav';
-
-      const file = new File([recordingBlob], inputFileName, {
-        type: recordingBlob.type,
-        lastModified: Date.now(),
-      });
-
-      // 変換
-      const output = await transcodeFile(
-        ffmpeg,
-        file,
-        inputFileName,
-        outputFileName,
-      );
-
-      const wavFile = new File([output], outputFileName);
-
-      // 録音データのセットアップ
-      const audio = audioRef.current!;
-      audio.src = URL.createObjectURL(wavFile);
-    })();
+    const audio = audioRef.current!;
+    audio.src = URL.createObjectURL(recordingBlob);
   }, [recordingBlob]);
 
-  const handleToggleRecording = () => {
+  const handleToggleRecording = useCallback(() => {
     if (isRecording) {
       stopRecording();
       return;
     }
     startRecording();
+  }, [isRecording, startRecording, stopRecording]);
+
+  // 音声データをアップロードする
+  const handleUpload = async () => {
+    if (!recordingBlob) return;
+
+    try {
+      const wavFile = await convertToWav(recordingBlob);
+      await updateUser(true, wavFile);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 録音した音声をWavファイルに変換する
+  const convertToWav = async (blob: Blob) => {
+    const ffmpeg = ffmpegRef.current;
+    await loadFFmpeg(ffmpeg);
+
+    // BlobをFileに変換する
+    const inputFileName = 'input.webm';
+    const outputFileName = 'output.wav';
+
+    const file = new File([blob], inputFileName, {
+      type: blob.type,
+      lastModified: Date.now(),
+    });
+
+    // BlobFileをWavに変換する
+    const output = await transcodeFile(
+      ffmpeg,
+      file,
+      inputFileName,
+      outputFileName,
+    );
+
+    return new File([output], outputFileName);
   };
 
   return (
@@ -106,6 +122,18 @@ export const RecordedModelSettings = () => {
         生成される音声はこの録音データを元に生成されます
       </Text>
       <audio ref={audioRef} controls />
+      <Group my="xl" p={0} justify="flex-end">
+        <Button
+          variant="outline"
+          color="orange"
+          size="xs"
+          radius="xl"
+          onClick={handleUpload}
+          disabled={!recordingBlob}
+        >
+          保存して音声モデルを生成する
+        </Button>
+      </Group>
     </Container>
   );
 };
