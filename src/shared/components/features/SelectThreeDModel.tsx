@@ -59,9 +59,9 @@ export const SelectThreeDModel = ({ control, setValue }: Props) => {
           {data.map(({ id, path }) => (
             <ImageRadioButton
               key={id}
-              path={path!}
+              path={path}
               onClick={setValue}
-              value={id!}
+              value={id}
             />
           ))}
         </Grid>
