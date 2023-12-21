@@ -12,7 +12,7 @@ export const Main: Story = {
   render: () => (
     <QRCode
       url={'https://airship.azurewebsites.net/'}
-      imageSrc="/logo.svg"
+      imagesrc="/logo.svg"
       size={50}
     ></QRCode>
   ),

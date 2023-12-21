@@ -14,7 +14,7 @@ export const ArAssetDetail = () => {
       <Center bg="blue.1" h={350}>
         <QRCode
           url="https://airship.com"
-          imageSrc="/airship-logo-column.svg"
+          imagesrc="/airship-logo-column.svg"
           size={224}
         />
       </Center>

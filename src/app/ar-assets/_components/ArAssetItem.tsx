@@ -31,7 +31,7 @@ export const ArAssetItem = ({ arAsset }: Props) => {
         <Flex gap={16} justify="space-around">
           <QRCode
             url={getQRCodeUrl(id)}
-            imageSrc={qrcodeImagePath}
+            imagesrc={qrcodeImagePath}
             size={100}
           />
           <Image src={threeDimentionalPath} alt="#" />
