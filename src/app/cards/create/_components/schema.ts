@@ -8,7 +8,7 @@ export const createCardSchema = z.object({
   businessCardName: z.string().optional(),
   companyName: z.string().optional(),
   department: z.string().optional(),
-  displayName: z.string().optional(),
+  displayName: z.string(),
   email: z.string().optional(),
   // id: z.string().optional(),
   officialPosition: z.string().optional(),

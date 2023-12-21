@@ -41,7 +41,7 @@ type BusinessCardPartsCoordinate = keyof NonNullable<
 
 export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
   const { ref, width, height } = useElementSize();
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(width / defaultWidth);
 
   useEffect(() => {
     if (width) {
@@ -50,6 +50,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
     }
   }, [width]);
 
+  // バックエンドの座標を、フロントに合わせて1/3に縮小する
   const businessCardPartsCoordinate: Record<
     BusinessCardPartsCoordinate,
     number
@@ -93,7 +94,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
       top={businessCardPartsCoordinate?.[`${key}Y`]}
       left={businessCardPartsCoordinate?.[`${key}X`]}
     >
-      {choiceIcon(key)}
+      {card[key] && choiceIcon(key)}
       {card[key]}
     </Text>
   );
@@ -101,10 +102,10 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
   return (
     <BusinessCardAspectRatio
       w={defaultWidth}
+      miw="100px"
       ref={ref}
       style={{
         cursor: 'pointer',
-        transform: `scale(${scale})`,
       }}
       {...props}
     >
@@ -127,7 +128,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
 
         <QRCode
           url={getQRCodeUrl(card.id!)}
-          imagesrc="/airship-logo-column.svg"
+          imagesrc=""
           size={90 * scale}
           style={{
             position: 'absolute',

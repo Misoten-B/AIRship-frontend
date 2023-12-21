@@ -1,55 +1,47 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useColorScheme } from '@mantine/hooks';
 import { useCallback } from 'react';
 import { CreateCardSchemaType, createCardSchema } from './schema';
+import { Dto_BusinessCardResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import {
-  ErrorNotificationData,
-  notifications,
-} from '@/shared/components/common/Feedback';
-import {
-  // NativeSelect,
-  TextInput,
-  Textarea,
-} from '@/shared/components/common/Input';
-import { Group, Stack } from '@/shared/components/common/Layout';
+
+import { TextInput, Textarea } from '@/shared/components/common/Input';
+import { Center, Group, Paper, Stack } from '@/shared/components/common/Layout';
+import { Loader } from '@/shared/components/common/Loader';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
-import { BusinessCard } from '@/shared/components/features';
+import { BusinessCard, getQRCodeUrl } from '@/shared/components/features';
+import { BusinessCardDesignModal } from '@/shared/components/features/BusinessCard/BusinessCardDesignModal';
 import { useAuth } from '@/shared/hooks/auth';
 import { useCreateBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
+import { useGetBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
+import { useGetBusinessCardCoordinate } from '@/shared/hooks/restapi/v1/useBusinessCardCoordinate';
 import { useForm } from '@/shared/hooks/useForm';
+import { useDisclosure } from '@/shared/lib/mantine';
 import { getAddressFromZipcode } from '@/shared/utils/address';
 // import { getAddressFromZipcode, prefectures } from '@/shared/utils/address';
 
 export const CreateCard = () => {
   const { currentUser } = useAuth();
+  const isDark = useColorScheme() === 'dark';
+  const [isOpen, { open, close }] = useDisclosure();
   const { createBusinessCard } = useCreateBusinessCard();
 
-  const onSubmit = useCallback(async (data: CreateCardSchemaType) => {
-    console.log('card', data);
-    const test = {
-      accessCount: 0,
-      businessCardBackgroundColor: 'aaa',
-      businessCardBackgroundImage: 'aaa',
-      speakingAudioPath: 'aaa',
-      speakingDescription: 'aaa',
-      threeDimentionalModel: 'aaa',
-    };
-    try {
-      // ここがうまくいかない
-      // await createBusinessCard({ ...data, ...test });
-      notifications.show({
-        title: '名刺の作成が完了しました',
-        message: 'おめでとう🤥',
-      });
-    } catch (error) {
-      notifications.show(ErrorNotificationData('Error', '登録されていません'));
-      console.log(error);
-    }
-  }, []);
+  // 背景と座標のデータ
+  const {
+    data: bcbData,
+    error: bcbError,
+    isLoading: isBcbLoading,
+  } = useGetBusinessCardBackground();
+  const {
+    data: bccData,
+    error: bccError,
+    isLoading: isBccLoading,
+  } = useGetBusinessCardCoordinate();
 
+  // フォーム
   const { register, handleSubmit, control, getValues, setValue, watch } =
     useForm<CreateCardSchemaType>({
       resolver: zodResolver(createCardSchema),
@@ -68,42 +60,104 @@ export const CreateCard = () => {
         // buildingAndRoom: '',
       },
     });
-  const watchAllFields = watch();
+
+  // デザインモーダルのフォーム
+  const {
+    control: designControl,
+    setValue: designSetvalue,
+    watch: designWatch,
+  } = useForm({
+    defaultValues: {
+      backgroundImage: bcbData?.[0].id ?? '',
+      coordinate: bccData?.[0].id ?? '',
+    },
+  });
+
+  // デザインモーダルでデザインを選択したときの処理
+  const handleClickDesign = (
+    name: 'backgroundImage' | 'coordinate',
+    id: string,
+  ) => {
+    designSetvalue(name, id);
+  };
+
+  // 名刺コンポーネントに渡すデータを作成
+  const watchAllFields: Dto_BusinessCardResponse = {
+    ...watch(),
+    businessCardPartsCoordinate: bccData?.find(
+      (bcb) => bcb.id === designWatch('coordinate'),
+    ) as Dto_BusinessCardResponse['businessCardPartsCoordinate'],
+    businessCardBackgroundImage:
+      bcbData?.find((bcb) => bcb.id === designWatch('backgroundImage'))
+        ?.businessCardBackgroundImage ?? '',
+    businessCardBackgroundColor:
+      bcbData?.find((bcb) => bcb.id === designWatch('backgroundImage'))
+        ?.businessCardBackgroundColor ?? '',
+    speakingAudioPath: '',
+    speakingDescription: '',
+    threeDimentionalModel: '',
+    id: '',
+  };
+
+  const onSubmit = useCallback(async (data: CreateCardSchemaType) => {
+    // const res = await createBusinessCard();
+    // console.log(res);
+  }, []);
 
   const handlePostalCodeSearch = async () => {
     const zipcode = getValues('postalCode') as string;
-
     if (!zipcode) {
       return;
     }
-
     try {
       const data = await getAddressFromZipcode(zipcode);
-
       if (data.error) {
         console.error(data.message);
       } else {
-        console.log('data', data);
         setValue('address', data.prefectures + data.cityAndAddress);
-        // setValue('prefectures', data.prefectures);
-        // setValue('cityAndAddress', data.cityAndAddress);
       }
     } catch (error) {
       console.error('エラーが発生しました:', error);
     }
   };
 
+  if (bcbError || bccError) return <div>failed to load</div>;
+  if (isBcbLoading || isBccLoading) return <Loader />;
+
   return (
     <Container>
-      <BusinessCard card={watchAllFields} />
+      <Paper
+        pos="sticky"
+        w="100%"
+        top={60}
+        pt="lg"
+        style={(theme) => ({
+          zIndex: 99,
+        })}
+      >
+        <Center px="lg">
+          <Button onClick={open}>名刺のデザインをカスタマイズ</Button>
+          <BusinessCardDesignModal
+            control={designControl}
+            setValue={handleClickDesign}
+            watch={designWatch}
+            card={watchAllFields}
+            opened={isOpen}
+            onClose={close}
+          />
+        </Center>
+        <Center w="100%" my="lg">
+          <BusinessCard style={{ width: '100%' }} card={watchAllFields} />
+        </Center>
+      </Paper>
       <Text size="sm">QRコード選択</Text>
       <Text size="xs" c="gray.6" mb="md">
         作成したQRコードを選択してください
       </Text>
       <Group justify="center" my="lg">
         <QRCode
-          url={'aaa.com'}
-          imageSrc="/airship-logo-column.svg"
+          url={getQRCodeUrl('sample')}
+          imagesrc="/airship-logo-column.svg"
           size={150}
         />
         <Button variant="outline" color="orange" radius="xl">
@@ -116,7 +170,7 @@ export const CreateCard = () => {
           control={control}
           name="businessCardName"
           label="名刺名"
-          placeholder="入力してください"
+          placeholder="仕事用、プライベート用など"
           description="名刺名が未入力の場合、名前が名刺名になります。"
         />
         <TextInput
