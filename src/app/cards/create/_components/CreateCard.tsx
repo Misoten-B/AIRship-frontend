@@ -1,6 +1,7 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useColorScheme } from '@mantine/hooks';
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { CreateCardSchemaType, createCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
@@ -14,6 +15,7 @@ import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
 import { BusinessCard, getQRCodeUrl } from '@/shared/components/features';
 import { BusinessCardDesignModal } from '@/shared/components/features/BusinessCard/BusinessCardDesignModal';
+import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
 import { useCreateBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useGetBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
@@ -24,9 +26,11 @@ import { getAddressFromZipcode } from '@/shared/utils/address';
 // import { getAddressFromZipcode, prefectures } from '@/shared/utils/address';
 
 export const CreateCard = () => {
+  const router = useRouter();
   const { currentUser } = useAuth();
   const isDark = useColorScheme() === 'dark';
   const [isOpen, { open, close }] = useDisclosure();
+  const [isLoaded, { open: openLoader, close: closeLoader }] = useDisclosure();
   const { createBusinessCard } = useCreateBusinessCard();
 
   // 背景と座標のデータ
@@ -66,6 +70,7 @@ export const CreateCard = () => {
     control: designControl,
     setValue: designSetvalue,
     watch: designWatch,
+    getValues: designGetValues,
   } = useForm({
     defaultValues: {
       backgroundImage: bcbData?.[0].id ?? '',
@@ -99,11 +104,35 @@ export const CreateCard = () => {
     id: '',
   };
 
-  const onSubmit = useCallback(async (data: CreateCardSchemaType) => {
-    // const res = await createBusinessCard();
-    // console.log(res);
-  }, []);
+  // 登録処理
+  const onSubmit = useCallback(
+    async (data: CreateCardSchemaType) => {
+      openLoader();
+      try {
+        await createBusinessCard(
+          '1', // TODO: ArAssetモーダルを作成したら変更する
+          designGetValues('backgroundImage'),
+          designGetValues('coordinate'),
+          data.displayName,
+          data.address,
+          data.businessCardName,
+          data.companyName,
+          data.department,
+          data.email,
+          data.officialPosition,
+          data.phoneNumber,
+          data.postalCode,
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      closeLoader();
+      router.push(ROUTES.cards.base);
+    },
+    [closeLoader, createBusinessCard, designGetValues, openLoader, router],
+  );
 
+  // 住所検索
   const handlePostalCodeSearch = async () => {
     const zipcode = getValues('postalCode') as string;
     if (!zipcode) {
