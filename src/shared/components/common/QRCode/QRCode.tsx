@@ -5,11 +5,11 @@ import { AspectRatio } from '../Layout/AspectRatio';
 type Props = {
   url: string;
   size: number;
-  imageSrc?: string;
+  imagesrc?: string;
   style?: React.CSSProperties;
 };
 export const QRCode = (props: Props) => {
-  const { url, imageSrc, size } = props;
+  const { url, imagesrc: imageSrc, size } = props;
   return (
     <Center {...props}>
       <Paper

@@ -34,7 +34,7 @@ export const CompletedArAsset = () => {
           <Stack>
             <QRCode
               url={getQRCodeUrl(data.id!)}
-              imageSrc={data.qrcodeImagePath}
+              imagesrc={data.qrcodeImagePath}
               size={100}
             />
             <Text size="sm" c="gray" w={240}>
