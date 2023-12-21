@@ -50,15 +50,7 @@ export const CreateCard = () => {
     useForm<CreateCardSchemaType>({
       resolver: zodResolver(createCardSchema),
       defaultValues: {
-        address: '',
-        businessCardName: '',
-        displayName: '',
-        companyName: '',
-        department: '',
-        officialPosition: '',
-        email: currentUser?.email as string,
-        phoneNumber: '',
-        postalCode: '',
+        email: currentUser?.email || '',
         // prefectures: '',
         // cityAndAddress: '',
         // buildingAndRoom: '',
@@ -79,12 +71,12 @@ export const CreateCard = () => {
   });
 
   // デザインモーダルでデザインを選択したときの処理
-  const handleClickDesign = (
-    name: 'backgroundImage' | 'coordinate',
-    id: string,
-  ) => {
-    designSetvalue(name, id);
-  };
+  const handleClickDesign = useCallback(
+    (name: 'backgroundImage' | 'coordinate', id: string) => {
+      designSetvalue(name, id);
+    },
+    [designSetvalue],
+  );
 
   // 名刺コンポーネントに渡すデータを作成
   const watchAllFields: Dto_BusinessCardResponse = {
