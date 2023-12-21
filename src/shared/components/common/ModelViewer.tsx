@@ -48,7 +48,7 @@ export const ModelViewerCore = (props: Props) => {
       poster={props.poster}
       alt={props.alt}
       shadow-intensity="1"
-      ar={props.ar!!}
+      ar={props.ar ?? false}
       ar-mode={props.arMode}
       auto-rotate={props.autoRotate}
       ar-modes="webxr scene-viewer quick-look"
