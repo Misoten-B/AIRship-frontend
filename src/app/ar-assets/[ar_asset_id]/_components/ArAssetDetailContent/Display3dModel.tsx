@@ -9,8 +9,8 @@ import { Modal } from '@/shared/components/common/Modal';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
-import { useDisclosure } from '@/shared/hooks/useDisclosure';
 import { useForm } from '@/shared/hooks/useForm';
+import { useDisclosure } from '@/shared/lib/mantine';
 
 const schema = z.object({
   threeDModel: z.string(),

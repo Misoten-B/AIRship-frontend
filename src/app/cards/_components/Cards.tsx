@@ -8,7 +8,7 @@ import { Loader } from '@/shared/components/common/Loader';
 import { BusinessCard } from '@/shared/components/features';
 import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCard/BusinessCardAspectRatio';
 import { useGetBusinessCards } from '@/shared/hooks/restapi/v1/BusinessCard';
-import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { useMediaQuery } from '@/shared/lib/mantine';
 
 const defaultBusinessCardWidht = 1254 / 3;
 const diffTop = 120;
