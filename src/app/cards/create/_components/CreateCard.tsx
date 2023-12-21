@@ -50,7 +50,15 @@ export const CreateCard = () => {
     useForm<CreateCardSchemaType>({
       resolver: zodResolver(createCardSchema),
       defaultValues: {
-        email: currentUser?.email || '',
+        address: '',
+        businessCardName: '',
+        displayName: '',
+        companyName: '',
+        department: '',
+        officialPosition: '',
+        email: currentUser?.email ?? '',
+        phoneNumber: '',
+        postalCode: '',
         // prefectures: '',
         // cityAndAddress: '',
         // buildingAndRoom: '',
