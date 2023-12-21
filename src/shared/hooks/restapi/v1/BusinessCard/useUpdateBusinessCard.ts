@@ -7,14 +7,14 @@ export const useUpdateBusinessCard = (businessCardId: string) => {
   const updaeBusinessCard = useCallback(
     (
       businessCardBackgroundImage: File | ReadStream,
+      arAssetsId: string,
+      businessCardBackgroundId: string,
+      businessCardPartsCoordinate: string,
+      displayName: string,
       address?: string | undefined,
-      arAssetsId?: string | undefined,
-      businessCardBackgroundId?: string | undefined,
       businessCardName?: string | undefined,
-      businessCardPartsCoordinate?: string | undefined,
       companyName?: string | undefined,
       department?: string | undefined,
-      displayName?: string | undefined,
       email?: string | undefined,
       officialPosition?: string | undefined,
       phoneNumber?: string | undefined,
