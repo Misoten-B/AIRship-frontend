@@ -121,7 +121,7 @@ export const BusinessCardDesignModal = ({
       title="名刺デザインの編集"
       size="xl"
     >
-      <Title order={3}>名刺背景の編集</Title>
+      <Title order={3}>名刺背景</Title>
       <Radio.Group control={control} name="backgroundImage">
         <Grid p="sm">
           {bcbData?.map(({ id, businessCardBackgroundImage }) => (
@@ -148,7 +148,7 @@ export const BusinessCardDesignModal = ({
         </Grid>
       </Radio.Group>
 
-      <Title order={3}>名刺配置の編集</Title>
+      <Title order={3}>名刺配置</Title>
       <Radio.Group control={control} name="coordinate">
         <Stack gap="lg" align="center">
           {bccData?.map((data) => (
