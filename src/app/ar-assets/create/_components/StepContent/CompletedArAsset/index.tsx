@@ -8,15 +8,26 @@ import { Text } from '@/shared/components/common/Text';
 import { getQRCodeUrl } from '@/shared/components/features';
 import { IconArrowBarToDown } from '@/shared/components/icons';
 import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useComponentToPng } from '@/shared/hooks/useComponentToPng';
 
 export const CompletedArAsset = () => {
   const requestBodies = useRequestBodiesValue();
   const { isLoading, data, error } = useGetArAsset(requestBodies['3']!);
 
+  const { ref, download } = useComponentToPng<HTMLDivElement>('qr-code');
+
   if (isLoading) return <Loader />;
 
   if (error) return <div>failed to load</div>;
   if (!data) return null;
+
+  const handleDownload = async () => {
+    try {
+      await download();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container mt={12} mb={64}>
@@ -33,9 +44,10 @@ export const CompletedArAsset = () => {
         <Center>
           <Stack>
             <QRCode
-              url={getQRCodeUrl(data.id!)}
+              url={getQRCodeUrl(data.id)}
               imagesrc={data.qrcodeImagePath}
               size={100}
+              qrref={ref}
             />
             <Text size="sm" c="gray" w={240}>
               カメラで読み取るとARで3D画像と生成された声を聞くことができます。
@@ -48,6 +60,7 @@ export const CompletedArAsset = () => {
             radius="xl"
             w={240}
             mt={24}
+            onClick={handleDownload}
           >
             QRコードをダウンロード
           </Button>
