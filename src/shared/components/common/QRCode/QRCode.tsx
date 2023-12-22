@@ -1,3 +1,5 @@
+'use client';
+
 import { QRCodeSVG } from 'qrcode.react';
 import { RefObject, useState } from 'react';
 import { Center, Paper } from '../Layout';
