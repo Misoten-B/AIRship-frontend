@@ -9,14 +9,14 @@ export const useCreateBusinessCard = () => {
       businessCardBackgroundId: string,
       businessCardPartsCoordinate: string,
       displayName: string,
-      address?: string | undefined,
-      businessCardName?: string | undefined,
-      companyName?: string | undefined,
-      department?: string | undefined,
-      email?: string | undefined,
-      officialPosition?: string | undefined,
-      phoneNumber?: string | undefined,
-      postalCode?: string | undefined,
+      address?: string,
+      businessCardName?: string,
+      companyName?: string,
+      department?: string,
+      email?: string,
+      officialPosition?: string,
+      phoneNumber?: string,
+      postalCode?: string,
     ) => {
       return api?.v1.users.business_cards.$post({
         body: {
