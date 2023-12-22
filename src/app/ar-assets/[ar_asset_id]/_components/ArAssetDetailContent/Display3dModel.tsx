@@ -62,20 +62,22 @@ export const Display3dModel = () => {
 
             <SelectThreeDModel control={control} setValue={handleSetValue} />
 
-            <Grid.Col span={4}>
-              <FileInput
-                // TODO: wip
-                name="fileInput"
-                control={fileInputControl}
-                placeholder="アップロード"
-                size="xs"
-                styles={{
-                  wrapper: { height: '100%' },
-                  root: { height: '100%' },
-                  input: { height: 'calc(100% - 28px)' },
-                }}
-              />
-            </Grid.Col>
+            <Grid>
+              <Grid.Col span={4}>
+                <FileInput
+                  // TODO: wip
+                  name="fileInput"
+                  control={fileInputControl}
+                  placeholder="アップロード"
+                  size="xs"
+                  styles={{
+                    wrapper: { height: '100%' },
+                    root: { height: '100%' },
+                    input: { height: 'calc(100% - 28px)' },
+                  }}
+                />
+              </Grid.Col>
+            </Grid>
 
             <Button onClick={close} w="100%" radius="md">
               選択
