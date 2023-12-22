@@ -1,5 +1,7 @@
 'use client';
 
+import '@mantine/notifications/styles.css';
+
 import { Notifications } from '@mantine/notifications';
 import { AppProgressBar } from 'next-nprogress-bar';
 import { AuthProvider } from '@/shared/hooks/auth';
