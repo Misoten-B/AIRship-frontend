@@ -3,10 +3,10 @@ import { AspectRatioProps } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { IconMail, IconPhone } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { getQRCodeUrl } from '..';
 import { Card } from '../../common/Layout';
 import { QRCode } from '../../common/QRCode';
 import { Text } from '../../common/Text';
+import { getQRCodeUrl } from '../QRCode';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
 import {
   Dto_BusinessCardPartsCoordinate,
