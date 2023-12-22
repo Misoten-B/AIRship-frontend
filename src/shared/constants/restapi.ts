@@ -1,5 +1,6 @@
 export const STATUS = {
-  none: -1,
-  inProgress: 0,
-  completed: 1,
+  error: -1,
+  none: 1,
+  inProgress: 2,
+  completed: 3,
 } as const;
