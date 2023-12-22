@@ -47,7 +47,7 @@ export const CompletedArAsset = () => {
               url={getQRCodeUrl(data.id)}
               imagesrc={data.qrcodeImagePath}
               size={100}
-              qrRef={ref}
+              qrref={ref}
             />
             <Text size="sm" c="gray" w={240}>
               カメラで読み取るとARで3D画像と生成された声を聞くことができます。

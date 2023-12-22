@@ -11,17 +11,17 @@ type Props = {
   size: number;
   imagesrc?: string;
   style?: React.CSSProperties;
-  qrRef?: RefObject<HTMLDivElement>;
+  qrref?: RefObject<HTMLDivElement>;
 };
 export const QRCode = (props: Props) => {
-  const { url, imagesrc: imageSrc, size, qrRef } = props;
+  const { url, imagesrc: imageSrc, size, qrref } = props;
 
-  const [src, setSrc] = useState(imageSrc ?? ASSETS.logo.column);
+  const [src, setSrc] = useState(imageSrc);
 
   return (
     <Center {...props}>
       <Paper
-        ref={qrRef}
+        ref={qrref}
         radius="md"
         p="md"
         pb={10}
@@ -36,7 +36,7 @@ export const QRCode = (props: Props) => {
             onError={() => {
               setSrc(ASSETS.logo.column);
             }}
-            {...(imageSrc && {
+            {...(src && {
               imageSettings: {
                 src: src,
                 x: undefined,
