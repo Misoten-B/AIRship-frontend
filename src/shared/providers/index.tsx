@@ -29,11 +29,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       <AuthProvider>
         <AxiosProvider>
           <ThemeProvider>
-            <LoadingProvider>
-              <Notifications />
-              {children}
-              <ProgressBar />
-            </LoadingProvider>
+            <LoadingProvider />
+            <Notifications />
+            {children}
+            <ProgressBar />
           </ThemeProvider>
         </AxiosProvider>
       </AuthProvider>

@@ -1,34 +1,35 @@
-import { createContext, useContext, useState } from 'react';
+import { useCallback } from 'react';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingOverlay as MantineLoading } from '@/shared/components/common/Loader';
 import { AirshipLogo } from '@/shared/components/features/AirshipLogo';
 
-const isLoadingContext = createContext<boolean>(false);
-const toggleLoadingContext = createContext<() => void>(() => undefined);
+const state = atom<boolean>({
+  key: 'loading',
+  default: false,
+});
 
-export const useToggleLoading = () => useContext(toggleLoadingContext);
+const useIsLoading = () => useRecoilValue(state);
 
-export const LoadingProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const toggle = () => setIsLoading((prev) => !prev);
+export const useToggleLoading = () => {
+  const setIsLoading = useSetRecoilState(state);
+
+  return useCallback(() => {
+    setIsLoading((prev) => !prev);
+  }, [setIsLoading]);
+};
+
+export const LoadingProvider = () => {
+  const isLoading = useIsLoading();
 
   return (
-    <isLoadingContext.Provider value={isLoading}>
-      <toggleLoadingContext.Provider value={toggle}>
-        <MantineLoading
-          visible={isLoading}
-          loaderProps={{ children: <Loading /> }}
-        />
-        {children}
-      </toggleLoadingContext.Provider>
-    </isLoadingContext.Provider>
+    <MantineLoading
+      visible={isLoading}
+      loaderProps={{ children: <CustomLoader /> }}
+    />
   );
 };
 
-const Loading = () => {
+const CustomLoader = () => {
   return (
     <>
       <AirshipLogo className="spin" />
