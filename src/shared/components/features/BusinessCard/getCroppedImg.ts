@@ -19,13 +19,13 @@ export const createImage = (url: string): Promise<HTMLImageElement> =>
 export default async function getCroppedImg(
   imageSrc: string,
   pixelCrop: Area,
-): Promise<string> {
+): Promise<Blob | null> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    return '';
+    return null;
   }
 
   // canvasサイズを設定
@@ -36,16 +36,23 @@ export default async function getCroppedImg(
   ctx.drawImage(image, 0, 0);
 
   // トリミング後の画像を抽出
+  const width_ratio = pixelCrop.width / 100;
+  const height_ratio = pixelCrop.height / 100;
+
+  const trimed_width = canvas.width * width_ratio;
+  const trimed_height = canvas.height * height_ratio;
+
   const data = ctx.getImageData(
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
+    canvas.width * (pixelCrop.x / 100),
+    canvas.height * (pixelCrop.y / 100),
+    trimed_width,
+    trimed_height,
   );
 
   // canvasのサイズ指定(切り取り後の画像サイズに更新)
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  // canvas.width = pixelCrop.width;
+  canvas.width = trimed_width;
+  canvas.height = trimed_height;
 
   // 抽出した画像データをcanvasの左隅に貼り付け
   ctx.putImageData(data, 0, 0);
@@ -53,7 +60,8 @@ export default async function getCroppedImg(
   // canvasを画像に変換
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
-      if (file !== null) resolve(URL.createObjectURL(file));
+      // if (file !== null) resolve(URL.createObjectURL(file));
+      resolve(file);
     }, 'image/jpeg');
   });
 }

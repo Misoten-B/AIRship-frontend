@@ -49,13 +49,15 @@ export const BusinessCardBackgroundCrop = () => {
 
   const onSubmit = async (data: { backgroundColor: string }) => {
     const croppedImage = await getCroppedImg(file, croppedAreaPixels!);
+    if (!croppedImage) return; // FIXME: エラーハンドリング
+
     const croppedFile = new File([croppedImage], 'croppedImage.png', {
       type: 'image/png',
     });
     // const form = new FormData();
     // form.append('BusinessCardBackgroundImage', croppedFile);
     // form.append('backgroundColor', data.backgroundColor);
-    console.debug('croppedFile', croppedFile);
+    console.log('croppedFile', croppedFile);
     try {
       const res = await createBusinessCardBackground(
         croppedFile,
