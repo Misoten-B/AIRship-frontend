@@ -39,11 +39,11 @@ const CustomLoader = () => {
             transform: rotateY(0deg);
           }
           100% {
-            transform: rotateY(360deg);
+            transform: rotateY(1080deg);
           }
         }
         .spin {
-          animation: spin 1.5s linear infinite;
+          animation: spin 1.5s ease-in-out infinite;
         }
       `}</style>
     </>
