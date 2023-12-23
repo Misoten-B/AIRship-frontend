@@ -10,5 +10,9 @@ export const LoginButton = () => {
     login && (await login());
   }, [login]);
 
-  return <Button onClick={handleClick}>Googleでログイン</Button>;
+  return (
+    <>
+      <Button onClick={handleClick}>Googleでログイン</Button>
+    </>
+  );
 };

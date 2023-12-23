@@ -4,6 +4,7 @@ import '@mantine/notifications/styles.css';
 
 import { Notifications } from '@mantine/notifications';
 import { AppProgressBar } from 'next-nprogress-bar';
+import { LoadingProvider } from './loading';
 import { AuthProvider } from '@/shared/hooks/auth';
 import { AxiosProvider } from '@/shared/lib/axios/AxiosProvider';
 import { useMantineTheme } from '@/shared/lib/mantine';
@@ -28,9 +29,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
       <AuthProvider>
         <AxiosProvider>
           <ThemeProvider>
-            <Notifications />
-            {children}
-            <ProgressBar />
+            <LoadingProvider>
+              <Notifications />
+              {children}
+              <ProgressBar />
+            </LoadingProvider>
           </ThemeProvider>
         </AxiosProvider>
       </AuthProvider>
