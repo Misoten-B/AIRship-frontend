@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { ColorPicker } from 'react-hook-form-mantine';
 import { Button, FileButton } from '../../common/Button';
 import { Container } from '../../common/Container';
-import { Flex, Stack } from '../../common/Layout';
+import { Stack } from '../../common/Layout';
 import { IconUpload } from '../../icons';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
-import getCroppedImg from './getCroppedImg';
+import getCroppedImg, { blobToImage } from './getCroppedImg';
 import { useCreateBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
 import { useDisclosure } from '@/shared/lib/mantine';
 
@@ -23,7 +23,7 @@ export const BusinessCardBackgroundCrop = () => {
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#ffffffff',
     },
   });
 
@@ -51,12 +51,13 @@ export const BusinessCardBackgroundCrop = () => {
     const croppedImage = await getCroppedImg(file, croppedAreaPixels!);
     if (!croppedImage) return; // FIXME: エラーハンドリング
 
+    blobToImage(croppedImage).then((img) => {
+      setCroppedImgSrc(img.src);
+    });
+
     const croppedFile = new File([croppedImage], 'croppedImage.png', {
       type: 'image/png',
     });
-    // const form = new FormData();
-    // form.append('BusinessCardBackgroundImage', croppedFile);
-    // form.append('backgroundColor', data.backgroundColor);
     console.log('croppedFile', croppedFile);
     try {
       const res = await createBusinessCardBackground(
@@ -95,53 +96,61 @@ export const BusinessCardBackgroundCrop = () => {
         title="名刺の背景画像を設定"
         size="xl"
       >
-        <Stack>
+        <Stack gap="md">
           <Container h={500}>
             {file && (
               <Cropper
                 image={file}
                 crop={crop}
                 zoom={zoom}
-                aspect={4 / 3}
+                aspect={1254 / 758}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
+                style={{
+                  containerStyle: {
+                    width: '95%',
+                    height: '65%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                  },
+                }}
               />
             )}
           </Container>
 
-          <Flex gap="md" align="end">
-            <ColorPicker
-              control={control}
-              name="backgroundColor"
-              format="hex"
-              swatches={[
-                '#2e2e2e',
-                '#ffffff',
-                '#fa5252',
-                '#e64980',
-                '#be4bdb',
-                '#7950f2',
-                '#4c6ef5',
-                '#228be6',
-                '#15aabf',
-                '#12b886',
-                '#40c057',
-                '#82c91e',
-                '#fab005',
-                '#fd7e14',
-              ]}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              radius="xl"
-              my="lg"
-              onClick={handleSubmit(onSubmit)}
-            >
-              アップロードする
-            </Button>
-          </Flex>
+          <ColorPicker
+            fullWidth
+            control={control}
+            name="backgroundColor"
+            format="hexa"
+            alphaLabel="透明度"
+            swatches={[
+              '#2e2e2e',
+              '#ffffff',
+              '#fa5252',
+              '#e64980',
+              '#be4bdb',
+              '#7950f2',
+              '#4c6ef5',
+              '#228be6',
+              '#15aabf',
+              '#12b886',
+              '#40c057',
+              '#82c91e',
+              '#fab005',
+              '#fd7e14',
+            ]}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            radius="xl"
+            my="lg"
+            onClick={handleSubmit(onSubmit)}
+          >
+            アップロードする
+          </Button>
         </Stack>
       </Modal>
     </>

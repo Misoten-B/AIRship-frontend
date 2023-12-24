@@ -57,11 +57,18 @@ export default async function getCroppedImg(
   // 抽出した画像データをcanvasの左隅に貼り付け
   ctx.putImageData(data, 0, 0);
 
-  // canvasを画像に変換
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
       // if (file !== null) resolve(URL.createObjectURL(file));
       resolve(file);
-    }, 'image/jpeg');
+    }, 'image/png');
   });
 }
+
+export const blobToImage = (blob: Blob): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener('load', () => resolve(image));
+    image.addEventListener('error', (error) => reject(error));
+    image.src = URL.createObjectURL(blob);
+  });
