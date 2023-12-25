@@ -54,9 +54,6 @@ export const RecordPage = () => {
     startRecording();
   }, [isRecording, startRecording, stopRecording]);
 
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   // 音声データをアップロードする
   const handleUpload = async () => {
     if (!recordingBlob) return;
