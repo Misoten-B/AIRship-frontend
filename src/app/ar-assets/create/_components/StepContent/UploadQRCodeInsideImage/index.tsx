@@ -16,6 +16,7 @@ import {
   IconUpload,
 } from '@/shared/components/icons';
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useToggleLoading } from '@/shared/providers/loading';
 
 type Props = {
   nextStep: () => void;
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
+  const toggleLoading = useToggleLoading();
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
 
@@ -44,6 +46,8 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
 
   const handleClick = useCallback(async () => {
     try {
+      toggleLoading();
+
       const select3DModel = requestBodies['0']!;
       const speakingSetting = requestBodies['1']!;
       const qrCodeInsideImage = requestBodies['2'];
@@ -66,8 +70,10 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
       nextStep();
     } catch (error) {
       console.error(error);
+    } finally {
+      toggleLoading();
     }
-  }, [requestBodies, createArAsset, setRequestBodies, nextStep]);
+  }, [requestBodies, createArAsset, setRequestBodies, nextStep, toggleLoading]);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;
