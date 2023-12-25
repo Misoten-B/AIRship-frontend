@@ -18,7 +18,7 @@ type Props = {
   hideElement?: boolean;
 };
 
-export const ArAssetItem = ({ arAsset, hideElement }: Props) => {
+export const ArAssetItem = ({ arAsset, hideElement = false }: Props) => {
   const { control } = useForm();
   const {
     id,

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useColorScheme } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { OpenSelectQRCodeButton } from './OpenSelectQRCodeButton';
+import { ModalSelectQRCodeButton } from './OpenSelectQRCodeButton';
 import { CreateCardSchemaType, createCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
@@ -190,7 +190,7 @@ export const CreateCard = () => {
           imagesrc="/airship-logo-column.svg"
           size={150}
         />
-        <OpenSelectQRCodeButton />
+        <ModalSelectQRCodeButton />
       </Group>
 
       <Stack gap="xs">
