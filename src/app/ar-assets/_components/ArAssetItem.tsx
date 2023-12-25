@@ -3,19 +3,23 @@ import { Dto_ArAssetsResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
 import { Divider } from '@/shared/components/common/Divider';
 import { Image } from '@/shared/components/common/Image';
-import { Card, Flex } from '@/shared/components/common/Layout';
+import { Card, Flex, Stack } from '@/shared/components/common/Layout';
 import { QRCode } from '@/shared/components/common/QRCode';
+import { Radio } from '@/shared/components/common/Radio';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { getQRCodeUrl } from '@/shared/components/features';
 import { IconPencil, IconSpeakerphone } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
+import { useForm } from '@/shared/hooks/useForm';
 
 type Props = {
   arAsset: Dto_ArAssetsResponse;
+  hideElement?: boolean;
 };
 
-export const ArAssetItem = ({ arAsset }: Props) => {
+export const ArAssetItem = ({ arAsset, hideElement = false }: Props) => {
+  const { control } = useForm();
   const {
     id,
     qrcodeImagePath,
@@ -27,6 +31,7 @@ export const ArAssetItem = ({ arAsset }: Props) => {
   if (!id) return null;
   return (
     <Card radius="md" withBorder mx={16} padding={0} pt={20} px={20} my={8}>
+      {!hideElement && <Radio name="qrCodeSelection" control={control} />}
       <Card.Section mb={16}>
         <Flex gap={16} justify="space-around">
           <QRCode
@@ -54,15 +59,19 @@ export const ArAssetItem = ({ arAsset }: Props) => {
         </Flex>
       </Card.Section>
       <Card.Section>
-        <Divider mt="md" />
-        <Button
-          component={Link}
-          fullWidth
-          href={ROUTES.arAssets.detail(id)}
-          leftSection={<IconPencil />}
-          size="md"
-          variant="subtle"
-        />
+        {hideElement && (
+          <Stack gap="0">
+            <Divider mt="md" />
+            <Button
+              component={Link}
+              fullWidth
+              href={ROUTES.arAssets.detail(id)}
+              leftSection={<IconPencil />}
+              size="md"
+              variant="subtle"
+            />
+          </Stack>
+        )}
       </Card.Section>
     </Card>
   );
