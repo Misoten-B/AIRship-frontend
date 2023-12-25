@@ -13,7 +13,8 @@ import { useCreateBusinessCardBackground } from '@/shared/hooks/restapi/v1/Busin
 import { useDisclosure } from '@/shared/lib/mantine';
 
 export const BusinessCardBackgroundCrop = () => {
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [fileString, setFileString] = useState('');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [isOpen, { open, close }] = useDisclosure();
@@ -34,11 +35,12 @@ export const BusinessCardBackgroundCrop = () => {
   const onFileChange = useCallback(
     async (file: File | null) => {
       if (!file) return;
+      setFile(file);
       console.debug('file', file);
       const reader = new FileReader();
       reader.addEventListener('load', () => {
         if (reader.result) {
-          setFile(reader.result.toString() || '');
+          setFileString(reader.result.toString() || '');
           open();
         }
       });
@@ -48,8 +50,9 @@ export const BusinessCardBackgroundCrop = () => {
   );
 
   const onSubmit = async (data: { backgroundColor: string }) => {
-    const croppedImage = await getCroppedImg(file, croppedAreaPixels!);
+    const croppedImage = await getCroppedImg(fileString, croppedAreaPixels!);
     if (!croppedImage) return; // FIXME: エラーハンドリング
+    if (!file) return; // FIXME: エラーハンドリング
 
     blobToImage(croppedImage).then((img) => {
       setCroppedImgSrc(img.src);
@@ -58,10 +61,11 @@ export const BusinessCardBackgroundCrop = () => {
     const croppedFile = new File([croppedImage], 'croppedImage.png', {
       type: 'image/png',
     });
-    console.log('croppedFile', croppedFile);
+    console.debug(file, croppedFile);
     try {
       const res = await createBusinessCardBackground(
-        croppedFile,
+        // croppedFile,
+        file,
         data.backgroundColor,
       );
       if (res) {
@@ -98,9 +102,9 @@ export const BusinessCardBackgroundCrop = () => {
       >
         <Stack gap="md">
           <Container h={500}>
-            {file && (
+            {fileString && (
               <Cropper
-                image={file}
+                image={fileString}
                 crop={crop}
                 zoom={zoom}
                 aspect={1254 / 758}
