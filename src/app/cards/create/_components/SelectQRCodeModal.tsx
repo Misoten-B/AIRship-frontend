@@ -1,21 +1,29 @@
 'use client';
+import { Control } from 'react-hook-form';
 import { SelectQRModal } from './SelectQRModal';
 import { Button } from '@/shared/components/common/Button';
 import { Modal } from '@/shared/components/common/Modal';
 import { useDisclosure } from '@/shared/lib/mantine';
 
-export const ModalSelectQRCodeButton = () => {
+type Props = {
+  setValue: (value: string) => void;
+  control: Control<
+    {
+      qrCodeSelection: string;
+    },
+    any
+  >;
+};
+
+export const SelectQRCodeModal = ({ setValue, control }: Props) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const content = Array(100)
-    .fill(0)
-    .map((_, index) => <p key={index}></p>);
+
   return (
     <>
       <Modal opened={opened} onClose={close} title="QRコードを選択する">
-        {content}
-        <SelectQRModal />
+        <SelectQRModal setValue={setValue} control={control} />
         <Button onClick={close} w="100%" radius="md" mt="md">
-          選択
+          閉じる
         </Button>
       </Modal>
 

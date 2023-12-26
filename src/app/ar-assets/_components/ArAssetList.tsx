@@ -1,8 +1,8 @@
 'use client';
 
-import { ArAssetItem } from './ArAssetItem';
 import { SimpleGrid } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
+import { ArAssetItem } from '@/shared/components/features/QRCode/ArAssetItem';
 import { useGetArAssets } from '@/shared/hooks/restapi/v1/ArAssets';
 
 export const ArAssetList = () => {
