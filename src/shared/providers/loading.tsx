@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { LoadingOverlay as MantineLoading } from '@/shared/components/common/Loader';
-import { AirshipLogo } from '@/shared/components/features/AirshipLogo';
+import { AirshipLogoColumn } from '@/shared/components/features/AirshipLogo';
 
 const state = atom<boolean>({
   key: 'loading',
@@ -18,6 +18,28 @@ export const useToggleLoading = () => {
   }, [setIsLoading]);
 };
 
+export const useOpenLoading = () => {
+  const setIsLoading = useSetRecoilState(state);
+
+  return useCallback(() => {
+    setIsLoading(true);
+  }, [setIsLoading]);
+};
+
+export const useCloseLoading = () => {
+  const setIsLoading = useSetRecoilState(state);
+
+  return useCallback(() => {
+    setIsLoading(false);
+  }, [setIsLoading]);
+};
+
+export const useLoading = () => ({
+  open: useOpenLoading(),
+  close: useCloseLoading(),
+  toggle: useToggleLoading(),
+});
+
 export const LoadingProvider = () => {
   const isLoading = useIsLoading();
 
@@ -32,18 +54,18 @@ export const LoadingProvider = () => {
 const CustomLoader = () => {
   return (
     <>
-      <AirshipLogo className="spin" />
+      <AirshipLogoColumn className="spin" />
       <style>{`
         @keyframes spin {
           0% {
             transform: rotateY(0deg);
           }
           100% {
-            transform: rotateY(1080deg);
+            transform: rotateY(3600deg);
           }
         }
         .spin {
-          animation: spin 1.5s ease-in-out infinite;
+          animation: spin 3s ease-in-out infinite;
         }
       `}</style>
     </>
