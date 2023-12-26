@@ -61,11 +61,11 @@ export const BusinessCardBackgroundCrop = () => {
     const croppedFile = new File([croppedImage], 'croppedImage.png', {
       type: 'image/png',
     });
-    console.debug(file, croppedFile);
+
     try {
       const res = await createBusinessCardBackground(
         data.backgroundColor,
-        file,
+        croppedFile,
       );
       if (res) {
         close();
