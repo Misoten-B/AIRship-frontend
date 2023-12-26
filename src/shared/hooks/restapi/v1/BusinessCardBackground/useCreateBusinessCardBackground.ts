@@ -5,7 +5,7 @@ import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
 export const useCreateBusinessCardBackground = () => {
   const { api } = useApiClient();
   const createBusinessCardBackground = useCallback(
-    (image: File | ReadStream, color: string) => {
+    (color: string, image?: File | ReadStream) => {
       try {
         return api?.v1.users.business_card_backgrounds.$post({
           body: {

@@ -10,19 +10,18 @@ import { useDisclosure } from '@/shared/lib/mantine';
 export const ColorOnlyModal = () => {
   const { createBusinessCardBackground } = useCreateBusinessCardBackground();
   const [isOpen, { open, close }] = useDisclosure();
-  const { control, setValue, watch, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       backgroundColor: '#ffffff',
     },
   });
 
-  // TODO: 画像が必須なので、バックエンドを修正してから実装する
-  // const onSubmit = async (data: { backgroundColor: string }) => {
-  //   const res = await createBusinessCardBackground('', data.backgroundColor);
-  //   if (res) {
-  //     close();
-  //   }
-  // };
+  const onSubmit = async (data: { backgroundColor: string }) => {
+    const res = await createBusinessCardBackground(data.backgroundColor);
+    if (res) {
+      close();
+    }
+  };
 
   return (
     <>
@@ -61,7 +60,9 @@ export const ColorOnlyModal = () => {
               '#fd7e14',
             ]}
           />
-          <Button onClick={close}>アップロードする</Button>
+          <Button type="submit" onClick={handleSubmit(onSubmit)}>
+            アップロードする
+          </Button>
         </Stack>
       </Modal>
     </>
