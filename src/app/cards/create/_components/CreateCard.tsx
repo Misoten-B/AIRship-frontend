@@ -1,9 +1,10 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Skeleton } from '@mantine/core';
 import { useColorScheme } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { ModalSelectQRCodeButton } from './OpenSelectQRCodeButton';
+import { SelectQRCodeModal } from './SelectQRCodeModal';
 import { CreateCardSchemaType, createCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
@@ -18,6 +19,7 @@ import { BusinessCard, getQRCodeUrl } from '@/shared/components/features';
 import { BusinessCardDesignModal } from '@/shared/components/features/BusinessCard/BusinessCardDesignModal';
 import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
+import { useGetArAssets } from '@/shared/hooks/restapi/v1/ArAssets';
 import { useCreateBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useGetBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
 import { useGetBusinessCardCoordinate } from '@/shared/hooks/restapi/v1/useBusinessCardCoordinate';
@@ -34,17 +36,24 @@ export const CreateCard = () => {
   const [isLoaded, { open: openLoader, close: closeLoader }] = useDisclosure();
   const { createBusinessCard } = useCreateBusinessCard();
 
-  // 背景と座標のデータ
+  // 背景の取得
   const {
     data: bcbData,
     error: bcbError,
     isLoading: isBcbLoading,
   } = useGetBusinessCardBackground();
+  // 座標の取得
   const {
     data: bccData,
     error: bccError,
     isLoading: isBccLoading,
   } = useGetBusinessCardCoordinate();
+  // ArAssetの取得
+  const {
+    data: arAssetData,
+    error: arAssetError,
+    isLoading: isArAssetLoading,
+  } = useGetArAssets();
 
   // フォーム
   const { register, handleSubmit, control, getValues, setValue, watch } =
@@ -76,6 +85,18 @@ export const CreateCard = () => {
     defaultValues: {
       backgroundImage: bcbData?.[0].id ?? '',
       coordinate: bccData?.[0].id ?? '',
+    },
+  });
+
+  // ArAssetモーダル
+  const {
+    control: qrcodeControl,
+    setValue: setQRCodeValue,
+    getValues: getQRCodeValues,
+    watch: qrcodeWatch,
+  } = useForm({
+    defaultValues: {
+      qrCodeSelection: '',
     },
   });
 
@@ -111,7 +132,7 @@ export const CreateCard = () => {
       openLoader();
       try {
         await createBusinessCard(
-          '1', // TODO: ArAssetモーダルを作成したら変更する
+          getQRCodeValues('qrCodeSelection'),
           designGetValues('backgroundImage'),
           designGetValues('coordinate'),
           data.displayName,
@@ -130,7 +151,14 @@ export const CreateCard = () => {
       closeLoader();
       router.push(ROUTES.cards.base);
     },
-    [closeLoader, createBusinessCard, designGetValues, openLoader, router],
+    [
+      closeLoader,
+      createBusinessCard,
+      designGetValues,
+      getQRCodeValues,
+      openLoader,
+      router,
+    ],
   );
 
   // 住所検索
@@ -151,8 +179,12 @@ export const CreateCard = () => {
     }
   };
 
-  if (bcbError || bccError) return <div>failed to load</div>;
-  if (isBcbLoading || isBccLoading) return <Loader />;
+  const hadnleSetQRCodeValue = (value: string) => {
+    setQRCodeValue('qrCodeSelection', value);
+  };
+
+  if (bcbError || bccError || arAssetError) return <div>failed to load</div>;
+  if (isBcbLoading || isBccLoading || isArAssetLoading) return <Loader />;
 
   return (
     <Container>
@@ -185,12 +217,23 @@ export const CreateCard = () => {
         作成したQRコードを選択してください
       </Text>
       <Group justify="center" my="lg">
-        <QRCode
-          url={getQRCodeUrl('sample')}
-          imagesrc="/airship-logo-column.svg"
-          size={150}
+        {qrcodeWatch('qrCodeSelection') !== '' ? (
+          <QRCode
+            url={getQRCodeUrl(qrcodeWatch('qrCodeSelection'))}
+            imagesrc={
+              arAssetData?.find(
+                (arAsset) => arAsset.id === qrcodeWatch('qrCodeSelection'),
+              )?.qrcodeImagePath ?? ''
+            }
+            size={150}
+          />
+        ) : (
+          <Skeleton height={200} width={200} />
+        )}
+        <SelectQRCodeModal
+          setValue={hadnleSetQRCodeValue}
+          control={qrcodeControl}
         />
-        <ModalSelectQRCodeButton />
       </Group>
 
       <Stack gap="xs">
