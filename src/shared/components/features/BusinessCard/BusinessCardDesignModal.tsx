@@ -124,14 +124,20 @@ export const BusinessCardDesignModal = ({
       <Title order={3}>名刺背景</Title>
       <Radio.Group control={control} name="backgroundImage">
         <Grid p="sm">
-          {bcbData?.map(({ id, businessCardBackgroundImage }) => (
-            <BackgroundImage
-              id={id!}
-              imagePath={businessCardBackgroundImage!}
-              imageColor={card.businessCardBackgroundColor!}
-              key={id}
-            />
-          ))}
+          {bcbData?.map(
+            ({
+              id,
+              businessCardBackgroundImage,
+              businessCardBackgroundColor,
+            }) => (
+              <BackgroundImage
+                id={id!}
+                imagePath={businessCardBackgroundImage!}
+                imageColor={businessCardBackgroundColor}
+                key={id}
+              />
+            ),
+          )}
           <Grid.Col span={4}>
             <ColorOnlyModal />
           </Grid.Col>
