@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
+import { notifications } from '@/shared/components/common/Feedback';
 import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
@@ -10,10 +11,12 @@ import { IconMicrophone } from '@/shared/components/icons';
 import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
 import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
 import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
+import { useToggleLoading } from '@/shared/providers/loading';
 
 const MAX_RECORDING_TIME = 10;
 
 export const RecordPage = () => {
+  const toggleLoading = useToggleLoading();
   const { updateUser } = useUpdateUser();
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -56,10 +59,18 @@ export const RecordPage = () => {
     if (!recordingBlob) return;
 
     try {
+      toggleLoading();
+
       const wavFile = await convertToWav(recordingBlob);
       await updateUser(true, wavFile);
+
+      notifications.show({
+        message: '音声モデルの生成が完了しました',
+      });
     } catch (error) {
       console.error(error);
+    } finally {
+      toggleLoading();
     }
   };
 
