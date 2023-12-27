@@ -1,14 +1,14 @@
-import { IconUpload } from '@tabler/icons-react';
 import { memo } from 'react';
 import { Control, UseFormWatch } from 'react-hook-form';
 import { BusinessCard } from '..';
-import { Button } from '../../common/Button';
 import { Grid, Paper, Stack } from '../../common/Layout';
 import { Loader } from '../../common/Loader';
 import { Modal } from '../../common/Modal';
 import { Radio } from '../../common/Radio';
 import { Title } from '../../common/Title';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
+import { BusinessCardBackgroundCrop } from './BusinessCardBackgroundCrop';
+import { ColorOnlyModal } from './ColorOnlyModal';
 import {
   Dto_BusinessCardPartsCoordinate,
   Dto_BusinessCardResponse,
@@ -124,26 +124,25 @@ export const BusinessCardDesignModal = ({
       <Title order={3}>名刺背景</Title>
       <Radio.Group control={control} name="backgroundImage">
         <Grid p="sm">
-          {bcbData?.map(({ id, businessCardBackgroundImage }) => (
-            <BackgroundImage
-              id={id!}
-              imagePath={businessCardBackgroundImage!}
-              imageColor={card.businessCardBackgroundColor!}
-              key={id}
-            />
-          ))}
+          {bcbData?.map(
+            ({
+              id,
+              businessCardBackgroundImage,
+              businessCardBackgroundColor,
+            }) => (
+              <BackgroundImage
+                id={id!}
+                imagePath={businessCardBackgroundImage!}
+                imageColor={businessCardBackgroundColor}
+                key={id}
+              />
+            ),
+          )}
           <Grid.Col span={4}>
-            <BusinessCardAspectRatio>
-              <Button
-                w="100%"
-                h="100%"
-                variant="outline"
-                color="gray"
-                size="xs"
-              >
-                <IconUpload size={24} />
-              </Button>
-            </BusinessCardAspectRatio>
+            <ColorOnlyModal />
+          </Grid.Col>
+          <Grid.Col span={4}>
+            <BusinessCardBackgroundCrop />
           </Grid.Col>
         </Grid>
       </Radio.Group>
