@@ -9,7 +9,10 @@ import { Stack } from '../../common/Layout';
 import { IconUpload } from '../../icons';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
 import getCroppedImg, { blobToImage } from './getCroppedImg';
-import { useCreateBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
+import {
+  useCreateBusinessCardBackground,
+  useGetBusinessCardBackground,
+} from '@/shared/hooks/restapi/v1/BusinessCardBackground';
 import { useDisclosure } from '@/shared/lib/mantine';
 
 export const BusinessCardBackgroundCrop = () => {
@@ -21,6 +24,7 @@ export const BusinessCardBackgroundCrop = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [croppedImgSrc, setCroppedImgSrc] = useState('');
   const { createBusinessCardBackground } = useCreateBusinessCardBackground();
+  const { mutate } = useGetBusinessCardBackground();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -68,6 +72,7 @@ export const BusinessCardBackgroundCrop = () => {
         croppedFile,
       );
       if (res) {
+        await mutate();
         close();
       }
     } catch (err) {

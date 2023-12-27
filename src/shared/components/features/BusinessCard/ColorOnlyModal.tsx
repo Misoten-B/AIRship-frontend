@@ -4,7 +4,10 @@ import { Button } from '../../common/Button';
 import { Stack } from '../../common/Layout';
 import { Modal } from '../../common/Modal';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
-import { useCreateBusinessCardBackground } from '@/shared/hooks/restapi/v1/BusinessCardBackground';
+import {
+  useCreateBusinessCardBackground,
+  useGetBusinessCardBackground,
+} from '@/shared/hooks/restapi/v1/BusinessCardBackground';
 import { useDisclosure } from '@/shared/lib/mantine';
 
 export const ColorOnlyModal = () => {
@@ -15,10 +18,12 @@ export const ColorOnlyModal = () => {
       backgroundColor: '#ffffff',
     },
   });
+  const { mutate } = useGetBusinessCardBackground();
 
   const onSubmit = async (data: { backgroundColor: string }) => {
     const res = await createBusinessCardBackground(data.backgroundColor);
     if (res) {
+      await mutate();
       close();
     }
   };
