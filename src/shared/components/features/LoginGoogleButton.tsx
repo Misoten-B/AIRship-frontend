@@ -8,6 +8,7 @@ import { useAuth } from '@/shared/hooks/auth';
 import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
 import { firebaseUserState } from '@/shared/lib/recoil';
+import { useLoading } from '@/shared/providers/loading';
 
 export const LoginGoogleButton = () => {
   const router = useRouter();
@@ -15,12 +16,13 @@ export const LoginGoogleButton = () => {
   const { data, mutate, error } = useGetUser(!firebaseUser?.token);
   const { login, logout } = useAuth();
   const { api } = useApiClient();
+  const { open, close } = useLoading();
 
   const handleClick = useCallback(async () => {
     try {
       login && (await login());
+      open();
       const d = await mutate();
-
       if (d) {
         console.debug('data', d);
         router.push('/cards');
@@ -28,10 +30,12 @@ export const LoginGoogleButton = () => {
         throw true;
       }
     } catch (error) {
+      console.debug('error', error);
       notifications.show(ErrorNotificationData('Error', '登録されていません'));
       logout && (await logout());
     }
-  }, [login, logout, mutate, router]);
+    close();
+  }, [close, login, logout, mutate, open, router]);
 
   return <GoogleButton onClick={handleClick} />;
 };
