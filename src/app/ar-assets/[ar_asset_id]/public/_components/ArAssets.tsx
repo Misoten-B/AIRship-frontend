@@ -1,24 +1,57 @@
 'use client';
 
-import { useCallback } from 'react';
-import { Button } from '@/shared/components/common/Button';
-import { Loader } from '@/shared/components/common/Loader';
+import { useCallback, useEffect, useState } from 'react';
+import { CircularProgressBar } from './CircleProgress';
+import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { ModelViewer } from '@/shared/components/common/ModelViewer';
-import { IconPlayerPlay } from '@/shared/components/icons';
+import {
+  IconCamera,
+  IconPlayerPause,
+  IconPlayerPlay,
+} from '@/shared/components/icons';
 import { useGetPublicArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useLoading } from '@/shared/providers/loading';
 
 export const ArAssets = ({ id }: { id: string }) => {
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState<number[]>([]);
+  const [duration, setDuration] = useState(0);
   const { data, isLoading, error } = useGetPublicArAsset(id);
+  const { open: openLoading, close: closeLoading } = useLoading();
 
-  const playVoice = useCallback(() => {
-    const audioPath = data?.speakingAudioPath;
-    if (!audioPath) return;
+  const togglePlay = useCallback(() => {
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  }, [audio]);
 
-    const audio = new Audio(audioPath);
-    audio.play();
+  useEffect(() => {
+    if (!data) return;
+    if (data.speakingAudioPath) {
+      const newAudio = new Audio(data.speakingAudioPath);
+      newAudio.addEventListener('loadedmetadata', () => {
+        setDuration(newAudio.duration);
+      });
+      newAudio.addEventListener('timeupdate', () => {
+        const cuProgress = (newAudio.currentTime / newAudio.duration) * 100;
+        if (cuProgress > 0) setProgress((prev) => [...prev, cuProgress]);
+        if (cuProgress === 100) {
+          setProgress([]);
+          setIsPlaying(false);
+        }
+      });
+      setAudio(newAudio);
+    }
   }, [data]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) openLoading();
+  if (!isLoading) closeLoading();
   if (error) return <div>falied to fetch</div>;
   if (!data) return null;
 
@@ -39,11 +72,13 @@ export const ArAssets = ({ id }: { id: string }) => {
           pos="absolute"
           bottom={16}
           left="50%"
+          variant="gradient"
           style={{ transform: 'translateX(-50%)' }}
+          leftSection={<IconCamera />}
         >
           ARで見る
         </Button>
-        <Button
+        <ActionIcon
           pos="absolute"
           bottom={16}
           right={0}
@@ -51,11 +86,18 @@ export const ArAssets = ({ id }: { id: string }) => {
           style={{
             transform: 'translateX(-50%)',
           }}
-          leftSection={<IconPlayerPlay />}
-          onClick={playVoice}
+          radius="xl"
+          variant="gradient"
+          size="xl"
+          onClick={togglePlay}
         >
-          再生
-        </Button>
+          {isPlaying ? <IconPlayerPause /> : <IconPlayerPlay />}
+          <CircularProgressBar
+            progress={progress}
+            duration={duration}
+            style={{ position: 'absolute' }}
+          />
+        </ActionIcon>
       </>
     </ModelViewer>
   );

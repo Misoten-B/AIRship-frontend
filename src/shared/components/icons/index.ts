@@ -16,4 +16,6 @@ export {
   IconBrandGoogle,
   IconX,
   IconPlayerPlay,
+  IconPlayerPause,
+  IconCamera,
 } from '@tabler/icons-react';
