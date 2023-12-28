@@ -25,6 +25,7 @@ import { useGetBusinessCardBackground } from '@/shared/hooks/restapi/v1/Business
 import { useGetBusinessCardCoordinate } from '@/shared/hooks/restapi/v1/useBusinessCardCoordinate';
 import { useForm } from '@/shared/hooks/useForm';
 import { useDisclosure } from '@/shared/lib/mantine';
+import { useLoading } from '@/shared/providers/loading';
 import { getAddressFromZipcode } from '@/shared/utils/address';
 // import { getAddressFromZipcode, prefectures } from '@/shared/utils/address';
 
@@ -33,7 +34,7 @@ export const CreateCard = () => {
   const { currentUser } = useAuth();
   const isDark = useColorScheme() === 'dark';
   const [isOpen, { open, close }] = useDisclosure();
-  const [isLoaded, { open: openLoader, close: closeLoader }] = useDisclosure();
+  const { open: openLoading, close: closeLoading } = useLoading();
   const { createBusinessCard } = useCreateBusinessCard();
 
   // 背景の取得
@@ -129,7 +130,7 @@ export const CreateCard = () => {
   // 登録処理
   const onSubmit = useCallback(
     async (data: CreateCardSchemaType) => {
-      openLoader();
+      openLoading();
       try {
         await createBusinessCard(
           getQRCodeValues('qrCodeSelection'),
@@ -148,15 +149,15 @@ export const CreateCard = () => {
       } catch (error) {
         console.error(error);
       }
-      closeLoader();
+      closeLoading();
       router.push(ROUTES.cards.base);
     },
     [
-      closeLoader,
+      closeLoading,
       createBusinessCard,
       designGetValues,
       getQRCodeValues,
-      openLoader,
+      openLoading,
       router,
     ],
   );
