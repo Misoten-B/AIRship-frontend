@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -7,6 +8,7 @@ import { Center, Flex } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
 import { BusinessCard } from '@/shared/components/features';
 import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCard/BusinessCardAspectRatio';
+import { ROUTES } from '@/shared/constants';
 import { useGetBusinessCards } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useMediaQuery } from '@/shared/lib/mantine';
 
@@ -81,7 +83,7 @@ export const Cards = () => {
           );
         })}
         <BusinessCardAspectRatio w={defaultBusinessCardWidht} m={0}>
-          <Button variant="default" top={ButtonTop}>
+          <Button component={Link} href={ROUTES.cards.create}>
             +
           </Button>
         </BusinessCardAspectRatio>
