@@ -83,7 +83,12 @@ export const Cards = () => {
           );
         })}
         <BusinessCardAspectRatio w={defaultBusinessCardWidht} m={0}>
-          <Button component={Link} href={ROUTES.cards.create}>
+          <Button
+            variant="default"
+            top={ButtonTop}
+            component={Link}
+            href={ROUTES.cards.create}
+          >
             +
           </Button>
         </BusinessCardAspectRatio>
