@@ -13,16 +13,16 @@ import { useLoading } from '@/shared/providers/loading';
 export const SigninGoogleButton = () => {
   const router = useRouter();
   const { createUser } = useCreateUser();
-  const { login, logout } = useAuth();
+  const { loginWithGoogle, logout } = useAuth();
   const { api } = useApiClient();
   const firebaseUser = useRecoilValue(firebaseUserState);
   const { open, close } = useLoading();
 
   const handleClick = useCallback(async () => {
     try {
-      if (!login) return;
+      if (!loginWithGoogle) return;
       open();
-      const token = login && (await login());
+      const token = loginWithGoogle && (await loginWithGoogle());
       const res = await createUser(token);
 
       router.push('/cards');
@@ -34,7 +34,7 @@ export const SigninGoogleButton = () => {
       logout && (await logout());
     }
     close();
-  }, [close, createUser, login, logout, open, router]);
+  }, [close, createUser, loginWithGoogle, logout, open, router]);
 
   return <GoogleButton onClick={handleClick} />;
 };
