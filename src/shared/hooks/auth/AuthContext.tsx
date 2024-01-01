@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { useRecoilState } from 'recoil';
 import {
+  firebaseSignInWithEmail,
   firebaseSignInWithGoogle,
   firebaseSignOut,
 } from '@/shared/lib/firebase';
@@ -20,7 +21,11 @@ import { User } from '@/shared/types';
 type AuthContextProps = {
   token?: string;
   currentUser?: User;
-  login?: () => Promise<string | undefined>;
+  loginWithGoogle?: () => Promise<string | undefined>;
+  loginWithEmailAndPassword?: (
+    email: string,
+    password: string,
+  ) => Promise<string | undefined>;
   logout?: () => Promise<void>;
 };
 
@@ -36,25 +41,52 @@ export const AuthProvider = ({ children }: Props) => {
   const [firebaseUser, setFirebaseUser] = useRecoilState(firebaseUserState);
   const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
-  const login = useCallback(async () => {
-    try {
-      const credential = await firebaseSignInWithGoogle();
-      if (!credential) return;
-      const token = await getAuth().currentUser?.getIdToken();
+  const loginWithGoogle: () => Promise<string | undefined> =
+    useCallback(async () => {
+      try {
+        const credential = await firebaseSignInWithGoogle();
+        if (!credential) return;
+        const token = await getAuth().currentUser?.getIdToken();
 
-      const cu: User = {
-        displayName: credential.user.displayName,
-        email: credential.user.email,
-        photoURL: credential.user.photoURL,
-        token: token,
-      };
-      setCurrentUser(cu);
-      setFirebaseUser(cu);
-      return token;
-    } catch (error) {
-      throw error;
-    }
-  }, [setFirebaseUser]);
+        const cu: User = {
+          displayName: credential.user.displayName,
+          email: credential.user.email,
+          photoURL: credential.user.photoURL,
+          token: token,
+        };
+        setCurrentUser(cu);
+        setFirebaseUser(cu);
+        return token;
+      } catch (error) {
+        throw error;
+      }
+    }, [setFirebaseUser]);
+
+  const loginWithEmailAndPassword: (
+    email: string,
+    password: string,
+  ) => Promise<string | undefined> = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const credential = await firebaseSignInWithEmail(email, password);
+        if (!credential) return;
+        const token = await getAuth().currentUser?.getIdToken();
+
+        const cu: User = {
+          displayName: credential.user.displayName,
+          email: credential.user.email,
+          photoURL: credential.user.photoURL,
+          token: token,
+        };
+        setCurrentUser(cu);
+        setFirebaseUser(cu);
+        return token;
+      } catch (error) {
+        throw error;
+      }
+    },
+    [setFirebaseUser],
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -71,7 +103,14 @@ export const AuthProvider = ({ children }: Props) => {
   }, [firebaseUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        loginWithGoogle,
+        loginWithEmailAndPassword,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

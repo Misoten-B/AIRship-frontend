@@ -14,13 +14,13 @@ export const LoginGoogleButton = () => {
   const router = useRouter();
   const firebaseUser = useRecoilValue(firebaseUserState);
   const { data, mutate, error } = useGetUser(!firebaseUser?.token);
-  const { login, logout } = useAuth();
+  const { loginWithGoogle, logout } = useAuth();
   const { api } = useApiClient();
   const { open, close } = useLoading();
 
   const handleClick = useCallback(async () => {
     try {
-      login && (await login());
+      loginWithGoogle && (await loginWithGoogle());
       open();
       const d = await mutate();
       if (d) {
@@ -35,7 +35,7 @@ export const LoginGoogleButton = () => {
       logout && (await logout());
     }
     close();
-  }, [close, login, logout, mutate, open, router]);
+  }, [close, loginWithGoogle, logout, mutate, open, router]);
 
   return <GoogleButton onClick={handleClick} />;
 };
