@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { GoogleButton } from '../common/Button';
 import { ErrorNotificationData, notifications } from '../common/Feedback';
+import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
 import { useCreateUser } from '@/shared/hooks/restapi/v1/User';
 import { useLoading } from '@/shared/providers/loading';
@@ -20,7 +21,7 @@ export const SigninGoogleButton = () => {
       const token = loginWithGoogle && (await loginWithGoogle());
       const res = await createUser(token);
 
-      router.push('/cards');
+      router.push(ROUTES.arAssets.base);
     } catch (e: any) {
       e.response.status === 500 &&
         notifications.show(
