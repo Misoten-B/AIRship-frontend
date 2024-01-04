@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import { GoogleButton } from '../common/Button';
 import { ErrorNotificationData, notifications } from '../common/Feedback';
+import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
 import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
@@ -25,7 +26,7 @@ export const LoginGoogleButton = () => {
       const d = await mutate();
       if (d) {
         console.debug('data', d);
-        router.push('/cards');
+        router.push(ROUTES.arAssets.base);
       } else {
         throw true;
       }
