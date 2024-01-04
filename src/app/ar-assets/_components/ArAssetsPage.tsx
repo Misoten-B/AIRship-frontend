@@ -9,7 +9,7 @@ import { ROUTES } from '@/shared/constants';
 export const ArAssetsPage = () => {
   return (
     <Container p={0}>
-      <Center bg="white">
+      <Center>
         <Flex gap={8} px={24} py={12} mb={16}>
           <Stack gap={0}>
             <Text size="xs" c="orange" ta="center" mb={4}>
