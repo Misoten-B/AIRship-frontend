@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -8,6 +9,7 @@ import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconMicrophone } from '@/shared/components/icons';
+import { ROUTES } from '@/shared/constants';
 import { useUpdateUser } from '@/shared/hooks/restapi/v1/User';
 import { useAudioRecorder } from '@/shared/hooks/useAudioRecorder';
 import { FFmpeg, loadFFmpeg, transcodeFile } from '@/shared/lib/ffmpeg';
@@ -18,6 +20,7 @@ const MAX_RECORDING_TIME = 10;
 export const RecordPage = () => {
   const toggleLoading = useToggleLoading();
   const { updateUser } = useUpdateUser();
+  const router = useRouter();
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const ffmpegRef = useRef(new FFmpeg());
@@ -67,6 +70,7 @@ export const RecordPage = () => {
       notifications.show({
         message: '音声モデルの生成が完了しました',
       });
+      router.push(ROUTES.arAssets.create);
     } catch (error) {
       console.error(error);
     } finally {
