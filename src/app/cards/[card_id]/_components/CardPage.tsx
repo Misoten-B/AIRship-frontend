@@ -1,7 +1,7 @@
 'use client';
 
-import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { domToCanvas } from 'modern-screenshot';
 import { useParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
@@ -15,7 +15,7 @@ import {
   IconPhotoSearch,
 } from '@/shared/components/icons';
 import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
-import { useDisclosure, useViewportSize } from '@/shared/lib/mantine';
+import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
 export const CardPage = () => {
@@ -24,22 +24,15 @@ export const CardPage = () => {
   const { data, error, isLoading } = useGetBusinessCard(params.card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
   const recoilScale = useRecoilValue(recoilScaleState);
-  const viewportWidth = useViewportSize().width;
 
   const exportPDF = async () => {
     const element = document.getElementById(`business_card`);
     if (!element) return;
-    const canvas = await html2canvas(element, {
-      useCORS: true,
-      logging: true,
-      allowTaint: false,
-    });
+
+    const canvas = await domToCanvas(element, {});
     const imageData = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgProps = pdf.getImageProperties(imageData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
     // 名刺のサイズ
     const cardWidth = 91 * (1 / recoilScale);
