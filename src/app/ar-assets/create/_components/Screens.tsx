@@ -76,7 +76,7 @@ export const CreateArAssetStepper = () => {
 export const StatusNoneScreen = () => {
   return (
     <Container>
-      <Text>先に生成する必要あり</Text>
+      <Text>先に声を登録して下さい</Text>
       <Button
         variant="filled"
         size="md"
@@ -100,8 +100,8 @@ export const StatusProgressScreen = () => {
 
   return (
     <Container>
-      <Text>現在生成中</Text>
-      <Text>手動で更新する場合はこちらから</Text>
+      <Text>現在生成中です</Text>
+      <Text>定期的にリロードで進行を確認して下さい</Text>
       <Button onClick={handleRefresh}>リロード</Button>
     </Container>
   );

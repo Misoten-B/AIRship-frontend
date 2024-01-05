@@ -64,7 +64,9 @@ export const Cards = () => {
           />
         ))}
         <BusinessCardAspectRatio w={defaultBusinessCardWidht}>
-          <Button variant="default">+</Button>
+          <Button variant="default" component={Link} href={ROUTES.cards.create}>
+            +
+          </Button>
         </BusinessCardAspectRatio>
       </Flex>
     </Container>
