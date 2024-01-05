@@ -3,11 +3,13 @@ import { AspectRatioProps } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { IconMail, IconPhone } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { Card } from '../../common/Layout';
 import { QRCode } from '../../common/QRCode';
 import { Text } from '../../common/Text';
 import { getQRCodeUrl } from '../QRCode';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
+import { recoilScaleState } from './atom';
 import {
   Dto_BusinessCardPartsCoordinate,
   Dto_BusinessCardResponse,
@@ -42,13 +44,20 @@ type BusinessCardPartsCoordinate = keyof NonNullable<
 export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
   const { ref, width, height } = useElementSize();
   const [scale, setScale] = useState(width / defaultWidth);
+  const [recoilScale, setRecoilScale] =
+    useRecoilState<number>(recoilScaleState);
 
   useEffect(() => {
     if (width) {
       const scale = width / defaultWidth;
       setScale(scale);
+      setRecoilScale(scale);
     }
-  }, [width]);
+  }, [setRecoilScale, width]);
+
+  useEffect(() => {
+    setRecoilScale(scale);
+  }, [recoilScale, scale, setRecoilScale]);
 
   // バックエンドの座標を、フロントに合わせて1/3に縮小する
   const businessCardPartsCoordinate: Record<

@@ -1,16 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Flex } from '@/shared/components/common/Layout';
-import { Loader } from '@/shared/components/common/Loader';
 import { BusinessCard } from '@/shared/components/features';
 import { BusinessCardAspectRatio } from '@/shared/components/features/BusinessCard/BusinessCardAspectRatio';
 import { ROUTES } from '@/shared/constants';
 import { useGetBusinessCards } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useMediaQuery } from '@/shared/lib/mantine';
+import { useLoading } from '@/shared/providers/loading';
 
 const defaultBusinessCardWidht = 1254 / 3;
 const diffTop = 120;
@@ -25,9 +26,10 @@ const initialState: State = {
 
 export const Cards = () => {
   const { data, error, isLoading } = useGetBusinessCards();
-
-  const isPC = useMediaQuery('(min-width: 768px)');
   const [selectedCard, setSelectedCard] = useState(initialState.selectedCard);
+  const router = useRouter();
+  const isPC = useMediaQuery('(min-width: 768px)');
+  const { open, close } = useLoading();
 
   // 計算が重くないから必要ないかも
   const ButtonTop = useMemo(() => {
@@ -39,16 +41,27 @@ export const Cards = () => {
     return ButtonTop + 40;
   }, [ButtonTop]);
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <Loader />;
+  const handleClcikCard = async (index: number, id: string) => {
+    setSelectedCard(index);
+    router.push(`${ROUTES.cards.detail(id)}`);
+  };
 
+  if (error) return <div>failed to load</div>;
+  if (isLoading) open();
   if (!data) return null;
+
+  close();
 
   return isPC ? (
     <Container w={'100%'}>
       <Flex w="100%" wrap="wrap" gap="lg" justify="space-around">
-        {data.map((card) => (
-          <BusinessCard key={card.id} card={card} />
+        {data.map((card, index) => (
+          <BusinessCard
+            key={card.id}
+            card={card}
+            id={`business_card${index}`}
+            onClick={() => handleClcikCard(index, card.id)}
+          />
         ))}
         <BusinessCardAspectRatio w={defaultBusinessCardWidht}>
           <Button variant="default">+</Button>
@@ -78,7 +91,12 @@ export const Cards = () => {
                 top: top,
                 left: '50%',
               }}
-              onClick={() => setSelectedCard(index)}
+              id={`business_card${index}`}
+              onClick={() => {
+                selectedCard === index
+                  ? handleClcikCard(index, card.id)
+                  : setSelectedCard(index);
+              }}
             />
           );
         })}
