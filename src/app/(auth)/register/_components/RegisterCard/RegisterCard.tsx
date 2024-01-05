@@ -4,6 +4,7 @@ import { IconUserPlus } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
 import { MailInput, PasswordConfirmInput, PasswordInput } from './Form';
 import { Schema, schema } from './schema';
 import { Button } from '@/shared/components/common/Button';
@@ -11,8 +12,10 @@ import { Container } from '@/shared/components/common/Container';
 import { Stack } from '@/shared/components/common/Layout/Stack';
 import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
+import { useCreateUser, useGetUser } from '@/shared/hooks/restapi/v1/User';
 import { useForm } from '@/shared/hooks/useForm';
 import { useNotifications } from '@/shared/hooks/useNotifications';
+import { firebaseUserState } from '@/shared/lib/recoil';
 import { useLoading } from '@/shared/providers/loading';
 
 export const RegisterCard = () => {
@@ -29,6 +32,9 @@ export const RegisterCard = () => {
   const { open, close } = useLoading();
   const { push } = useRouter();
   const { errorNotification } = useNotifications();
+  const firebaseUser = useRecoilValue(firebaseUserState);
+  const { data, mutate, error } = useGetUser(!firebaseUser?.token);
+  const { createUser } = useCreateUser();
 
   const onSubmit = useCallback(
     async (data: Schema) => {
@@ -37,11 +43,12 @@ export const RegisterCard = () => {
       }
       open();
       try {
-        const d = await createUserWithEmailAndPassword(
+        const token = await createUserWithEmailAndPassword(
           data.email,
           data.password,
         );
-        if (d) {
+        await createUser(token);
+        if (token) {
           push(ROUTES.arAssets.base);
         } else {
           throw true;

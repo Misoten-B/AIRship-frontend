@@ -4,6 +4,7 @@ import { IconUserPlus } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
 import { MailInput, PasswordInput } from './Form';
 import { EmailLoginSchema, emailLoginSchema } from './schema';
 import { Button } from '@/shared/components/common/Button';
@@ -11,8 +12,10 @@ import { Container } from '@/shared/components/common/Container';
 import { Stack } from '@/shared/components/common/Layout/Stack';
 import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
+import { useGetUser } from '@/shared/hooks/restapi/v1/User';
 import { useForm } from '@/shared/hooks/useForm';
 import { useNotifications } from '@/shared/hooks/useNotifications';
+import { firebaseUserState } from '@/shared/lib/recoil';
 import { useLoading } from '@/shared/providers/loading';
 
 export const LoginCard = () => {
@@ -29,6 +32,8 @@ export const LoginCard = () => {
   const { push } = useRouter();
   const { open, close } = useLoading();
   const { errorNotification } = useNotifications();
+  const firebaseUser = useRecoilValue(firebaseUserState);
+  const { mutate } = useGetUser(!firebaseUser?.token);
 
   const onSubmit = useCallback(
     async (data: EmailLoginSchema) => {
@@ -37,8 +42,9 @@ export const LoginCard = () => {
       }
       open();
       try {
-        const d = await loginWithEmailAndPassword(data.email, data.password);
-        if (d) {
+        await loginWithEmailAndPassword(data.email, data.password);
+        const user = await mutate();
+        if (user) {
           push(ROUTES.arAssets.base);
         } else {
           throw true;

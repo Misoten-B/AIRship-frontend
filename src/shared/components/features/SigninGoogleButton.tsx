@@ -19,9 +19,8 @@ export const SigninGoogleButton = () => {
     try {
       if (!loginWithGoogle) return;
       open();
-      const token = loginWithGoogle && (await loginWithGoogle());
-      const res = await createUser(token);
-
+      const token = await loginWithGoogle();
+      await createUser(token);
       router.push(ROUTES.arAssets.base);
     } catch (e: any) {
       e.response.status === 500 &&
