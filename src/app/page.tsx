@@ -1,7 +1,12 @@
 import { NextPage } from 'next';
-import { LoginButton } from '@/shared/components/features';
+import { IntroducePage } from './_components/IntroducePage';
 
 const Page: NextPage = () => {
-  return <LoginButton />;
+  return (
+    <>
+      <IntroducePage />
+    </>
+  );
 };
+
 export default Page;

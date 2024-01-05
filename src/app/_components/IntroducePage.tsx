@@ -1,4 +1,5 @@
 import { Overview } from './Overview/Overview';
+import { QRCodeSample } from './QRCodeSample/QRCodeSample';
 import { UsageSection } from './UsageSection/UsageSection';
 
 export const IntroducePage = () => {
@@ -6,6 +7,7 @@ export const IntroducePage = () => {
     <>
       <Overview />
       <UsageSection />
+      <QRCodeSample />
     </>
   );
 };
