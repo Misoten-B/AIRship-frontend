@@ -11,7 +11,7 @@ import { QRCode } from '@/shared/components/common/QRCode';
 export const ArAssetDetail = () => {
   return (
     <Container p={0}>
-      <Center bg="blue.1" h={350}>
+      <Center bg="blue.05" h={350}>
         <QRCode
           url="https://airship.com"
           imagesrc="/airship-logo-column.svg"
