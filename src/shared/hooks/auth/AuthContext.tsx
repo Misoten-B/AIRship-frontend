@@ -15,6 +15,7 @@ import {
   firebaseSignInWithGoogle,
   firebaseSignOut,
 } from '@/shared/lib/firebase';
+import { firebaseCreateUserWithEmailAndPassword } from '@/shared/lib/firebase/firebase';
 import { firebaseUserState } from '@/shared/lib/recoil';
 import { User } from '@/shared/types';
 
@@ -23,6 +24,10 @@ type AuthContextProps = {
   currentUser?: User;
   loginWithGoogle?: () => Promise<string | undefined>;
   loginWithEmailAndPassword?: (
+    email: string,
+    password: string,
+  ) => Promise<string | undefined>;
+  createUserWithEmailAndPassword?: (
     email: string,
     password: string,
   ) => Promise<string | undefined>;
@@ -62,6 +67,37 @@ export const AuthProvider = ({ children }: Props) => {
       }
     }, [setFirebaseUser]);
 
+  // 新規登録
+  const createUserWithEmailAndPassword: (
+    email: string,
+    password: string,
+  ) => Promise<string | undefined> = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const credential = await firebaseCreateUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        if (!credential) return;
+        const token = await getAuth().currentUser?.getIdToken();
+
+        const cu: User = {
+          displayName: credential.user.displayName,
+          email: credential.user.email,
+          photoURL: credential.user.photoURL,
+          token: token,
+        };
+        setCurrentUser(cu);
+        setFirebaseUser(cu);
+        return token;
+      } catch (error) {
+        throw error;
+      }
+    },
+    [setFirebaseUser],
+  );
+
+  // ログイン
   const loginWithEmailAndPassword: (
     email: string,
     password: string,
@@ -108,6 +144,7 @@ export const AuthProvider = ({ children }: Props) => {
         currentUser,
         loginWithGoogle,
         loginWithEmailAndPassword,
+        createUserWithEmailAndPassword,
         logout,
       }}
     >

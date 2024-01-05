@@ -1,4 +1,5 @@
 'use client';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +13,7 @@ import { firebaseUserState } from '@/shared/lib/recoil';
 import { useLoading } from '@/shared/providers/loading';
 
 export const LoginGoogleButton = () => {
-  const router = useRouter();
+  const { push } = useRouter();
   const firebaseUser = useRecoilValue(firebaseUserState);
   const { data, mutate, error } = useGetUser(!firebaseUser?.token);
   const { loginWithGoogle, logout } = useAuth();
@@ -27,18 +28,22 @@ export const LoginGoogleButton = () => {
       open();
       const d = await mutate();
       if (d) {
-        console.debug('data', d);
-        router.push(ROUTES.arAssets.base);
+        push(ROUTES.arAssets.base);
       } else {
         throw true;
       }
     } catch (error) {
-      console.debug('error', error);
-      errorNotification('登録されていません');
+      if (error instanceof AxiosError) {
+        if (error.code === '401') {
+          push(ROUTES.login.base);
+        }
+        errorNotification('登録されていません');
+      }
       logout && (await logout());
+    } finally {
+      close();
     }
-    close();
-  }, [close, errorNotification, loginWithGoogle, logout, mutate, open, router]);
+  }, [close, errorNotification, loginWithGoogle, logout, mutate, open, push]);
 
   return <GoogleButton onClick={handleClick} />;
 };
