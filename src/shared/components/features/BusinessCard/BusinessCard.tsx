@@ -128,6 +128,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
           backgroundColor: card.businessCardBackgroundColor || 'white',
           color: 'black',
           backgroundImage: `url(${card.businessCardBackgroundImage})`,
+          backgroundRepeat: 'no-repeat',
           backgroundSize: 'contain',
         }}
       >

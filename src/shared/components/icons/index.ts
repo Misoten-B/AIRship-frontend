@@ -18,4 +18,7 @@ export {
   IconPlayerPlay,
   IconPlayerPause,
   IconCamera,
+  IconBallpen,
+  IconDownload,
+  IconPhotoSearch,
 } from '@tabler/icons-react';
