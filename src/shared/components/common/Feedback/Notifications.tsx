@@ -1,3 +1,3 @@
-import { notifications as MantineNotification } from '@mantine/notifications';
+import { Notifications as MantineNotification } from '@mantine/notifications';
 
-export const notifications = MantineNotification;
+export const Notifications = MantineNotification;
