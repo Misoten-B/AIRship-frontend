@@ -37,7 +37,6 @@ export const CardPage = () => {
     const cardWidth = 91 * (1 / recoilScale);
     const cardHeight = 55 * (1 / recoilScale);
 
-    console.debug(cardWidth, cardHeight);
     // A4サイズの寸法
     const pageWidth = 210;
     const pageHeight = 297;
