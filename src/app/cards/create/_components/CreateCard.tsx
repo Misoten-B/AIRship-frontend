@@ -121,6 +121,7 @@ export const CreateCard = () => {
     businessCardBackgroundColor:
       bcbData?.find((bcb) => bcb.id === designWatch('backgroundImage'))
         ?.businessCardBackgroundColor ?? '',
+    arAssetId: '',
     speakingAudioPath: '',
     speakingDescription: '',
     threeDimentionalModel: '',

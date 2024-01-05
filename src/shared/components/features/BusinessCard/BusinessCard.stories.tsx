@@ -30,6 +30,7 @@ export const Main: Story = {
         officialPosition: undefined,
         phoneNumber: undefined,
         postalCode: undefined,
+        arAssetId: 'arAssetId',
         speakingAudioPath: '/ktok_test.wav',
         speakingDescription: 'こんにちは',
         threeDimentionalModel: '/dog.glb',

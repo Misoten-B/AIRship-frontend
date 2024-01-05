@@ -127,8 +127,8 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
         )}
 
         <QRCode
-          url={getQRCodeUrl(card.id)}
-          imagesrc="/airship-logo-column.svg"
+          url={getQRCodeUrl(card.arAssetId)}
+          imagesrc={card.qrcodeImagePath || ''}
           size={90 * scale}
           style={{
             position: 'absolute',
