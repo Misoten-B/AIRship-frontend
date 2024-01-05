@@ -2,8 +2,8 @@
 
 import '@mantine/notifications/styles.css';
 
-import { Notifications } from '@mantine/notifications';
 import { AppProgressBar } from 'next-nprogress-bar';
+import { Notifications } from '../components/common/Feedback';
 import { LoadingProvider } from './loading';
 import { AuthProvider } from '@/shared/hooks/auth';
 import { AxiosProvider } from '@/shared/lib/axios/AxiosProvider';

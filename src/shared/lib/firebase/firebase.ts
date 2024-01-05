@@ -4,6 +4,7 @@
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -24,15 +25,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+export const firebaseCreateUserWithEmailAndPassword = async (
+  email: string,
+  password: string,
+) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    return { user: result.user };
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const firebaseSignInWithEmail = async (
   email: string,
   password: string,
 ) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential!.accessToken;
-    return { token: token, user: result.user };
+    return { user: result.user };
   } catch (error) {
     throw error;
   }
@@ -44,8 +55,7 @@ export const firebaseSignInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential!.accessToken;
-    return { token: token, user: result.user };
+    return { user: result.user };
   } catch (error) {
     throw error;
   }
