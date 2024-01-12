@@ -60,7 +60,7 @@ export const LoginCard = () => {
         close();
       }
     },
-    [close, errorNotification, loginWithEmailAndPassword, open, push],
+    [close, errorNotification, loginWithEmailAndPassword, mutate, open, push],
   );
 
   return (

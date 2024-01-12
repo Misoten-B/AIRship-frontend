@@ -64,7 +64,14 @@ export const RegisterCard = () => {
         close();
       }
     },
-    [close, createUserWithEmailAndPassword, errorNotification, open, push],
+    [
+      close,
+      createUser,
+      createUserWithEmailAndPassword,
+      errorNotification,
+      open,
+      push,
+    ],
   );
 
   return (
