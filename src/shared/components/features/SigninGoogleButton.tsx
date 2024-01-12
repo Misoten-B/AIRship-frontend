@@ -18,16 +18,17 @@ export const SigninGoogleButton = () => {
   const handleClick = useCallback(async () => {
     try {
       if (!loginWithGoogle) return;
-      open();
       const token = await loginWithGoogle();
+      open();
       await createUser(token);
       router.push(ROUTES.arAssets.base);
     } catch (e: any) {
       e.response.status === 500 &&
         errorNotification('登録済みのアカウントです');
       logout && (await logout());
+    } finally {
+      close();
     }
-    close();
   }, [
     close,
     createUser,
