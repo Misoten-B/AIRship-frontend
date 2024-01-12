@@ -56,8 +56,6 @@ export const ArAssetItem = ({
             glb={threeDimentionalPath}
             alt={`${threeDimentionalPath} 3d model`}
             poster={''}
-            // usdz={'/cat.usdz'}
-            style={{ width: '100%' }}
           >
             <Button slot="ar-button" display="none" />
           </ModelViewer>

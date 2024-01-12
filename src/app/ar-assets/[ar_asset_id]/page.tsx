@@ -1,13 +1,12 @@
-import { NextPage } from 'next';
 import { ArAssetDetail } from './_components/ArAssetDetail';
 import { Guard } from '@/shared/components/features';
 import { GlobalNav } from '@/shared/components/layouts/GlobalNav';
 
-const Page: NextPage = () => {
+const Page = ({ params }: { params: { ar_asset_id: string } }) => {
   return (
     <Guard>
       <GlobalNav>
-        <ArAssetDetail />
+        <ArAssetDetail id={params.ar_asset_id} />
       </GlobalNav>
     </Guard>
   );

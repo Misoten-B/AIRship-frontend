@@ -4,7 +4,6 @@ import { QRCodeSVG } from 'qrcode.react';
 import { RefObject, useState } from 'react';
 import { Center, Paper } from '../Layout';
 import { AspectRatio } from '../Layout/AspectRatio';
-import { ASSETS } from '@/shared/constants';
 
 type Props = {
   url: string;
@@ -33,9 +32,9 @@ export const QRCode = (props: Props) => {
             bgColor={'#ffffff'}
             fgColor={'#000000'}
             level={'L'}
-            onError={() => {
-              setSrc(ASSETS.logo.column);
-            }}
+            // onError={() => {
+            //   setSrc(ASSETS.logo.column);
+            // }}
             {...(src && {
               imageSettings: {
                 src: src,
