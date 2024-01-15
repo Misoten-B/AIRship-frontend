@@ -1,13 +1,23 @@
 'use client';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/shared/components/common/Button';
 import { Textarea } from '@/shared/components/common/Input';
 import { Center, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
+import { ROUTES } from '@/shared/constants';
+import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useLoading } from '@/shared/providers/loading';
 
-export const SpeakingArea = () => {
+type Props = {
+  id: string;
+};
+
+export const SpeakingArea = ({ id }: Props) => {
+  const { data, error, isLoading } = useGetArAsset(id);
+  const { open, close } = useLoading();
   const { control } = useForm();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -18,6 +28,15 @@ export const SpeakingArea = () => {
       setIsEditing(true);
     }
   };
+
+  useEffect(() => {
+    if (isLoading) open();
+    if (!isLoading) close();
+
+    return () => close();
+  }, [close, isLoading, open]);
+  if (!data) return null;
+  if (error) return <div>failed to load</div>;
 
   return (
     <Stack gap={0}>
@@ -30,11 +49,26 @@ export const SpeakingArea = () => {
         </Text>
         <Stack align="flex-end" gap={4}>
           <Center mt={8} w={'100%'}>
-            <audio controls src="" style={{ width: '100%' }}></audio>
+            <audio
+              controls
+              src={data.speakingAudioPath}
+              style={{ width: '100%' }}
+            ></audio>
           </Center>
-          <Button variant="white" size="xs" radius="xl" color="blue.3">
-            元の音声の編集はこちら
+          <Button
+            variant="light"
+            size="xs"
+            radius="xl"
+            color="blue.3"
+            component={Link}
+            href={ROUTES.record.base}
+          >
+            AI化した音声を変更する場合はこちら
           </Button>
+
+          <Text size="xs" c="gray.6" mb={12}>
+            AI化した音声を変更した場合、再度音声を生成する必要があります。
+          </Text>
         </Stack>
       </Stack>
 
@@ -54,10 +88,11 @@ export const SpeakingArea = () => {
             minRows={3}
             mb={8}
             w={'100%'}
+            autoFocus
           />
         ) : (
           <Text size="sm" mb={8} ta="left">
-            初めまして。私の名前は田中太郎です。よろしくお願いします。
+            {data.speakingDescription}
           </Text>
         )}
         <Button

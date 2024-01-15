@@ -1,16 +1,19 @@
 'use client';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Image } from '@/shared/components/common/Image';
 import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Group, Stack } from '@/shared/components/common/Layout';
 import { Modal } from '@/shared/components/common/Modal';
+import { ModelViewer } from '@/shared/components/common/ModelViewer';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
+import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
 import { useForm } from '@/shared/hooks/useForm';
 import { useDisclosure } from '@/shared/lib/mantine';
+import { useLoading } from '@/shared/providers/loading';
 
 const schema = z.object({
   threeDModel: z.string(),
@@ -23,8 +26,14 @@ const fileInputSchema = z.object({
 type FormSchemaType = z.infer<typeof schema>;
 type FileInputSchemaType = z.infer<typeof fileInputSchema>;
 
-export const Display3dModel = () => {
+type Props = {
+  id: string;
+};
+
+export const Display3dModel = ({ id }: Props) => {
+  const { data, error, isLoading } = useGetArAsset(id);
   const [opened, { open, close }] = useDisclosure(false);
+  const { open: openLoading, close: closeLoading } = useLoading();
   const { control, setValue } = useForm<FormSchemaType>({
     defaultValues: {
       threeDModel: '',
@@ -40,6 +49,12 @@ export const Display3dModel = () => {
     setValue('threeDModel', value);
   };
 
+  useEffect(() => {
+    if (isLoading) openLoading();
+    if (!isLoading) closeLoading();
+    return () => closeLoading();
+  }, [closeLoading, isLoading, openLoading]);
+
   return (
     <Stack gap={0}>
       <Title order={5} c="blue.6" mb={4}>
@@ -49,7 +64,13 @@ export const Display3dModel = () => {
         3Dモデルデータを登録すると、QRコードから3DモデルをARとして表示させることができます。
       </Text>
       <Group justify="center" mt={8}>
-        <Image src="/3d_model_image.svg" alt="3d_model_image" height={160} />
+        <ModelViewer
+          glb={data?.threeDimentionalPath ?? ''}
+          alt={`${data?.threeDimentionalPath} 3d model`}
+          poster={''}
+        >
+          <Button slot="ar-button" display="none" />
+        </ModelViewer>
 
         <Modal opened={opened} onClose={close}>
           <Container>
@@ -65,7 +86,6 @@ export const Display3dModel = () => {
             <Grid>
               <Grid.Col span={4}>
                 <FileInput
-                  // TODO: wip
                   name="fileInput"
                   control={fileInputControl}
                   placeholder="アップロード"
