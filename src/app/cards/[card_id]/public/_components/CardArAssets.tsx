@@ -4,12 +4,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { CircularProgressBar } from './CircleProgress';
 import { ActionIcon, Button } from '@/shared/components/common/Button';
 import { ModelViewer } from '@/shared/components/common/ModelViewer';
+import { BusinessCard } from '@/shared/components/features';
 import {
   IconCamera,
   IconPlayerPause,
   IconPlayerPlay,
 } from '@/shared/components/icons';
-import { useGetPublicArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useGetPublicBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useLoading } from '@/shared/providers/loading';
 
 export const CardArAssets = ({ id }: { id: string }) => {
@@ -17,8 +18,8 @@ export const CardArAssets = ({ id }: { id: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState<number[]>([]);
   const [duration, setDuration] = useState(0);
-  const { data, isLoading, error } = useGetPublicArAsset(id);
   const { open: openLoading, close: closeLoading } = useLoading();
+  const { data, isLoading, error } = useGetPublicBusinessCard(id);
 
   const togglePlay = useCallback(() => {
     if (!audio) return;
@@ -56,11 +57,21 @@ export const CardArAssets = ({ id }: { id: string }) => {
   if (!data) return null;
 
   return (
-    <>
-      {/* <BusinessCard card={} style={{ width: '100%', height: '100%' }} /> */}
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <BusinessCard
+        card={data}
+        style={{
+          left: '50%',
+          position: 'absolute',
+          top: '70%',
+          transform: 'translate(-50%, -50%) rotateX(45deg)',
+          width: '100%',
+          zIndex: '-1',
+        }}
+      />
       <ModelViewer
         poster={''}
-        glb={data.threeDimentionalPath ?? '/dog.glb'}
+        glb={data.threeDimentionalModel ?? '/dog.glb'}
         alt={''}
         height="100%"
         ar
@@ -102,6 +113,6 @@ export const CardArAssets = ({ id }: { id: string }) => {
           </ActionIcon>
         </>
       </ModelViewer>
-    </>
+    </div>
   );
 };
