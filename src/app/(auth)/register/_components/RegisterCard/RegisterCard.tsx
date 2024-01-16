@@ -28,7 +28,6 @@ export const RegisterCard = () => {
         return;
       }
       try {
-        console.debug(data.email);
         await sendSignInLinkToEmail(data.email);
         infoNotification('入力されたメールアドレスへURLを送信しました');
       } catch (error) {

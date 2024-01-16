@@ -30,7 +30,6 @@ const auth = getAuth(app);
 export const sendSignInLink = async (email: string) => {
   try {
     const url = process.env.NEXT_PUBLIC_BASE_URL ?? '';
-    console.debug(url);
     await sendSignInLinkToEmail(auth, email, {
       url,
       handleCodeInApp: true,
