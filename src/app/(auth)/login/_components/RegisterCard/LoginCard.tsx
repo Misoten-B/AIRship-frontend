@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
-import { MailInput, PasswordInput } from './Form';
+import { MailInput } from './Form';
 import { EmailLoginSchema, emailLoginSchema } from './schema';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -19,13 +19,12 @@ import { firebaseUserState } from '@/shared/lib/recoil';
 import { useLoading } from '@/shared/providers/loading';
 
 export const LoginCard = () => {
-  const { loginWithEmailAndPassword } = useAuth();
+  const { loginWithEmail } = useAuth();
 
   const { handleSubmit, control } = useForm<EmailLoginSchema>({
     resolver: zodResolver(emailLoginSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   });
 
@@ -37,12 +36,12 @@ export const LoginCard = () => {
 
   const onSubmit = useCallback(
     async (data: EmailLoginSchema) => {
-      if (!loginWithEmailAndPassword) {
+      if (!loginWithEmail) {
         return;
       }
       open();
       try {
-        await loginWithEmailAndPassword(data.email, data.password);
+        await loginWithEmail();
         const user = await mutate();
         if (user) {
           push(ROUTES.arAssets.base);
@@ -60,7 +59,7 @@ export const LoginCard = () => {
         close();
       }
     },
-    [close, errorNotification, loginWithEmailAndPassword, mutate, open, push],
+    [close, errorNotification, loginWithEmail, mutate, open, push],
   );
 
   return (
@@ -68,7 +67,6 @@ export const LoginCard = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap="xl">
           <MailInput name="email" control={control} />
-          <PasswordInput name="password" control={control} />
           <Button
             type="submit"
             fullWidth

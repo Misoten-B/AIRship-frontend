@@ -11,26 +11,23 @@ import {
 } from 'react';
 import { useRecoilState } from 'recoil';
 import {
-  firebaseSignInWithEmail,
   firebaseSignInWithGoogle,
   firebaseSignOut,
 } from '@/shared/lib/firebase';
-import { firebaseCreateUserWithEmailAndPassword } from '@/shared/lib/firebase/firebase';
+import {
+  firebaseSignInWithEmailLink,
+  sendSignInLink,
+} from '@/shared/lib/firebase/firebase';
 import { firebaseUserState } from '@/shared/lib/recoil';
+import { emailState } from '@/shared/lib/recoil/atom';
 import { User } from '@/shared/types';
 
 type AuthContextProps = {
   token?: string;
   currentUser?: User;
   loginWithGoogle?: () => Promise<string | undefined>;
-  loginWithEmailAndPassword?: (
-    email: string,
-    password: string,
-  ) => Promise<string | undefined>;
-  createUserWithEmailAndPassword?: (
-    email: string,
-    password: string,
-  ) => Promise<string | undefined>;
+  sendSignInLinkToEmail?: (email: string) => Promise<void>;
+  loginWithEmail?: () => Promise<string | undefined>;
   logout?: () => Promise<void>;
 };
 
@@ -45,6 +42,7 @@ type Props = {
 export const AuthProvider = ({ children }: Props) => {
   const [firebaseUser, setFirebaseUser] = useRecoilState(firebaseUserState);
   const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
+  const [email, setEmail] = useRecoilState(emailState);
 
   const loginWithGoogle: () => Promise<string | undefined> =
     useCallback(async () => {
@@ -67,72 +65,49 @@ export const AuthProvider = ({ children }: Props) => {
       }
     }, [setFirebaseUser]);
 
-  // 新規登録
-  const createUserWithEmailAndPassword: (
-    email: string,
-    password: string,
-  ) => Promise<string | undefined> = useCallback(
-    async (email: string, password: string) => {
+  // Eメール認証
+  const sendSignInLinkToEmail: (email: string) => Promise<void> =
+    useCallback(async () => {
       try {
-        const credential = await firebaseCreateUserWithEmailAndPassword(
-          email,
-          password,
-        );
-        if (!credential) return;
-        const token = await getAuth().currentUser?.getIdToken();
+        await sendSignInLink(email);
+        setEmail(email);
+      } catch (error) {
+        throw error;
+      }
+    }, [email, setEmail]);
 
+  // Eメールリンクログイン
+  const loginWithEmail: () => Promise<string | undefined> =
+    useCallback(async () => {
+      try {
+        const c = await firebaseSignInWithEmailLink(email);
+        if (!c) return;
+        const token = await getAuth().currentUser?.getIdToken();
         const cu: User = {
-          displayName: credential.user.displayName,
-          email: credential.user.email,
-          photoURL: credential.user.photoURL,
+          displayName: c.user.displayName,
+          email: c.user.email,
+          photoURL: c.user.photoURL,
           token: token,
         };
         setCurrentUser(cu);
         setFirebaseUser(cu);
+        setEmail('');
         return token;
       } catch (error) {
         throw error;
       }
-    },
-    [setFirebaseUser],
-  );
-
-  // ログイン
-  const loginWithEmailAndPassword: (
-    email: string,
-    password: string,
-  ) => Promise<string | undefined> = useCallback(
-    async (email: string, password: string) => {
-      try {
-        const credential = await firebaseSignInWithEmail(email, password);
-        if (!credential) return;
-        const token = await getAuth().currentUser?.getIdToken();
-
-        const cu: User = {
-          displayName: credential.user.displayName,
-          email: credential.user.email,
-          photoURL: credential.user.photoURL,
-          token: token,
-        };
-        setCurrentUser(cu);
-        setFirebaseUser(cu);
-        return token;
-      } catch (error) {
-        throw error;
-      }
-    },
-    [setFirebaseUser],
-  );
+    }, [email, setEmail, setFirebaseUser]);
 
   const logout = useCallback(async () => {
     try {
       await firebaseSignOut();
       setCurrentUser(null);
       setFirebaseUser(null);
+      setEmail('');
     } catch (error) {
       throw error;
     }
-  }, [setFirebaseUser]);
+  }, [setEmail, setFirebaseUser]);
 
   useEffect(() => {
     setCurrentUser(firebaseUser);
@@ -143,8 +118,8 @@ export const AuthProvider = ({ children }: Props) => {
       value={{
         currentUser,
         loginWithGoogle,
-        loginWithEmailAndPassword,
-        createUserWithEmailAndPassword,
+        sendSignInLinkToEmail,
+        loginWithEmail,
         logout,
       }}
     >

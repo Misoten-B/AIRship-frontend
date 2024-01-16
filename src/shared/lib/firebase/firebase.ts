@@ -6,7 +6,9 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
+  sendSignInLinkToEmail,
   signInWithEmailAndPassword,
+  signInWithEmailLink,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
@@ -24,6 +26,30 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+export const sendSignInLink = async (email: string) => {
+  try {
+    await sendSignInLinkToEmail(auth, email, {
+      url: process.env.NEXT_PUBLIC_BASE_URL ?? '',
+    });
+    return email;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const firebaseSignInWithEmailLink = async (email: string) => {
+  try {
+    const result = await signInWithEmailLink(
+      auth,
+      email,
+      process.env.NEXT_PUBLIC_BASE_URL,
+    );
+    return { user: result.user };
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const firebaseCreateUserWithEmailAndPassword = async (
   email: string,

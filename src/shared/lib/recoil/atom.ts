@@ -15,3 +15,9 @@ export const globalState = atom<GlobalConfig>({
   default: { dark: false },
   effects: [persistAtom],
 });
+
+export const emailState = atom<string>({
+  key: 'emailState',
+  default: '',
+  effects: [persistAtom],
+});
