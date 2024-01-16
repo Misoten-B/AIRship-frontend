@@ -6,9 +6,12 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconUpload } from '@/shared/components/icons';
 import {
+  useDeleteQRCodeIcon,
   useGetArAsset,
   useUpdateArAsset,
 } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useLoading } from '@/shared/providers/loading';
 
 type Props = {
@@ -18,6 +21,8 @@ type Props = {
 export const QRCodeInsideImage = ({ id }: Props) => {
   const { data, isLoading, error, mutate } = useGetArAsset(id);
   const { updateArAsset } = useUpdateArAsset(id);
+  const { infoNotification, errorNotification } = useNotifications();
+  const { deleteQRCodeIcon } = useDeleteQRCodeIcon(id);
   const [file, setFile] = useState<File | null>(null);
   const { open, close } = useLoading();
 
@@ -29,14 +34,25 @@ export const QRCodeInsideImage = ({ id }: Props) => {
   };
 
   const handleDelete = async () => {
-    if (!updateArAsset || !data) return;
+    try {
+      open();
+      if (!data) return;
 
-    await updateArAsset(
-      data?.speakingDescription,
-      data?.threeDimentionalPath,
-      file ?? undefined,
-    );
-    mutate();
+      await deleteQRCodeIcon();
+
+      infoNotification('QRコードアイコンを削除しました');
+      mutate();
+    } catch (error) {
+      const message = 'QRコードアイコンの削除に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      close();
+    }
   };
 
   useEffect(() => {
