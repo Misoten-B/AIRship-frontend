@@ -83,7 +83,7 @@ export const BusinessCardBackgroundCrop = () => {
   return (
     <>
       <BusinessCardAspectRatio>
-        <FileButton onChange={onFileChange} accept="image/png">
+        <FileButton onChange={onFileChange} accept="image/png,image/jpeg">
           {(props) => (
             <Button
               w="100%"

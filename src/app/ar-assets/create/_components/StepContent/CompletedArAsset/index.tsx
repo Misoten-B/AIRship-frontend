@@ -1,7 +1,10 @@
+import { TextInput } from '@mantine/core';
+import { IconExternalLink, IconLink } from '@tabler/icons-react';
+import Link from 'next/link';
 import { useRequestBodiesValue } from '../../RequestBodiesProvider';
-import { Button } from '@/shared/components/common/Button';
+import { Button, CopyButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { Center, Stack } from '@/shared/components/common/Layout';
+import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
@@ -49,21 +52,49 @@ export const CompletedArAsset = () => {
               size={100}
               qrref={ref}
             />
+            <Button
+              variant="transparent"
+              component={Link}
+              target="_blank"
+              href={getQRCodeUrl(data.id)}
+              leftSection={<IconExternalLink />}
+            >
+              実際に確認する
+            </Button>
             <Text size="sm" c="gray" w={240}>
               カメラで読み取るとARで3D画像と生成された声を聞くことができます。
             </Text>
           </Stack>
         </Center>
         <Center>
-          <Button
-            leftSection={<IconArrowBarToDown />}
-            radius="xl"
-            w={240}
-            mt={24}
-            onClick={handleDownload}
-          >
-            QRコードをダウンロード
-          </Button>
+          <Stack>
+            <Stack>
+              <Text size="xs" c="gray.6">
+                URLをコピー
+              </Text>
+              <Group
+                gap={0}
+                justify="space-around"
+                style={{ alignItems: 'center' }}
+              >
+                <TextInput
+                  leftSection={<IconLink />}
+                  defaultValue={getQRCodeUrl(data.id)}
+                  readOnly
+                />
+                <CopyButton value={getQRCodeUrl(data.id)} />
+              </Group>
+            </Stack>
+            <Button
+              leftSection={<IconArrowBarToDown />}
+              radius="xl"
+              w={240}
+              mt={24}
+              onClick={handleDownload}
+            >
+              QRコードをダウンロード
+            </Button>
+          </Stack>
         </Center>
       </Stack>
     </Container>
