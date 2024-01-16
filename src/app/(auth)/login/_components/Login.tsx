@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { LoginCard } from './RegisterCard/LoginCard';
+import { LoginCard } from './LoginCard';
 import { Divider } from '@/shared/components/common/Divider';
 import { Flex } from '@/shared/components/common/Layout';
 import { Center } from '@/shared/components/common/Layout/Center';
