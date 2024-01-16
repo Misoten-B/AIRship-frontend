@@ -36,7 +36,6 @@ export const useUpdateBusinessCard = (businessCardId: string) => {
             officialPosition: officialPosition,
             phoneNumber: phoneNumber,
             postalCode: postalCode,
-            BusinessCardBackgroundImage: businessCardBackgroundImage,
           },
         });
     },

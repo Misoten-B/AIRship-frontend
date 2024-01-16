@@ -21,4 +21,6 @@ export {
   IconBallpen,
   IconDownload,
   IconPhotoSearch,
+  IconPlayerRecord,
+  IconPlayerStop,
 } from '@tabler/icons-react';
