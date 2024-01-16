@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import {
+  DeleteButtonContainer,
   Display3dModel,
   QRCodeInsideImage,
   SpeakingArea,
@@ -43,6 +44,8 @@ export const ArAssetDetail = ({ id }: { id: string }) => {
         <Display3dModel id={id} />
         <Divider my="sm" />
         <SpeakingArea id={id} />
+        <Divider my="xl" />
+        <DeleteButtonContainer id={id} />
       </Stack>
     </>
   );

@@ -8,7 +8,6 @@ import { IconUpload } from '@/shared/components/icons';
 import {
   useDeleteQRCodeIcon,
   useGetArAsset,
-  useUpdateArAsset,
 } from '@/shared/hooks/restapi/v1/ArAssets';
 import { useNotifications } from '@/shared/hooks/useNotifications';
 import { isApiError } from '@/shared/lib/axios/errorHandling';
@@ -20,18 +19,19 @@ type Props = {
 
 export const QRCodeInsideImage = ({ id }: Props) => {
   const { data, isLoading, error, mutate } = useGetArAsset(id);
-  const { updateArAsset } = useUpdateArAsset(id);
   const { infoNotification, errorNotification } = useNotifications();
   const { deleteQRCodeIcon } = useDeleteQRCodeIcon(id);
   const [file, setFile] = useState<File | null>(null);
   const { open, close } = useLoading();
 
-  const handleUpdate = async () => {
-    if (!updateArAsset || !data) return;
+  useEffect(() => {
+    if (isLoading) open();
+    if (!isLoading) close();
 
-    await updateArAsset(data?.speakingDescription, data?.threeDimentionalPath);
-    mutate();
-  };
+    return () => {
+      close();
+    };
+  }, [close, isLoading, open]);
 
   const handleDelete = async () => {
     try {
@@ -54,15 +54,6 @@ export const QRCodeInsideImage = ({ id }: Props) => {
       close();
     }
   };
-
-  useEffect(() => {
-    if (isLoading) open();
-    if (!isLoading) close();
-
-    return () => {
-      close();
-    };
-  }, [close, isLoading, open]);
 
   if (error) return <div>failed to load</div>;
   if (!data) return null;
