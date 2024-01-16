@@ -1,12 +1,10 @@
-import { ReadStream } from 'fs';
 import { useCallback } from 'react';
 import { useApiClient } from '@/shared/lib/axios/AxiosProvider';
 
 export const useUpdateBusinessCard = (businessCardId: string) => {
   const { api } = useApiClient();
-  const updaeBusinessCard = useCallback(
+  const updateBusinessCard = useCallback(
     (
-      businessCardBackgroundImage: File | ReadStream,
       arAssetsId: string,
       businessCardBackgroundId: string,
       businessCardPartsCoordinate: string,
@@ -36,11 +34,10 @@ export const useUpdateBusinessCard = (businessCardId: string) => {
             officialPosition: officialPosition,
             phoneNumber: phoneNumber,
             postalCode: postalCode,
-            BusinessCardBackgroundImage: businessCardBackgroundImage,
           },
         });
     },
     [api?.v1.users.business_cards, businessCardId],
   );
-  return { updaeBusinessCard };
+  return { updateBusinessCard };
 };

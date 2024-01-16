@@ -3,6 +3,7 @@
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
 import { Flex, Stack } from '@/shared/components/common/Layout';
@@ -14,6 +15,7 @@ import {
   IconDownload,
   IconPhotoSearch,
 } from '@/shared/components/icons';
+import { ROUTES } from '@/shared/constants';
 import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
@@ -21,6 +23,7 @@ import { useLoading } from '@/shared/providers/loading';
 export const CardPage = () => {
   const params = useParams<{ card_id: string }>();
   const [opened, { open, close }] = useDisclosure();
+  const router = useRouter();
   const { data, error, isLoading } = useGetBusinessCard(params.card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
   const recoilScale = useRecoilValue(recoilScaleState);
@@ -59,6 +62,13 @@ export const CardPage = () => {
     pdf.save(`${data?.displayName}.pdf`);
   };
 
+  const handleOnClickEdit = () => {
+    if (!data) {
+      console.error(data);
+      return;
+    }
+    router.push(`${ROUTES.cards.edit(data.id)}`);
+  };
   if (error) return <div>failed to load</div>;
   if (isLoading) openLoading();
   closeLoading();
@@ -76,7 +86,12 @@ export const CardPage = () => {
         >
           拡大表示
         </Button>
-        <Button leftSection={<IconBallpen />} fullWidth variant="outline">
+        <Button
+          leftSection={<IconBallpen />}
+          fullWidth
+          variant="outline"
+          onClick={handleOnClickEdit}
+        >
           名刺を編集する
         </Button>
         <Button leftSection={<IconDownload />} onClick={exportPDF} fullWidth>
