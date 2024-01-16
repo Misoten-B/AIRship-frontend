@@ -66,15 +66,17 @@ export const AuthProvider = ({ children }: Props) => {
     }, [setFirebaseUser]);
 
   // Eメール認証
-  const sendSignInLinkToEmail: (email: string) => Promise<void> =
-    useCallback(async () => {
+  const sendSignInLinkToEmail: (email: string) => Promise<void> = useCallback(
+    async (email: string) => {
       try {
         await sendSignInLink(email);
         setEmail(email);
       } catch (error) {
         throw error;
       }
-    }, [email, setEmail]);
+    },
+    [setEmail],
+  );
 
   // Eメールリンクログイン
   const loginWithEmail: () => Promise<string | undefined> =

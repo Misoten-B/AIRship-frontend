@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconUserPlus } from '@tabler/icons-react';
 import { useCallback } from 'react';
-import { MailInput, PasswordConfirmInput, PasswordInput } from './Form';
+import { MailInput } from './Form';
 import { Schema, schema } from './schema';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
@@ -16,8 +16,6 @@ export const RegisterCard = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       email: '',
-      password: '',
-      confirmPassword: '',
     },
   });
 
@@ -30,6 +28,7 @@ export const RegisterCard = () => {
         return;
       }
       try {
+        console.debug(data.email);
         await sendSignInLinkToEmail(data.email);
         infoNotification('入力されたメールアドレスへURLを送信しました');
       } catch (error) {
@@ -44,8 +43,6 @@ export const RegisterCard = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack gap="xl">
           <MailInput name="email" control={control} />
-          <PasswordInput name="password" control={control} />
-          <PasswordConfirmInput name="confirmPassword" control={control} />
           <Button
             type="submit"
             fullWidth

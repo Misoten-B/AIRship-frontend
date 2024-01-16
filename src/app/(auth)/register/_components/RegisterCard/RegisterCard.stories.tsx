@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { RegisterCard } from '.';
+import { AuthProvider } from '@/shared/hooks/auth';
 
 const meta: Meta<typeof RegisterCard> = {
   component: undefined,
@@ -10,6 +11,10 @@ type Story = StoryObj<typeof RegisterCard>;
 
 export const Main: Story = {
   render: () => {
-    return <RegisterCard />;
+    return (
+      <AuthProvider>
+        <RegisterCard />
+      </AuthProvider>
+    );
   },
 };
