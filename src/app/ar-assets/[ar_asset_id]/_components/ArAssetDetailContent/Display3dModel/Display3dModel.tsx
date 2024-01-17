@@ -1,17 +1,24 @@
 'use client';
+
 import { useEffect } from 'react';
 import { z } from 'zod';
-import { Button } from '@/shared/components/common/Button';
+import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Group, Stack } from '@/shared/components/common/Layout';
 import { Modal } from '@/shared/components/common/Modal';
 import { ModelViewer } from '@/shared/components/common/ModelViewer';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
-import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { IconUpload } from '@/shared/components/icons';
+import {
+  useGetArAsset,
+  useUpdateArAsset,
+} from '@/shared/hooks/restapi/v1/ArAssets';
+import { useCreateThreeDimentionalModel } from '@/shared/hooks/restapi/v1/ThreeDimentionalModel';
 import { useForm } from '@/shared/hooks/useForm';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
@@ -19,12 +26,7 @@ const schema = z.object({
   threeDModel: z.string(),
 });
 
-const fileInputSchema = z.object({
-  fileInput: z.string(),
-});
-
 type FormSchemaType = z.infer<typeof schema>;
-type FileInputSchemaType = z.infer<typeof fileInputSchema>;
 
 type Props = {
   id: string;
@@ -34,16 +36,14 @@ export const Display3dModel = ({ id }: Props) => {
   const { data, error, isLoading, mutate } = useGetArAsset(id);
   const [opened, { open, close }] = useDisclosure(false);
   const { open: openLoading, close: closeLoading } = useLoading();
-  const { control, setValue } = useForm<FormSchemaType>({
+  const { control, setValue, handleSubmit } = useForm<FormSchemaType>({
     defaultValues: {
       threeDModel: '',
     },
   });
-  const { control: fileInputControl } = useForm<FileInputSchemaType>({
-    defaultValues: {
-      fileInput: '',
-    },
-  });
+  const { infoNotification, errorNotification } = useNotifications();
+  const { updateArAsset } = useUpdateArAsset(id);
+  const { createThreeDimentionalModel } = useCreateThreeDimentionalModel();
 
   const handleSetValue = (value: string) => {
     setValue('threeDModel', value);
@@ -54,6 +54,61 @@ export const Display3dModel = ({ id }: Props) => {
     if (!isLoading) closeLoading();
     return () => closeLoading();
   }, [closeLoading, isLoading, openLoading]);
+
+  const handleChange = async (payload: File | null) => {
+    try {
+      openLoading();
+      if (!data || !payload) return;
+
+      await createThreeDimentionalModel(payload);
+
+      infoNotification('3Dモデルをアップロードしました');
+      mutate();
+    } catch (error) {
+      const message = '3Dモデルのアップロードに失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      closeLoading();
+    }
+  };
+
+  const handleClick = async (values: FormSchemaType) => {
+    try {
+      openLoading();
+      if (!data) return;
+
+      await updateArAsset(data.speakingDescription, values.threeDModel);
+
+      infoNotification('3Dモデルを更新しました');
+      mutate();
+      closeModal();
+    } catch (error) {
+      const message = '3Dモデルの更新に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      closeLoading();
+    }
+  };
+
+  const openModal = () => {
+    open();
+    setValue('threeDModel', data?.threeDimentionalId ?? '');
+  };
+
+  const closeModal = () => {
+    close();
+    setValue('threeDModel', '');
+  };
 
   return (
     <Stack gap={0}>
@@ -72,7 +127,7 @@ export const Display3dModel = ({ id }: Props) => {
           <Button slot="ar-button" display="none" />
         </ModelViewer>
 
-        <Modal opened={opened} onClose={close}>
+        <Modal opened={opened} onClose={closeModal}>
           <Container>
             <Title order={5} mb={4} c="dark">
               サンプル3Dモデル
@@ -85,27 +140,36 @@ export const Display3dModel = ({ id }: Props) => {
 
             <Grid>
               <Grid.Col span={4}>
-                <FileInput
+                <FileButton
                   name="fileInput"
-                  control={fileInputControl}
-                  placeholder="アップロード"
-                  size="xs"
-                  styles={{
-                    wrapper: { height: '100%' },
-                    root: { height: '100%' },
-                    input: { height: 'calc(100% - 28px)' },
-                  }}
-                />
+                  onChange={handleChange}
+                  accept=".glb"
+                >
+                  {(props) => (
+                    <Button
+                      variant="outline"
+                      {...props}
+                      leftSection={<IconUpload />}
+                    >
+                      Upload
+                    </Button>
+                  )}
+                </FileButton>
               </Grid.Col>
             </Grid>
 
-            <Button onClick={close} w="100%" radius="md">
+            <Button onClick={handleSubmit(handleClick)} w="100%" radius="md">
               選択
             </Button>
           </Container>
         </Modal>
 
-        <Button variant="outline" color="orange" radius="xl" onClick={open}>
+        <Button
+          variant="outline"
+          color="orange"
+          radius="xl"
+          onClick={openModal}
+        >
           選択する
         </Button>
       </Group>
