@@ -32,9 +32,9 @@ export const QRCode = (props: Props) => {
             bgColor={'#ffffff'}
             fgColor={'#000000'}
             level={'L'}
-            // onError={() => {
-            //   setSrc(ASSETS.logo.column);
-            // }}
+            onError={() => {
+              setSrc('');
+            }}
             {...(src && {
               imageSettings: {
                 src: src,

@@ -1,33 +1,51 @@
 'use client';
+
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/shared/components/common/Button';
 import { Textarea } from '@/shared/components/common/Input';
-import { Center, Stack } from '@/shared/components/common/Layout';
+import { Center, Group, Stack } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { ROUTES } from '@/shared/constants';
-import { useGetArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import {
+  useGetArAsset,
+  useUpdateArAsset,
+} from '@/shared/hooks/restapi/v1/ArAssets';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useLoading } from '@/shared/providers/loading';
 
 type Props = {
   id: string;
 };
 
-export const SpeakingArea = ({ id }: Props) => {
-  const { data, error, isLoading } = useGetArAsset(id);
-  const { open, close } = useLoading();
-  const { control } = useForm();
-  const [isEditing, setIsEditing] = useState(false);
+type State = {
+  isEditing: boolean;
+};
 
-  const toggleEditMode = () => {
-    if (isEditing) {
-      setIsEditing(false);
-    } else {
-      setIsEditing(true);
-    }
-  };
+type FieldValues = {
+  speakingDescription: string;
+};
+
+const initialState: State = {
+  isEditing: false,
+};
+
+const initFieldValues: FieldValues = {
+  speakingDescription: '',
+};
+
+export const SpeakingArea = ({ id }: Props) => {
+  const { data, error, isLoading, mutate } = useGetArAsset(id);
+  const { open, close } = useLoading();
+  const { control, setValue, handleSubmit } = useForm<FieldValues>({
+    defaultValues: initFieldValues,
+  });
+  const [isEditing, setIsEditing] = useState(initialState.isEditing);
+  const { infoNotification, errorNotification } = useNotifications();
+  const { updateArAsset } = useUpdateArAsset(id);
 
   useEffect(() => {
     if (isLoading) open();
@@ -35,6 +53,47 @@ export const SpeakingArea = ({ id }: Props) => {
 
     return () => close();
   }, [close, isLoading, open]);
+
+  const handleClick = () => {
+    if (isEditing) {
+      handleSubmit(updateSpeakingDescription)();
+    } else {
+      openEditMode();
+    }
+  };
+
+  const updateSpeakingDescription = async (values: FieldValues) => {
+    try {
+      open();
+      if (!data) return;
+
+      await updateArAsset(values.speakingDescription, data.threeDimentionalId);
+
+      infoNotification('話させる文章を更新しました');
+      mutate();
+      closeEditMode();
+    } catch (error) {
+      const message = '話させる文章の更新に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      close();
+    }
+  };
+
+  const openEditMode = () => {
+    setIsEditing(true);
+    setValue('speakingDescription', data?.speakingDescription ?? '');
+  };
+
+  const closeEditMode = () => {
+    setIsEditing(initialState.isEditing);
+  };
+
   if (!data) return null;
   if (error) return <div>failed to load</div>;
 
@@ -81,7 +140,7 @@ export const SpeakingArea = ({ id }: Props) => {
       <Stack align="flex-start" justify="flex-start" mb={12} gap="xs">
         {isEditing ? (
           <Textarea
-            name=""
+            name="speakingDescription"
             control={control}
             placeholder="100文字以下で入力してください。"
             autosize
@@ -95,15 +154,28 @@ export const SpeakingArea = ({ id }: Props) => {
             {data.speakingDescription}
           </Text>
         )}
-        <Button
-          variant={isEditing ? 'filled' : 'outline'}
-          color="orange"
-          size="xs"
-          radius="xl"
-          onClick={toggleEditMode}
-        >
-          {isEditing ? '保存して合成音声を生成する' : '編集する'}
-        </Button>
+        <Group>
+          {isEditing && (
+            <Button
+              variant="outline"
+              color="orange"
+              size="xs"
+              radius="xl"
+              onClick={closeEditMode}
+            >
+              キャンセル
+            </Button>
+          )}
+          <Button
+            variant={isEditing ? 'filled' : 'outline'}
+            color="orange"
+            size="xs"
+            radius="xl"
+            onClick={handleClick}
+          >
+            {isEditing ? '保存して合成音声を生成する' : '編集する'}
+          </Button>
+        </Group>
       </Stack>
     </Stack>
   );
