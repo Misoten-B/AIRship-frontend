@@ -65,7 +65,7 @@ const createData = [
 
 const viewDate = [
   {
-    src: 'camera.svg',
+    src: 'receive.svg',
     title: 'AIRshipの名刺を受け取る',
     description: 'QRコードが記載されたAIRshipの名刺を受け取ります。',
   },
