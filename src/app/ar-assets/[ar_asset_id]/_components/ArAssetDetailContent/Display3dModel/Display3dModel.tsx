@@ -31,7 +31,7 @@ type Props = {
 };
 
 export const Display3dModel = ({ id }: Props) => {
-  const { data, error, isLoading } = useGetArAsset(id);
+  const { data, error, isLoading, mutate } = useGetArAsset(id);
   const [opened, { open, close }] = useDisclosure(false);
   const { open: openLoading, close: closeLoading } = useLoading();
   const { control, setValue } = useForm<FormSchemaType>({

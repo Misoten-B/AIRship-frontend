@@ -18,6 +18,7 @@ export const ArAssetDetail = ({ id }: { id: string }) => {
 
     return () => close();
   }, [close, isLoading, open]);
+
   if (!data) return null;
   if (error) return <div>failed to load</div>;
 
