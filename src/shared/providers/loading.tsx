@@ -47,6 +47,11 @@ export const LoadingProvider = () => {
     <MantineLoading
       visible={isLoading}
       loaderProps={{ children: <CustomLoader /> }}
+      styles={{
+        root: {
+          position: 'fixed',
+        },
+      }}
     />
   );
 };
