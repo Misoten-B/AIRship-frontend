@@ -53,17 +53,22 @@ const createData = [
     src: 'qrcode.svg',
     title: 'QRコード作成',
     description:
-      '表示する3DモデルとAI化した音声に喋らせる文章を作成しQRコードを生成させます。',
+      '表示する3DモデルとAI化した声に喋らせる文章を登録し、QRコードを生成させます。',
   },
   {
     src: 'card.svg',
     title: '名刺作成',
     description:
-      '名前、会社名、電話番号など名刺に必要なデータを入力していきます。背景画像をカスタムしてその人だけの名刺を作成します。',
+      '名前、会社名、電話番号など名刺に必要なデータを入力し、作成したQRコードを選択します。背景画像のカスタムしてその人だけの名刺を作成することが可能です。',
   },
 ];
 
 const viewDate = [
+  {
+    src: 'camera.svg',
+    title: 'AIRshipの名刺を受け取る',
+    description: 'QRコードが記載されたAIRshipの名刺を受け取ります。',
+  },
   {
     src: 'camera.svg',
     title: 'カメラを起動',
@@ -73,7 +78,7 @@ const viewDate = [
     src: 'viewqrcode.svg',
     title: 'QRを読み取る',
     description:
-      '名刺に付与されたQRコードを読み取ることで、声、3DモデルのデータをARで閲覧できます。',
+      '名刺に記載されたQRコードを読み取ることで、AI化された声、3DモデルのデータをARで閲覧できます。',
   },
 ];
 
@@ -97,7 +102,7 @@ export const UsageSection: React.FC = () => {
         {createDataItems}
       </SimpleGrid>
 
-      <Text className={classes.supTitle} mt={32}>
+      <Text className={classes.supTitle} mt={40}>
         Viewing business cards
       </Text>
 
