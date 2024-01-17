@@ -27,14 +27,14 @@ import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 import { getAddressFromZipcode } from '@/shared/utils/address';
 
-export const EditCard = () => {
+export const EditCard = ({ id }: { id: string }) => {
   const router = useRouter();
   const params = useParams<{ card_id: string }>();
 
-  const { data, error, isLoading } = useGetBusinessCard(params.card_id);
+  const { data, error, isLoading } = useGetBusinessCard(id);
   const [isOpen, { open, close }] = useDisclosure();
   const { open: openLoading, close: closeLoading } = useLoading();
-  const { updateBusinessCard } = useUpdateBusinessCard(params.card_id);
+  const { updateBusinessCard } = useUpdateBusinessCard(id);
   const { errorNotification } = useNotifications();
   // ArAssetの取得
   const {

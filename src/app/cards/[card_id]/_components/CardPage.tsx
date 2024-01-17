@@ -2,6 +2,7 @@
 
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
@@ -62,13 +63,6 @@ export const CardPage = () => {
     pdf.save(`${data?.displayName}.pdf`);
   };
 
-  const handleOnClickEdit = () => {
-    if (!data) {
-      console.error(data);
-      return;
-    }
-    router.push(`${ROUTES.cards.edit(data.id)}`);
-  };
   if (error) return <div>failed to load</div>;
   if (isLoading) openLoading();
   closeLoading();
@@ -90,7 +84,8 @@ export const CardPage = () => {
           leftSection={<IconBallpen />}
           fullWidth
           variant="outline"
-          onClick={handleOnClickEdit}
+          component={Link}
+          href={ROUTES.cards.edit(params.card_id)}
         >
           名刺を編集する
         </Button>

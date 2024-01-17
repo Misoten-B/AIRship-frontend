@@ -6,7 +6,7 @@ const page = ({ params }: { params: { card_id: string } }) => {
   return (
     <Guard>
       <GlobalNav>
-        <EditCard />
+        <EditCard id={params.card_id} />
       </GlobalNav>
     </Guard>
   );
