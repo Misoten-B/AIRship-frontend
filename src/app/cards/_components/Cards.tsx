@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { Center, Flex } from '@/shared/components/common/Layout';
@@ -46,11 +46,13 @@ export const Cards = () => {
     router.push(`${ROUTES.cards.detail(id)}`);
   };
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) open();
-  if (!data) return null;
+  useEffect(() => {
+    if (isLoading) open();
+    else close();
+  }, [close, isLoading, open]);
 
-  close();
+  if (error) return <div>failed to load</div>;
+  if (!data) return null;
 
   return isPC ? (
     <Container w={'100%'}>
