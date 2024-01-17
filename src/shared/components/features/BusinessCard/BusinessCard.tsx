@@ -96,6 +96,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
     <Text
       style={{
         fontSize: fontSize[key] * scale,
+        lineHeight: 1,
       }}
       key={key}
       mb="md"
@@ -104,7 +105,12 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
       left={businessCardPartsCoordinate?.[`${key}X`]}
     >
       {card[key] && choiceIcon(key)}
-      {card[key]}
+      {card[key]?.split('\n').map((str) => (
+        <>
+          {str}
+          <br />
+        </>
+      ))}
     </Text>
   );
 
