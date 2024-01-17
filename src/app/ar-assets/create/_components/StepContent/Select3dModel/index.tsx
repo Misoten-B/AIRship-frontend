@@ -1,18 +1,21 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import {
   useRequestBodiesValue,
   useSetRequestBodies,
 } from '../../RequestBodiesProvider';
-import { Button } from '@/shared/components/common/Button';
+import { Button, FileButton } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-import { FileInput } from '@/shared/components/common/Input';
 import { Grid, Group } from '@/shared/components/common/Layout';
 import { Title } from '@/shared/components/common/Title';
 import { SelectThreeDModel } from '@/shared/components/features/SelectThreeDModel';
-import { IconChevronRight } from '@/shared/components/icons';
-import { useCreateThreeDimentionalModel } from '@/shared/hooks/restapi/v1/ThreeDimentionalModel';
+import { IconChevronRight, IconUpload } from '@/shared/components/icons';
+import {
+  useCreateThreeDimentionalModel,
+  useGetThreeDimentionalModels,
+} from '@/shared/hooks/restapi/v1/ThreeDimentionalModel';
 import { useForm } from '@/shared/hooks/useForm';
+import { useLoading } from '@/shared/providers/loading';
 
 const schema = z.object({
   threeDModel: z.string(),
@@ -31,6 +34,9 @@ type Props = {
 export const Select3dModel = ({ nextStep }: Props) => {
   const requestBodies = useRequestBodiesValue();
   const setRequestBodies = useSetRequestBodies();
+  const { mutate } = useGetThreeDimentionalModels();
+  const { open, close } = useLoading();
+  const [file, setFile] = useState<File | null>(null);
 
   const { createThreeDimentionalModel } = useCreateThreeDimentionalModel();
 
@@ -41,6 +47,7 @@ export const Select3dModel = ({ nextStep }: Props) => {
   });
   const {
     control: fileInputControl,
+    setValue: setFileInputValue,
     watch,
     reset,
   } = useForm<FileFieldValues>({
@@ -55,14 +62,19 @@ export const Select3dModel = ({ nextStep }: Props) => {
       if (!file) return;
 
       try {
+        open();
         await createThreeDimentionalModel(file);
         reset({ fileInput: undefined });
+        mutate();
+        close();
       } catch (error) {
         console.log(error);
+      } finally {
+        close();
       }
     });
     return () => subscription.unsubscribe();
-  }, [createThreeDimentionalModel, watch, reset]);
+  }, [createThreeDimentionalModel, watch, reset, mutate, open, close]);
 
   const set3DModelID = useCallback(
     (id: string) => {
@@ -93,17 +105,24 @@ export const Select3dModel = ({ nextStep }: Props) => {
 
         <Grid>
           <Grid.Col span={4}>
-            <FileInput
-              control={fileInputControl}
+            <FileButton
               name="fileInput"
-              placeholder="アップロード"
-              size="xs"
-              styles={{
-                wrapper: { height: '100%' },
-                root: { height: '100%' },
-                input: { height: 'calc(100% - 28px)' },
+              onChange={(value) => {
+                if (!value) return;
+                setFileInputValue('fileInput', value);
               }}
-            />
+              accept=".glb"
+            >
+              {(props) => (
+                <Button
+                  variant="outline"
+                  {...props}
+                  leftSection={<IconUpload />}
+                >
+                  Upload
+                </Button>
+              )}
+            </FileButton>
           </Grid.Col>
         </Grid>
       </Container>
