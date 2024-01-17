@@ -148,6 +148,7 @@ export const Display3dModel = ({ id }: Props) => {
                   {(props) => (
                     <Button
                       variant="outline"
+                      mb="md"
                       {...props}
                       leftSection={<IconUpload />}
                     >
@@ -159,7 +160,7 @@ export const Display3dModel = ({ id }: Props) => {
             </Grid>
 
             <Button onClick={handleSubmit(handleClick)} w="100%" radius="md">
-              選択
+              更新する
             </Button>
           </Container>
         </Modal>
@@ -170,7 +171,7 @@ export const Display3dModel = ({ id }: Props) => {
           radius="xl"
           onClick={openModal}
         >
-          選択する
+          更新する
         </Button>
       </Group>
     </Stack>
