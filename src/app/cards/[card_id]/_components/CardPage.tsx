@@ -1,7 +1,9 @@
 'use client';
 
+import { IconExternalLink } from '@tabler/icons-react';
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
@@ -14,6 +16,7 @@ import {
   IconDownload,
   IconPhotoSearch,
 } from '@/shared/components/icons';
+import { ROUTES } from '@/shared/constants';
 import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
@@ -68,6 +71,15 @@ export const CardPage = () => {
     <>
       <Stack align="center">
         <BusinessCard card={data} id="business_card" />
+        <Button
+          variant="transparent"
+          leftSection={<IconExternalLink />}
+          component={Link}
+          href={ROUTES.cards.public(params.card_id)}
+          target="_blank"
+        >
+          ARを確認する
+        </Button>
         <Button
           onClick={open}
           leftSection={<IconPhotoSearch />}
