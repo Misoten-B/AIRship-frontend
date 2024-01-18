@@ -2,8 +2,11 @@
 
 import '@mantine/notifications/styles.css';
 
+import { useRouter } from 'next/navigation';
 import { AppProgressBar } from 'next-nprogress-bar';
+import { SWRConfig } from 'swr';
 import { Notifications } from '../components/common/Feedback';
+import { ROUTES } from '../constants';
 import { LoadingProvider } from './loading';
 import { AuthProvider } from '@/shared/hooks/auth';
 import { AxiosProvider } from '@/shared/lib/axios/AxiosProvider';
@@ -24,16 +27,27 @@ const ProgressBar = () => {
 };
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   return (
     <RecoilRoot>
       <AuthProvider>
         <AxiosProvider>
-          <ThemeProvider>
-            <LoadingProvider />
-            <Notifications />
-            {children}
-            <ProgressBar />
-          </ThemeProvider>
+          <SWRConfig
+            value={{
+              onError: (error, key) => {
+                if (error.status === 401) {
+                  router.push(ROUTES.login.base);
+                }
+              },
+            }}
+          >
+            <ThemeProvider>
+              <LoadingProvider />
+              <Notifications />
+              {children}
+              <ProgressBar />
+            </ThemeProvider>
+          </SWRConfig>
         </AxiosProvider>
       </AuthProvider>
     </RecoilRoot>
