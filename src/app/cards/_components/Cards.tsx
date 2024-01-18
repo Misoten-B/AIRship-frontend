@@ -99,6 +99,8 @@ export const Cards = () => {
               onClick={() => {
                 selectedCard === index
                   ? handleClcikCard(index, card.id)
+                  : data.length - 1 === index
+                  ? router.push(ROUTES.cards.detail(card.id))
                   : setSelectedCard(index);
               }}
             />
