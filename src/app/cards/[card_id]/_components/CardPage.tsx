@@ -96,7 +96,13 @@ export const CardPage = () => {
           >
             拡大表示
           </Button>
-          <Button fullWidth leftSection={<IconBallpen />} variant="outline">
+          <Button
+            fullWidth
+            leftSection={<IconBallpen />}
+            component={Link}
+            href={ROUTES.cards.edit(params.card_id)}
+            variant="outline"
+          >
             名刺を編集する
           </Button>
           <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
