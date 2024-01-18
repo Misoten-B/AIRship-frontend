@@ -1,2 +1,2 @@
 export { SampleQrCodeImage } from './QRCodeImage';
-export { getQRCodeUrl } from './helper';
+export { getQRCodeUrl, getPublicCardUrl, qrBaseUrl } from './helper';
