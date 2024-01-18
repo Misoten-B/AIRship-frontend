@@ -10,7 +10,6 @@ import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
 import { TextInput, Textarea } from '@/shared/components/common/Input';
 import { Center, Group, Paper, Stack } from '@/shared/components/common/Layout';
-import { Loader } from '@/shared/components/common/Loader';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
 import { BusinessCard, getQRCodeUrl } from '@/shared/components/features';
@@ -28,14 +27,33 @@ import { useLoading } from '@/shared/providers/loading';
 import { getAddressFromZipcode } from '@/shared/utils/address';
 
 export const EditCard = ({ id }: { id: string }) => {
+  const { data, error, isLoading } = useGetBusinessCard(id);
+  const { open: openLoading, close: closeLoading } = useLoading();
+
+  if (isLoading) {
+    openLoading();
+  } else {
+    closeLoading();
+  }
+
+  if (data) {
+    return <EditForm data={data} />;
+  }
+
+  if (error) {
+    return <div>failed to load</div>;
+  }
+};
+
+const EditForm = ({ data }: { data: Dto_BusinessCardResponse }) => {
   const router = useRouter();
   const params = useParams<{ card_id: string }>();
 
-  const { data, error, isLoading } = useGetBusinessCard(id);
   const [isOpen, { open, close }] = useDisclosure();
   const { open: openLoading, close: closeLoading } = useLoading();
-  const { updateBusinessCard } = useUpdateBusinessCard(id);
+  const { updateBusinessCard } = useUpdateBusinessCard(data.id);
   const { errorNotification } = useNotifications();
+
   // ArAssetの取得
   const {
     data: arAssetData,
@@ -44,16 +62,16 @@ export const EditCard = ({ id }: { id: string }) => {
   } = useGetArAssets();
 
   // フォーム
-  const { handleSubmit, control, getValues, setValue, watch } =
+  const { handleSubmit, control, getValues, setValue, reset, watch } =
     useForm<UpdateCardSchemaType>({
       resolver: zodResolver(updateCardSchema),
       defaultValues: {
         id: data?.id,
         address: data?.address,
         businessCardName: data?.businessCardName,
-        displayName: data?.displayName ?? '',
+        displayName: data?.displayName,
         companyName: data?.companyName,
-        department: data?.department ?? '',
+        department: data?.department,
         officialPosition: data?.officialPosition,
         email: data?.email,
         phoneNumber: data?.phoneNumber,
@@ -133,9 +151,6 @@ export const EditCard = ({ id }: { id: string }) => {
     ],
   );
 
-  if (error || arAssetError) return <div>failed to load</div>;
-  if (isLoading || isArAssetLoading) return <Loader />;
-
   const handleSetQRCodeValue = (value: string) => {
     setQRCodeValue('qrCodeSelection', value);
   };
@@ -168,6 +183,13 @@ export const EditCard = ({ id }: { id: string }) => {
       console.error('エラーが発生しました:', error);
     }
   };
+
+  if (arAssetError) return <div>failed to load</div>;
+
+  if (!isArAssetLoading) openLoading();
+  else closeLoading();
+
+  if (!data) return null;
 
   return (
     <Container>
