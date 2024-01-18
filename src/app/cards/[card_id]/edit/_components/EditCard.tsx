@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '@mantine/core';
 import { useParams, useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SelectQRCodeModal } from './SelectQRCodeModal';
 import { UpdateCardSchemaType, updateCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
@@ -30,11 +30,14 @@ export const EditCard = ({ id }: { id: string }) => {
   const { data, error, isLoading } = useGetBusinessCard(id);
   const { open: openLoading, close: closeLoading } = useLoading();
 
-  if (isLoading) {
-    openLoading();
-  } else {
-    closeLoading();
-  }
+  useEffect(() => {
+    if (isLoading) {
+      openLoading();
+    }
+    if (!isLoading) {
+      closeLoading();
+    }
+  }, [data]);
 
   if (data) {
     return <EditForm data={data} />;
@@ -186,8 +189,9 @@ const EditForm = ({ data }: { data: Dto_BusinessCardResponse }) => {
 
   if (arAssetError) return <div>failed to load</div>;
 
-  if (!isArAssetLoading) openLoading();
-  else closeLoading();
+  // useEffect(() => {}, []);
+  // if (isArAssetLoading) openLoading();
+  // else closeLoading();
 
   if (!data) return null;
 
