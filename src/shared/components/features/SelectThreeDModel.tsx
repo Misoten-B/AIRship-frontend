@@ -1,4 +1,5 @@
 import { Control } from 'react-hook-form';
+import { Button } from '../common/Button';
 import { Divider } from '../common/Divider';
 import { Grid, Stack } from '../common/Layout';
 import { Loader } from '../common/Loader';
@@ -32,7 +33,9 @@ const ImageRadioButton = ({ value, path, onClick }: ImageRadioOptionProps) => {
           poster={''}
           // usdz={'/cat.usdz'}
           style={{ width: '100%' }}
-        />
+        >
+          <Button slot="ar-button" display="none" />
+        </ModelViewer>
         <Radio.Item value={value} size="xs" />
       </Stack>
     </Grid.Col>

@@ -1,6 +1,6 @@
 export { Guard } from './Guard';
 export { LoginButton } from './LoginButton';
-export { SampleQrCodeImage, getQRCodeUrl } from './QRCode';
+export { SampleQrCodeImage, getQRCodeUrl, qrBaseUrl } from './QRCode';
 export { BusinessCard } from './BusinessCard/BusinessCard';
 export { SigninGoogleButton } from './SigninGoogleButton';
 export { AirshipMainVisual } from './MainVisual';

@@ -2,6 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IconUserPlus } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
+import { getAuth } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -12,14 +13,14 @@ import { Container } from '@/shared/components/common/Container';
 import { Stack } from '@/shared/components/common/Layout/Stack';
 import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
-import { useGetUser } from '@/shared/hooks/restapi/v1/User';
+import { useCreateUser, useGetUser } from '@/shared/hooks/restapi/v1/User';
 import { useForm } from '@/shared/hooks/useForm';
 import { useNotifications } from '@/shared/hooks/useNotifications';
 import { firebaseUserState } from '@/shared/lib/recoil';
 import { useLoading } from '@/shared/providers/loading';
 
 export const LoginCard = () => {
-  const { loginWithEmailAndPassword } = useAuth();
+  const { loginWithEmailAndPassword, logout } = useAuth();
 
   const { handleSubmit, control } = useForm<EmailLoginSchema>({
     resolver: zodResolver(emailLoginSchema),
@@ -32,6 +33,7 @@ export const LoginCard = () => {
   const { push } = useRouter();
   const { open, close } = useLoading();
   const { errorNotification } = useNotifications();
+  const { createUser } = useCreateUser();
   const firebaseUser = useRecoilValue(firebaseUserState);
   const { mutate } = useGetUser(!firebaseUser?.token);
 
@@ -42,7 +44,18 @@ export const LoginCard = () => {
       }
       open();
       try {
-        await loginWithEmailAndPassword(data.email, data.password);
+        const token = await loginWithEmailAndPassword(
+          data.email,
+          data.password,
+        );
+        const currentUser = getAuth().currentUser;
+        if (!currentUser) return;
+
+        if (!currentUser.emailVerified) {
+          errorNotification('登録時に入力したメールアドレスをご確認ください');
+          throw true;
+        }
+        await createUser(token);
         const user = await mutate();
         if (user) {
           push(ROUTES.arAssets.base);
@@ -54,13 +67,24 @@ export const LoginCard = () => {
           if (error.code === '401') {
             push(ROUTES.login.base);
           }
+          errorNotification('メールアドレスまたはパスワードが異なります');
         }
-        errorNotification();
+        logout && (await logout());
+        return;
       } finally {
         close();
       }
     },
-    [close, errorNotification, loginWithEmailAndPassword, mutate, open, push],
+    [
+      close,
+      createUser,
+      errorNotification,
+      loginWithEmailAndPassword,
+      logout,
+      mutate,
+      open,
+      push,
+    ],
   );
 
   return (

@@ -41,17 +41,17 @@ export const SpeakingAssetsSettings = () => {
       <Title order={5} mb={4}>
         合成音声の設定
       </Title>
-      <Text size="xs" c="gray.6" mb={12}>
+      <Text size="xs" c="gray.6">
         QRコードを読み込むと再生できる音声です。
       </Text>
       <Text size="xs" c="gray.6" mb={12}>
-        生成されるまでに5分ほどかかる場合があります
+        生成されるまでに5分ほどかかる場合があります。
       </Text>
       <Title order={6} my={4}>
         話させる文章
       </Title>
       <Text size="xs" c="gray.6" mb={12}>
-        登録した声がAI化されて再生される文章です
+        登録した声がAI化されて再生される文章です。
       </Text>
       <Stack align="flex-start" justify="flex-start" mb={12} gap="xs">
         <Textarea

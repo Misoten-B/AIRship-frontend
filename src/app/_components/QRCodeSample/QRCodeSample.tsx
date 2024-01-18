@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import classes from './QRCodeSample.module.css';
 import { Button } from '@/shared/components/common/Button';
-import { Container } from '@/shared/components/common/Container';
 import { Image } from '@/shared/components/common/Image';
 import { Group } from '@/shared/components/common/Layout';
 import { Text } from '@/shared/components/common/Text';
@@ -15,7 +14,7 @@ import { useMediaQuery } from '@/shared/lib/mantine';
 export const QRCodeSample = () => {
   const isPC = useMediaQuery('(min-width: 768px)');
   return (
-    <Container bg="#c4e8f470">
+    <div className={classes.container}>
       <div className={classes.inner}>
         <Title className={classes.title} mt={18}>
           Try it
@@ -40,6 +39,6 @@ export const QRCodeSample = () => {
           </Group>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };

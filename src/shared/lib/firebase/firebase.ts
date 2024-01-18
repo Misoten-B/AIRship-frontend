@@ -4,8 +4,10 @@
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
+  User,
   createUserWithEmailAndPassword,
   getAuth,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -24,6 +26,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+export const firebaseSendEmailVerification = async (currentUser: User) => {
+  return await sendEmailVerification(currentUser);
+};
 
 export const firebaseCreateUserWithEmailAndPassword = async (
   email: string,

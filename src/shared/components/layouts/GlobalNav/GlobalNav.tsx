@@ -64,7 +64,7 @@ export const GlobalNav = ({ children }: Props) => {
               hiddenFrom="sm"
               size="sm"
             />
-            <AirshipLogoRow h={50} />
+            <AirshipLogoRow h={50} w="auto" />
           </Group>
           <ActionIcon
             variant="outline"

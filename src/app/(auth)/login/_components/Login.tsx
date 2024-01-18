@@ -1,12 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { LoginCard } from './RegisterCard/LoginCard';
+import { LoginCard } from './LoginCard';
 import { Divider } from '@/shared/components/common/Divider';
 import { Flex } from '@/shared/components/common/Layout';
 import { Center } from '@/shared/components/common/Layout/Center';
 import { Stack } from '@/shared/components/common/Layout/Stack';
 import { Anchor } from '@/shared/components/common/Navigation';
-
 import { Title } from '@/shared/components/common/Title';
 import { LoginGoogleButton } from '@/shared/components/features';
 import { AirshipMainVisual } from '@/shared/components/features/MainVisual';

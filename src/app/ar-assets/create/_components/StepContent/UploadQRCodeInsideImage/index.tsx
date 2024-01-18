@@ -16,6 +16,7 @@ import {
   IconUpload,
 } from '@/shared/components/icons';
 import { useCreateArAsset } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useNotifications } from '@/shared/hooks/useNotifications';
 import { useToggleLoading } from '@/shared/providers/loading';
 
 type Props = {
@@ -29,6 +30,8 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
   const setRequestBodies = useSetRequestBodies();
 
   const { createArAsset } = useCreateArAsset();
+
+  const { infoNotification, errorNotification } = useNotifications();
 
   const [file, setFile] = useState(requestBodies['2']?.image);
 
@@ -60,6 +63,7 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
 
       if (!res) throw new Error('Failed to create AR asset');
 
+      infoNotification('QRコードの作成が完了しました！');
       const location = (res.headers as any).location; // FIXME: 型の修正
       const id = location.split('/')[1];
 
@@ -70,10 +74,19 @@ export const UploadQRCodeInsideImage = ({ nextStep, prevStep }: Props) => {
       nextStep();
     } catch (error) {
       console.error(error);
+      errorNotification();
     } finally {
       toggleLoading();
     }
-  }, [requestBodies, createArAsset, setRequestBodies, nextStep, toggleLoading]);
+  }, [
+    toggleLoading,
+    requestBodies,
+    createArAsset,
+    infoNotification,
+    setRequestBodies,
+    nextStep,
+    errorNotification,
+  ]);
 
   const handleUpload = (file: File | null) => {
     if (!file) return;

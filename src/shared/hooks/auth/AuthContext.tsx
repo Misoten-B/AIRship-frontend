@@ -15,7 +15,10 @@ import {
   firebaseSignInWithGoogle,
   firebaseSignOut,
 } from '@/shared/lib/firebase';
-import { firebaseCreateUserWithEmailAndPassword } from '@/shared/lib/firebase/firebase';
+import {
+  firebaseCreateUserWithEmailAndPassword,
+  firebaseSendEmailVerification,
+} from '@/shared/lib/firebase/firebase';
 import { firebaseUserState } from '@/shared/lib/recoil';
 import { User } from '@/shared/types';
 
@@ -79,7 +82,10 @@ export const AuthProvider = ({ children }: Props) => {
           password,
         );
         if (!credential) return;
-        const token = await getAuth().currentUser?.getIdToken();
+        const user = getAuth().currentUser;
+        if (!user) return;
+        const token = await user.getIdToken();
+        await firebaseSendEmailVerification(user);
 
         const cu: User = {
           displayName: credential.user.displayName,

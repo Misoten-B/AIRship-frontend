@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { Button, FileButton } from '@/shared/components/common/Button';
 import { Group, Stack } from '@/shared/components/common/Layout';
@@ -6,9 +7,12 @@ import { Text } from '@/shared/components/common/Text';
 import { Title } from '@/shared/components/common/Title';
 import { IconUpload } from '@/shared/components/icons';
 import {
+  useDeleteQRCodeIcon,
   useGetArAsset,
   useUpdateArAsset,
 } from '@/shared/hooks/restapi/v1/ArAssets';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useLoading } from '@/shared/providers/loading';
 
 type Props = {
@@ -17,27 +21,11 @@ type Props = {
 
 export const QRCodeInsideImage = ({ id }: Props) => {
   const { data, isLoading, error, mutate } = useGetArAsset(id);
+  const { infoNotification, errorNotification } = useNotifications();
   const { updateArAsset } = useUpdateArAsset(id);
+  const { deleteQRCodeIcon } = useDeleteQRCodeIcon(id);
   const [file, setFile] = useState<File | null>(null);
   const { open, close } = useLoading();
-
-  const handleUpdate = async () => {
-    if (!updateArAsset || !data) return;
-
-    await updateArAsset(data?.speakingDescription, data?.threeDimentionalPath);
-    mutate();
-  };
-
-  const handleDelete = async () => {
-    if (!updateArAsset || !data) return;
-
-    await updateArAsset(
-      data?.speakingDescription,
-      data?.threeDimentionalPath,
-      file ?? undefined,
-    );
-    mutate();
-  };
 
   useEffect(() => {
     if (isLoading) open();
@@ -47,6 +35,55 @@ export const QRCodeInsideImage = ({ id }: Props) => {
       close();
     };
   }, [close, isLoading, open]);
+
+  const handleChange = async (payload: File | null) => {
+    try {
+      open();
+      if (!data || !payload) return;
+
+      await updateArAsset(
+        data.speakingDescription,
+        data.threeDimentionalId,
+        payload,
+      );
+
+      setFile(payload);
+      infoNotification('QRコードアイコンをアップロードしました');
+      mutate();
+    } catch (error) {
+      const message = 'QRコードアイコンのアップロードに失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      close();
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      open();
+      if (!data) return;
+
+      await deleteQRCodeIcon();
+
+      infoNotification('QRコードアイコンを削除しました');
+      mutate();
+    } catch (error) {
+      const message = 'QRコードアイコンの削除に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      close();
+    }
+  };
 
   if (error) return <div>failed to load</div>;
   if (!data) return null;
@@ -61,7 +98,7 @@ export const QRCodeInsideImage = ({ id }: Props) => {
         {file?.name ?? '画像をアップロードしてください'}
       </Text>
       <Group justify="center" wrap="nowrap">
-        <FileButton onChange={setFile} accept="image/png,image/jpeg">
+        <FileButton onChange={handleChange} accept="image/png,image/jpeg">
           {(props) => (
             <Button
               variant="outline"

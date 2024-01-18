@@ -1,10 +1,12 @@
 'use client';
 
+import { IconExternalLink } from '@tabler/icons-react';
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
 import { Flex, Stack } from '@/shared/components/common/Layout';
@@ -63,35 +65,44 @@ export const CardPage = () => {
     pdf.save(`${data?.displayName}.pdf`);
   };
 
+  useEffect(() => {
+    if (isLoading) openLoading();
+    else closeLoading();
+  }, [closeLoading, isLoading, openLoading]);
+
   if (error) return <div>failed to load</div>;
-  if (isLoading) openLoading();
-  closeLoading();
 
   if (!data) return null;
   return (
     <>
       <Stack align="center">
         <BusinessCard card={data} id="business_card" />
-        <Button
-          onClick={open}
-          leftSection={<IconPhotoSearch />}
-          fullWidth
-          variant="light"
-        >
-          拡大表示
-        </Button>
-        <Button
-          leftSection={<IconBallpen />}
-          fullWidth
-          variant="outline"
-          component={Link}
-          href={ROUTES.cards.edit(params.card_id)}
-        >
-          名刺を編集する
-        </Button>
-        <Button leftSection={<IconDownload />} onClick={exportPDF} fullWidth>
-          名刺をダウンロード
-        </Button>
+        <Stack gap="md" align="center" w={(1254 / 3) * recoilScale}>
+          <Button
+            fullWidth
+            variant="transparent"
+            leftSection={<IconExternalLink />}
+            component={Link}
+            href={ROUTES.cards.public(params.card_id)}
+            target="_blank"
+          >
+            ARを確認する
+          </Button>
+          <Button
+            fullWidth
+            onClick={open}
+            leftSection={<IconPhotoSearch />}
+            variant="light"
+          >
+            拡大表示
+          </Button>
+          <Button fullWidth leftSection={<IconBallpen />} variant="outline">
+            名刺を編集する
+          </Button>
+          <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
+            名刺をダウンロード
+          </Button>
+        </Stack>
       </Stack>
       <Modal opened={opened} onClose={close} fullScreen>
         <Flex h="100%">
