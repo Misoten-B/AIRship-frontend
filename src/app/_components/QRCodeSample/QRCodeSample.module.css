@@ -10,11 +10,6 @@
   padding-top: calc(var(--mantine-spacing-xl));
   padding-bottom: calc(var(--mantine-spacing-xl));
   gap: 15px;
-
-  @media (max-width: 768px) {
-    padding-top: 10px;
-    padding-bottom: 32px;
-  }
 }
 
 .content {
@@ -35,8 +30,17 @@
   font-size: rem(44px);
   line-height: 1.2;
   font-weight: 900;
+}
 
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
+  .title {
     font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .inner {
+    padding-top: 10px;
+    padding-bottom: 32px;
   }
 }
