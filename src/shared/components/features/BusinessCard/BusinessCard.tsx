@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { Card } from '../../common/Layout';
 import { QRCode } from '../../common/QRCode';
 import { Text } from '../../common/Text';
-import { getQRCodeUrl } from '../QRCode';
+import { getPublicCardUrl } from '../QRCode';
 import { BusinessCardAspectRatio } from './BusinessCardAspectRatio';
 import { recoilScaleState } from './atom';
 import {
@@ -19,6 +19,11 @@ type OmitAspectRatioProps = Omit<AspectRatioProps, 'ratio' | 'w'>;
 type Props = OmitAspectRatioProps & {
   card: Dto_BusinessCardResponse;
   handleClick?: () => void;
+  /**
+   * urlはQRコードを読み込んだ際の明示的な遷移先
+   * デフォルトは名刺のIDを元に生成される
+   */
+  url?: string;
 };
 
 const scaleRatio = 3;
@@ -41,7 +46,7 @@ type BusinessCardPartsCoordinate = keyof NonNullable<
   Omit<Dto_BusinessCardPartsCoordinate, 'id'>
 >;
 
-export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
+export const BusinessCard = ({ card, handleClick, url, ...props }: Props) => {
   const { ref, width, height } = useElementSize();
   const [scale, setScale] = useState(width / defaultWidth);
   const [recoilScale, setRecoilScale] =
@@ -137,7 +142,7 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
         )}
 
         <QRCode
-          url={getQRCodeUrl(card.arAssetId)}
+          url={url || getPublicCardUrl(card.id)}
           imagesrc={card.qrcodeImagePath || ''}
           size={90 * scale}
           style={{

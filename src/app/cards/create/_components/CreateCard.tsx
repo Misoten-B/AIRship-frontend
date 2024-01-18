@@ -9,13 +9,16 @@ import { CreateCardSchemaType, createCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-
 import { TextInput, Textarea } from '@/shared/components/common/Input';
 import { Center, Group, Paper, Stack } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
 import { QRCode } from '@/shared/components/common/QRCode';
 import { Text } from '@/shared/components/common/Text';
-import { BusinessCard, getQRCodeUrl } from '@/shared/components/features';
+import {
+  BusinessCard,
+  getQRCodeUrl,
+  qrBaseUrl,
+} from '@/shared/components/features';
 import { BusinessCardDesignModal } from '@/shared/components/features/BusinessCard/BusinessCardDesignModal';
 import { ROUTES } from '@/shared/constants';
 import { useAuth } from '@/shared/hooks/auth';
@@ -27,7 +30,6 @@ import { useForm } from '@/shared/hooks/useForm';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 import { getAddressFromZipcode } from '@/shared/utils/address';
-// import { getAddressFromZipcode, prefectures } from '@/shared/utils/address';
 
 export const CreateCard = () => {
   const router = useRouter();
@@ -211,7 +213,15 @@ export const CreateCard = () => {
           />
         </Center>
         <Center w="100%" my="lg">
-          <BusinessCard style={{ width: '100%' }} card={watchAllFields} />
+          <BusinessCard
+            style={{ width: '100%' }}
+            card={watchAllFields}
+            url={
+              qrcodeWatch('qrCodeSelection') !== ''
+                ? getQRCodeUrl(qrcodeWatch('qrCodeSelection'))
+                : qrBaseUrl
+            }
+          />
         </Center>
       </Paper>
       <Text size="sm">QRコード選択</Text>
