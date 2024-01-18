@@ -1,7 +1,7 @@
 'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '@mantine/core';
-import { useColorScheme } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 import { SelectQRCodeModal } from './SelectQRCodeModal';
@@ -9,7 +9,6 @@ import { CreateCardSchemaType, createCardSchema } from './schema';
 import { Dto_BusinessCardResponse } from '@/api/@types';
 import { Button } from '@/shared/components/common/Button';
 import { Container } from '@/shared/components/common/Container';
-
 import { TextInput, Textarea } from '@/shared/components/common/Input';
 import { Center, Group, Paper, Stack } from '@/shared/components/common/Layout';
 import { Loader } from '@/shared/components/common/Loader';
@@ -27,12 +26,10 @@ import { useForm } from '@/shared/hooks/useForm';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 import { getAddressFromZipcode } from '@/shared/utils/address';
-// import { getAddressFromZipcode, prefectures } from '@/shared/utils/address';
 
 export const CreateCard = () => {
   const router = useRouter();
   const { currentUser } = useAuth();
-  const isDark = useColorScheme() === 'dark';
   const [isOpen, { open, close }] = useDisclosure();
   const { open: openLoading, close: closeLoading } = useLoading();
   const { createBusinessCard } = useCreateBusinessCard();
@@ -70,9 +67,6 @@ export const CreateCard = () => {
         email: currentUser?.email ?? '',
         phoneNumber: '',
         postalCode: '',
-        // prefectures: '',
-        // cityAndAddress: '',
-        // buildingAndRoom: '',
       },
     });
 
@@ -307,25 +301,6 @@ export const CreateCard = () => {
           label="住所"
           placeholder="入力してください"
         />
-        {/* <NativeSelect
-          control={control}
-          name="prefectures"
-          label="都道府県"
-          data={prefectures}
-          w={100}
-        />
-        <TextInput
-          control={control}
-          name="cityAndAddress"
-          label="市区町村 番地"
-          placeholder="入力してください"
-        />
-        <TextInput
-          control={control}
-          name="buildingAndRoom"
-          label="建物名・部屋番号"
-          placeholder="入力してください"
-        /> */}
         <Button
           type="submit"
           fullWidth
