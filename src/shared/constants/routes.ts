@@ -9,6 +9,7 @@ export const ROUTES = {
     base: '/cards',
     create: '/cards/create',
     detail: (id: string) => `/cards/${id}`,
+    edit: (id: string) => `/cards/${id}/edit`,
     public: (id: string) => `/cards/${id}/public`,
   },
   login: {

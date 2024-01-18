@@ -4,7 +4,7 @@ import { IconExternalLink } from '@tabler/icons-react';
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
@@ -27,11 +27,10 @@ import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
-export const CardPage = () => {
-  const router = useRouter();
-  const params = useParams<{ card_id: string }>();
+export const CardPage = ({ card_id }: { card_id: string }) => {
   const [opened, { open, close }] = useDisclosure();
-  const { data, error, isLoading } = useGetBusinessCard(params.card_id);
+  const router = useRouter();
+  const { data, error, isLoading } = useGetBusinessCard(card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
   const { deleteBusinessCard } = useDeleteBusinessCard(params.card_id);
   const { infoNotification, errorNotification } = useNotifications();
@@ -111,7 +110,7 @@ export const CardPage = () => {
             variant="transparent"
             leftSection={<IconExternalLink />}
             component={Link}
-            href={ROUTES.cards.public(params.card_id)}
+            href={ROUTES.cards.public(card_id)}
             target="_blank"
           >
             ARを確認する
@@ -124,7 +123,13 @@ export const CardPage = () => {
           >
             拡大表示
           </Button>
-          <Button fullWidth leftSection={<IconBallpen />} variant="outline">
+          <Button
+            fullWidth
+            leftSection={<IconBallpen />}
+            component={Link}
+            href={ROUTES.cards.edit(card_id)}
+            variant="outline"
+          >
             名刺を編集する
           </Button>
           <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
