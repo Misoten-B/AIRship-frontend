@@ -35,7 +35,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
           <SWRConfig
             value={{
               onError: (error, key) => {
-                if (error.status === 401) {
+                if (error.response.status === 401) {
                   router.push(ROUTES.login.base);
                 }
               },
