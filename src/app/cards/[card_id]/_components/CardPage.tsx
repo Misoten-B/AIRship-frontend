@@ -32,7 +32,7 @@ export const CardPage = ({ card_id }: { card_id: string }) => {
   const router = useRouter();
   const { data, error, isLoading } = useGetBusinessCard(card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
-  const { deleteBusinessCard } = useDeleteBusinessCard(params.card_id);
+  const { deleteBusinessCard } = useDeleteBusinessCard(card_id);
   const { infoNotification, errorNotification } = useNotifications();
   const recoilScale = useRecoilValue(recoilScaleState);
 
