@@ -4,7 +4,7 @@ import { IconExternalLink } from '@tabler/icons-react';
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
@@ -22,10 +22,10 @@ import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
-export const CardPage = () => {
-  const params = useParams<{ card_id: string }>();
+export const CardPage = ({ card_id }: { card_id: string }) => {
   const [opened, { open, close }] = useDisclosure();
-  const { data, error, isLoading } = useGetBusinessCard(params.card_id);
+  const router = useRouter();
+  const { data, error, isLoading } = useGetBusinessCard(card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
   const recoilScale = useRecoilValue(recoilScaleState);
 
@@ -81,7 +81,7 @@ export const CardPage = () => {
             variant="transparent"
             leftSection={<IconExternalLink />}
             component={Link}
-            href={ROUTES.cards.public(params.card_id)}
+            href={ROUTES.cards.public(card_id)}
             target="_blank"
           >
             ARを確認する
@@ -94,7 +94,13 @@ export const CardPage = () => {
           >
             拡大表示
           </Button>
-          <Button fullWidth leftSection={<IconBallpen />} variant="outline">
+          <Button
+            fullWidth
+            leftSection={<IconBallpen />}
+            component={Link}
+            href={ROUTES.cards.edit(card_id)}
+            variant="outline"
+          >
             名刺を編集する
           </Button>
           <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
