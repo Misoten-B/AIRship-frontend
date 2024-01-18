@@ -1,7 +1,7 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '@mantine/core';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { SelectQRCodeModal } from './SelectQRCodeModal';
 import { UpdateCardSchemaType, updateCardSchema } from './schema';
@@ -50,7 +50,6 @@ export const EditCard = ({ id }: { id: string }) => {
 
 const EditForm = ({ data }: { data: Dto_BusinessCardResponse }) => {
   const router = useRouter();
-  const params = useParams<{ card_id: string }>();
 
   const [isOpen, { open, close }] = useDisclosure();
   const { open: openLoading, close: closeLoading } = useLoading();
