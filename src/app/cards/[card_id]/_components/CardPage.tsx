@@ -4,7 +4,7 @@ import { IconExternalLink } from '@tabler/icons-react';
 import jsPDF from 'jspdf';
 import { domToCanvas } from 'modern-screenshot';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Button } from '@/shared/components/common/Button';
@@ -18,15 +18,23 @@ import {
   IconPhotoSearch,
 } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
-import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
+import {
+  useDeleteBusinessCard,
+  useGetBusinessCard,
+} from '@/shared/hooks/restapi/v1/BusinessCard';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
 export const CardPage = () => {
+  const router = useRouter();
   const params = useParams<{ card_id: string }>();
   const [opened, { open, close }] = useDisclosure();
   const { data, error, isLoading } = useGetBusinessCard(params.card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
+  const { deleteBusinessCard } = useDeleteBusinessCard(params.card_id);
+  const { infoNotification, errorNotification } = useNotifications();
   const recoilScale = useRecoilValue(recoilScaleState);
 
   const exportPDF = async () => {
@@ -61,6 +69,28 @@ export const CardPage = () => {
     }
 
     pdf.save(`${data?.displayName}.pdf`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      openLoading();
+      if (!data) return;
+
+      await deleteBusinessCard();
+
+      infoNotification('名刺を削除しました');
+      router.replace(ROUTES.cards.base);
+    } catch (error) {
+      const message = '名刺の削除に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      closeLoading();
+    }
   };
 
   useEffect(() => {
@@ -99,6 +129,9 @@ export const CardPage = () => {
           </Button>
           <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
             名刺をダウンロード
+          </Button>
+          <Button fullWidth color="red" onClick={handleDelete}>
+            名刺を削除する
           </Button>
         </Stack>
       </Stack>
