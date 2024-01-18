@@ -18,7 +18,12 @@ import {
   IconPhotoSearch,
 } from '@/shared/components/icons';
 import { ROUTES } from '@/shared/constants';
-import { useGetBusinessCard } from '@/shared/hooks/restapi/v1/BusinessCard';
+import {
+  useDeleteBusinessCard,
+  useGetBusinessCard,
+} from '@/shared/hooks/restapi/v1/BusinessCard';
+import { useNotifications } from '@/shared/hooks/useNotifications';
+import { isApiError } from '@/shared/lib/axios/errorHandling';
 import { useDisclosure } from '@/shared/lib/mantine';
 import { useLoading } from '@/shared/providers/loading';
 
@@ -27,6 +32,8 @@ export const CardPage = ({ card_id }: { card_id: string }) => {
   const router = useRouter();
   const { data, error, isLoading } = useGetBusinessCard(card_id);
   const { open: openLoading, close: closeLoading } = useLoading();
+  const { deleteBusinessCard } = useDeleteBusinessCard(card_id);
+  const { infoNotification, errorNotification } = useNotifications();
   const recoilScale = useRecoilValue(recoilScaleState);
 
   const exportPDF = async () => {
@@ -61,6 +68,28 @@ export const CardPage = ({ card_id }: { card_id: string }) => {
     }
 
     pdf.save(`${data?.displayName}.pdf`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      openLoading();
+      if (!data) return;
+
+      await deleteBusinessCard();
+
+      infoNotification('名刺を削除しました');
+      router.replace(ROUTES.cards.base);
+    } catch (error) {
+      const message = '名刺の削除に失敗しました';
+
+      if (isApiError(error)) {
+        errorNotification(error.response?.data.error ?? message);
+      } else {
+        errorNotification(message);
+      }
+    } finally {
+      closeLoading();
+    }
   };
 
   useEffect(() => {
@@ -105,6 +134,9 @@ export const CardPage = ({ card_id }: { card_id: string }) => {
           </Button>
           <Button fullWidth leftSection={<IconDownload />} onClick={exportPDF}>
             名刺をダウンロード
+          </Button>
+          <Button fullWidth color="red" onClick={handleDelete}>
+            名刺を削除する
           </Button>
         </Stack>
       </Stack>
