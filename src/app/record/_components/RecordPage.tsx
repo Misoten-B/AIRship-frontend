@@ -155,8 +155,14 @@ export const RecordPage = () => {
           <Title order={5} mb={4}>
             生成元音声の設定
           </Title>
-          <Text size="xs" c="gray.6" mb={12}>
-            最大10秒間の音声を録音してください。
+          <Text size="xs" c="gray.6" mb="md">
+            5秒程の音声になるように、録音してください。
+          </Text>
+          <Text size="xs" c="gray.6">
+            録音する言葉の例:
+          </Text>
+          <Text size="xs" c="gray.6">
+            「この声がAI化されたら、どんなことができるかな？どんなことを話せるかな？」
           </Text>
           <Stack align="center" pb="md" h="60vh" justify="space-evenly">
             <Text
