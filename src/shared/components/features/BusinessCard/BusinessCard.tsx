@@ -96,6 +96,8 @@ export const BusinessCard = ({ card, handleClick, ...props }: Props) => {
     <Text
       style={{
         fontSize: fontSize[key] * scale,
+        lineHeight: 1,
+        whiteSpace: 'pre-wrap',
       }}
       key={key}
       mb="md"
